@@ -6,6 +6,7 @@ import { ListaProdutoComponent } from './pages/produtos/lista-produto/lista-prod
 export const routes: Routes = [
     { path: 'produtos', component: ListaProdutoComponent },
     { path: 'produtos/:id', component: DetalhesProdutoComponent },
+    { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule) },
     { path: '', redirectTo: 'produtos', pathMatch: 'full' },
     { path: '**', component: NotFoundComponent },
 ];
