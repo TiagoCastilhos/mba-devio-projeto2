@@ -1,4 +1,4 @@
-# **XpertStore - Aplicação de Gestão de Mini Loja Virtual com Angular, MVC e API RESTful**
+# **DevXpert.Store - Aplicação de Gestão de Mini Loja Virtual com Angular, MVC e API RESTful**
 
 ## **1. Apresentação**
 ---
@@ -8,12 +8,12 @@ O objetivo principal desenvolver uma aplicação de Gestão de Mini Loja Virtual
 
 ### :notebook: **Autores**
 ---
-:white_check_mark: Chayene Freitas - @chaya3090
-:white_check_mark: Cristian Kruger Silva - @mr.krug3r
-:white_check_mark: Edson Junio Araújo dos Santos - @edsonsantos3976
-:white_check_mark: Gilberto Moshim Yabiku Junior - @junmoriyama3d
-:white_check_mark: Tiago Henrique de Castilhos - @zsfnightmare
-:white_check_mark: Victor Higaki - @victorhigaki
+- :white_check_mark: Chayene Freitas - @chaya3090
+- :white_check_mark: Cristian Kruger Silva - @mr.krug3r
+- :white_check_mark: Edson Junio Araújo dos Santos - @edsonsantos3976
+- :white_check_mark: Gilberto Moshim Yabiku Junior - @junmoriyama3d
+- :white_check_mark: Tiago Henrique de Castilhos - @zsfnightmare
+- :white_check_mark: Victor Higaki - @victorhigaki
 
 ## :notebook: **2. Proposta do Projeto**
 ---
@@ -134,8 +134,8 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 ## :white_check_mark: **10. To Do List**
 ---
 
-:white_check_mark: implementar entidade cliente (relacionamento com produtos/favoritos);
-:white_check_mark: implementar identity na camada MVC;
-:white_check_mark: implementar AuthController, VendedorController, ClienteController e ProdutoController;
-:white_check_mark: implementar Migrations e rever seed;
-:white_check_mark: implementar as Roles ou Claims;
+- :white_check_mark: implementar entidade cliente (relacionamento com produtos/favoritos);
+- :white_check_mark: implementar identity na camada MVC;
+- :white_check_mark: implementar AuthController, VendedorController, ClienteController e ProdutoController;
+- :white_check_mark: implementar Migrations e rever seed;
+- :white_check_mark: implementar as Roles ou Claims;
