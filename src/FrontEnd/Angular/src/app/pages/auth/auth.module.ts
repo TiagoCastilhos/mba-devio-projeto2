@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RouterModule } from '@angular/router';
 import { authRoutes } from './auth.routes';
+import { AuthService } from './services/auth/auth.service';
 
 
 
@@ -15,6 +16,9 @@ import { authRoutes } from './auth.routes';
   imports: [
     CommonModule,
     RouterModule.forChild(authRoutes)
+  ],
+  providers: [
+    AuthService
   ]
 })
 export class AuthModule { }
