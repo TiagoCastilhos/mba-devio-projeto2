@@ -1,4 +1,6 @@
-﻿namespace DevXpert.Store.Core.Business.Models.Settings
+﻿using System.Text;
+
+namespace DevXpert.Store.Core.Business.Models.Settings
 {
     public class JWTSettings
     {
@@ -9,5 +11,8 @@
         public int ExpiracaoRefreshTokenMinutos { get; set; }
         public string Jwt { get; set; }
         public string[] ValidoEm { get; set; }
+
+        public byte[] ObterChaveEmBytes() 
+            => Encoding.ASCII.GetBytes(Jwt);
     }
 }

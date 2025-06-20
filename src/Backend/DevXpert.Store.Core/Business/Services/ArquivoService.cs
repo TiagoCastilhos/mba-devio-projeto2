@@ -10,7 +10,8 @@ namespace DevXpert.Store.Core.Business.Services
     //TODO: EM PROD, SALVAR EM UM Blob Storage / S3 Bucket etc
     public class ArquivoService(INotificador notificador,
                                 IWebHostEnvironment environment,
-                                IOptions<ArquivoSettings> arquivoSettings) : BaseService(notificador), IArquivoService
+                                IOptions<ArquivoSettings> arquivoSettings,
+                                IHttpContextAccessor httpContextAccessor) : BaseService(notificador, httpContextAccessor), IArquivoService
     {
         private readonly ArquivoSettings _arquivoSettings = arquivoSettings.Value;
         private readonly IWebHostEnvironment _environment = environment;

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using DevXpert.Store.Core.Business.Models;
+using DevXpert.Store.Core.Data.Seed;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using DevXpert.Store.Core.Business.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DevXpert.Store.Core.Data.Context
 {
@@ -9,10 +10,10 @@ namespace DevXpert.Store.Core.Data.Context
     {
 
         #region DB SET
-        public DbSet<Categoria> Categorias{ get; set; }
-        public DbSet<Produto> Produtos{ get; set; }
-        public DbSet<Vendedor> Vendedores{ get; set; }
-        public DbSet<Cliente> Clientes{ get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Vendedor> Vendedores { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
         #endregion
 
 
@@ -42,8 +43,6 @@ namespace DevXpert.Store.Core.Data.Context
                 relationship.DeleteBehavior = DeleteBehavior.NoAction;
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
-            //SeedDatabase.Seed(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }

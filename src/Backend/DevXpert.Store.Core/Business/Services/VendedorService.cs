@@ -3,11 +3,13 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using LinqKit;
+using Microsoft.AspNetCore.Http;
 
 namespace DevXpert.Store.Core.Business.Services
 {
     public class VendedorService(IVendedorRepository vendedorRepository,
-                                  INotificador notificador) : BaseService(notificador), IVendedorService
+                                  INotificador notificador,
+                                  IHttpContextAccessor httpContextAccessor) : BaseService(notificador, httpContextAccessor), IVendedorService
     {
         private readonly IVendedorRepository _vendedorRepository = vendedorRepository;
 
@@ -61,7 +63,7 @@ namespace DevXpert.Store.Core.Business.Services
                 return NotificarError("Vendedor já cadastrado.");
 
             return true;
-        }      
+        }
         #endregion
     }
 }

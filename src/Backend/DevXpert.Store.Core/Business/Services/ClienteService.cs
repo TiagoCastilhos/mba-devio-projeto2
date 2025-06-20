@@ -3,11 +3,13 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using LinqKit;
+using Microsoft.AspNetCore.Http;
 
 namespace DevXpert.Store.Core.Business.Services
 {
     public class ClienteService(IClienteRepository clienteRepository,
-                                  INotificador notificador) : BaseService(notificador), IClienteService
+                                  INotificador notificador,
+                                  IHttpContextAccessor httpContextAccessor) : BaseService(notificador, httpContextAccessor), IClienteService
     {
         private readonly IClienteRepository _clienteRepository = clienteRepository;
 

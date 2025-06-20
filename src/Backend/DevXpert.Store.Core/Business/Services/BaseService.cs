@@ -1,12 +1,15 @@
-﻿using DevXpert.Store.Core.Business.Models;
+﻿using DevXpert.Store.Core.Business.Constants;
+using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 
 namespace DevXpert.Store.Core.Business.Services
 {
-    public abstract class BaseService(INotificador notificador)
+    public abstract class BaseService(INotificador notificador, IHttpContextAccessor httpContextAccessor)
     {
         private readonly INotificador _notificador = notificador;
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
         protected void Notificar(ValidationResult validationResult)
         {
@@ -37,6 +40,36 @@ namespace DevXpert.Store.Core.Business.Services
         {
             Notificar(errorMessage);
             return default;
+        }
+
+        protected bool EstaAutenticado()
+        {
+            return _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
+        }
+
+        protected Guid ObterUsuarioId()
+        {
+            if (!EstaAutenticado())
+                return Guid.Empty;
+
+            var userId = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            return Guid.TryParse(userId, out var id) ? id : Guid.Empty;
+        }
+
+        protected bool PossuiRole(string role)
+        {
+            if (!EstaAutenticado())
+                return false;
+
+            return _httpContextAccessor.HttpContext?.User.IsInRole(role) ?? false;
+        }
+
+        protected bool UsuarioEAdmin()
+        {
+            if (!EstaAutenticado())
+                return false;
+
+            return _httpContextAccessor.HttpContext?.User.IsInRole(RoleConstants.Administrador) ?? false;
         }
     }
 }

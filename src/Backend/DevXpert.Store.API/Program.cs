@@ -1,4 +1,5 @@
 using DevXpert.Store.Core.Application.Configurations;
+using DevXpert.Store.Core.Data.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,10 @@ var app = builder.Build();
 
 app.UseApiConfiguration()
    .UseSwaggerConfig()
-   .UseEndPointsConfiguration()
-   .MigrateDatabase().Wait();
+   .UseEndPointsConfiguration();
 
-app.Run();
+await app.MigrateDatabase();
+
+await app.PopularBancoDeDados();
+
+await app.RunAsync();

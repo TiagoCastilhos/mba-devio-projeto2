@@ -1,11 +1,10 @@
-﻿using DevXpert.Store.Core.Business.Models.Settings;
+﻿using System.Diagnostics.CodeAnalysis;
+using DevXpert.Store.Core.Business.Models.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace DevXpert.Store.Core.Application.Configurations
 {
@@ -14,8 +13,10 @@ namespace DevXpert.Store.Core.Application.Configurations
     {
         public static WebApplicationBuilder AddJWTConfiguration(this WebApplicationBuilder builder)
         {
-            var appSettings = builder.Configuration.GetSection(JWTSettings.ConfigName).Get<JWTSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Jwt);
+            var jwtSettings = builder.Configuration.GetSection(JWTSettings.ConfigName).Get<JWTSettings>();
+
+            builder.Services
+                   .AddSingleton(jwtSettings);
 
             builder.Services
                    .AddAuthentication(t =>
@@ -30,11 +31,11 @@ namespace DevXpert.Store.Core.Application.Configurations
                        t.TokenValidationParameters = new TokenValidationParameters
                        {
                            ValidateIssuerSigningKey = true,
-                           IssuerSigningKey = new SymmetricSecurityKey(key),
+                           IssuerSigningKey = new SymmetricSecurityKey(jwtSettings.ObterChaveEmBytes()),
                            ValidateIssuer = true,
                            ValidateAudience = true,
-                           ValidAudiences = appSettings.ValidoEm,
-                           ValidIssuer = appSettings.Emissor,
+                           ValidAudiences = jwtSettings.ValidoEm,
+                           ValidIssuer = jwtSettings.Emissor,
                            ClockSkew = TimeSpan.Zero
                        };
                    });

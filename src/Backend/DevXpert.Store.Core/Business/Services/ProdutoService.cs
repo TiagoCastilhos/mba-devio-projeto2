@@ -3,12 +3,14 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using LinqKit;
+using Microsoft.AspNetCore.Http;
 
 namespace DevXpert.Store.Core.Business.Services
 {
     public class ProdutoService(INotificador notificador,
-                                IProdutoRepository produtoRepository,                               
-                                IArquivoService arquivoService) : BaseService(notificador), IProdutoService
+                                IProdutoRepository produtoRepository,
+                                IArquivoService arquivoService,
+                                IHttpContextAccessor httpContextAccessor) : BaseService(notificador, httpContextAccessor), IProdutoService
     {
         private readonly IProdutoRepository _produtoRepository = produtoRepository;
         private readonly IArquivoService _arquivoService = arquivoService;
@@ -103,7 +105,7 @@ namespace DevXpert.Store.Core.Business.Services
             }
 
             return true;
-        }       
+        }
         #endregion
     }
 }
