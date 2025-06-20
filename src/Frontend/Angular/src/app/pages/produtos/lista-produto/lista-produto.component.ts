@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-lista-produto',
@@ -7,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrl: './lista-produto.component.css'
 })
 export class ListaProdutoComponent {
+  private authenticationService = inject(AuthenticationService);
 
+  ngOnInit() {
+    this.authenticationService.login('teste@teste.com', '@Aa12345') //Substituir com as credenciais do form
+      .subscribe({
+        next: (response) => { }
+      });
+  }
 }
