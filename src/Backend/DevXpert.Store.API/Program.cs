@@ -14,9 +14,9 @@ builder.AddApiBehaviorConfig()
 
 var app = builder.Build();
 
-app.UseApiConfiguration()
+app.MigrateDatabase()
+   .UseApiConfiguration()
    .UseSwaggerConfig()
-   .UseEndPointsConfiguration()
-   .MigrateDatabase().Wait();
+   .UseEndPointsConfiguration();
 
 app.Run();

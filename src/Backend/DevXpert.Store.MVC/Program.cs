@@ -10,6 +10,6 @@ builder.MvcBehaviorConfig()
 var app = builder.Build();
 
 app.UseMvcConfiguration()
-   .MigrateDatabase().Wait();
+   .MigrateDatabase();
 
 app.Run();

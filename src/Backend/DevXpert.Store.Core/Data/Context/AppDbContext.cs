@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using DevXpert.Store.Core.Business.Models;
+using DevXpert.Store.Core.Data.Seed;
 
 namespace DevXpert.Store.Core.Data.Context
 {
@@ -43,7 +44,7 @@ namespace DevXpert.Store.Core.Data.Context
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            //SeedDatabase.Seed(modelBuilder);
+            SeedDatabase.Seed(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
