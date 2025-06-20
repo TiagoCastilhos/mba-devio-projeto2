@@ -10,7 +10,8 @@ namespace DevXpert.Store.Core.Data.Seed
         public static void Seed(ModelBuilder builder)
         {
             var vendedorId = Guid.Parse("f96e5735-7f8a-49a7-8fe1-64304e70257d");
-            var senha = new PasswordHasher<IdentityUser>().HashPassword(null, "@Aa12345");
+            //var senha = new PasswordHasher<IdentityUser>().HashPassword(null, "@Aa12345");
+            var senha = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==";//@Aa12345
 
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "1", Name = "Administrator", NormalizedName = "ADMINISTRADOR", ConcurrencyStamp = "2c5e174e-3b0e-446f-86af-483d56fd7210" },
@@ -29,6 +30,8 @@ namespace DevXpert.Store.Core.Data.Seed
                     PasswordHash = senha,
                     EmailConfirmed = true,
                     LockoutEnabled = true,
+                    ConcurrencyStamp = "f1aef7e9-db61-4442-a01a-ea58d7609d21",
+                    SecurityStamp = "fdb857cc-1f49-484f-bd6b-bfbba7fedfab"
                 }
             );
 
@@ -47,10 +50,10 @@ namespace DevXpert.Store.Core.Data.Seed
             );
 
             builder.Entity<Produto>().HasData(
-                new Produto(Guid.NewGuid(), 100, 5000, "Computador", "Personal Computer", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
-                new Produto(Guid.NewGuid(), 20, 60, "Mouse", "mouse com fio", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
-                new Produto(Guid.NewGuid(), 15, 100, "Teclado", "teclado mecânico", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
-                new Produto(Guid.NewGuid(), 28, 780, "Monitor", "Monitor curso 27", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId, false)
+                new Produto(Guid.Parse("f5dd84d8-ccda-43e8-96cf-be0ccff0de3b"), 100, 5000, "Computador", "Personal Computer", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
+                new Produto(Guid.Parse("5fa99536-a7c8-403d-a0a0-373f30773054"), 20, 60, "Mouse", "mouse com fio", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
+                new Produto(Guid.Parse("26361398-ab18-4efd-879f-1f0ad1bb6d9e"), 15, 100, "Teclado", "teclado mecânico", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
+                new Produto(Guid.Parse("6fa552cd-bdbf-4f4d-b298-987c3a140275"), 28, 780, "Monitor", "Monitor curso 27", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId, false)
             );
         }
     }
