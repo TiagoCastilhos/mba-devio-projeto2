@@ -4,9 +4,6 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RouterModule } from '@angular/router';
 import { authRoutes } from './auth.routes';
-import { AuthService } from './services/auth/auth.service';
-
-
 
 @NgModule({
   declarations: [
@@ -18,7 +15,6 @@ import { AuthService } from './services/auth/auth.service';
     RouterModule.forChild(authRoutes)
   ],
   providers: [
-    AuthService
   ]
 })
 export class AuthModule { }
