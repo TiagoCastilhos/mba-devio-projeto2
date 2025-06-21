@@ -6,8 +6,6 @@ namespace DevXpert.Store.Core.Business.Services
 {
     public abstract class BaseService(INotificador notificador)
     {
-        private readonly INotificador _notificador = notificador;
-
         protected void Notificar(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
@@ -16,7 +14,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         protected void Notificar(string errorMessage)
         {
-            _notificador.Handle(new Notificacao(errorMessage));
+            notificador.Handle(new Notificacao(errorMessage));
         }
 
         protected bool IsValid<TE>(TE entity) where TE : BaseEntity

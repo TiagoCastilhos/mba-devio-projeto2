@@ -10,18 +10,30 @@ namespace DevXpert.Store.Core.Business.Services
                                 IProdutoRepository produtoRepository,                               
                                 IArquivoService arquivoService) : BaseService(notificador), IProdutoService
     {
-        private readonly IProdutoRepository _produtoRepository = produtoRepository;
-        private readonly IArquivoService _arquivoService = arquivoService;
-
         #region READ
         public async Task<IEnumerable<Produto>> BuscarTodos()
         {
-            return await _produtoRepository.BuscarTodos();
+            return await produtoRepository.BuscarTodos();
         }
 
         public async Task<Produto> BuscarPorId(Guid id)
         {
-            return await _produtoRepository.BuscarPorId(id);
+            return await produtoRepository.BuscarPorId(id);
+        }
+
+        public async Task<IEnumerable<Produto>> BuscarPorNome(string nome)
+        {
+            return await produtoRepository.BuscarPorNome(nome);
+        }
+
+        public async Task<IEnumerable<Produto>> BuscarPorVendedorId(Guid vendedorId)
+        {
+            return await produtoRepository.BuscarPorVendedorId(vendedorId);
+        }
+        
+        public async Task<IEnumerable<Produto>> BuscarAtivos()
+        {
+            return await produtoRepository.BuscarAtivos();
         }
         #endregion
 
@@ -32,7 +44,7 @@ namespace DevXpert.Store.Core.Business.Services
 
             await ManipularImagem(produto, true);
 
-            await _produtoRepository.Adicionar(produto);
+            await produtoRepository.Adicionar(produto);
 
             return true;
         }
@@ -43,22 +55,22 @@ namespace DevXpert.Store.Core.Business.Services
 
             await ManipularImagem(produto, false);
 
-            await _produtoRepository.Atualizar(produto);
+            await produtoRepository.Atualizar(produto);
 
             return true;
         }
 
         public async Task<bool> Excluir(Guid id)
         {
-            var produto = await _produtoRepository.BuscarPorId(id);
+            var produto = await produtoRepository.BuscarPorId(id);
 
             if (produto is null) return NotificarError("Produto não encontrado.");
 
-            _arquivoService.Excluir(produto.Imagem);
+            arquivoService.Excluir(produto.Imagem);
 
             //TODO: EXCLUIR OS FAVORITOS DOS CLIENTES
 
-            await _produtoRepository.Excluir(id);
+            await produtoRepository.Excluir(id);
 
             return true;
         }
@@ -67,12 +79,12 @@ namespace DevXpert.Store.Core.Business.Services
         #region METHODS
         public async Task Salvar()
         {
-            await _produtoRepository.Salvar();
+            await produtoRepository.Salvar();
         }
 
         public void Dispose()
         {
-            _produtoRepository?.Dispose();
+            produtoRepository?.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -83,7 +95,7 @@ namespace DevXpert.Store.Core.Business.Services
             var expression = PredicateBuilder.New<Produto>(m => m.Nome == produto.Nome);
             if (!isInsert) expression = expression.And(m => m.Id != produto.Id);
 
-            if (_produtoRepository.Pesquisar(expression).Result.Any())
+            if (produtoRepository.Pesquisar(expression).Result.Any())
                 return NotificarError("Produto já cadastrado.");
 
             return true;
@@ -91,15 +103,15 @@ namespace DevXpert.Store.Core.Business.Services
 
         private async Task<bool> ManipularImagem(Produto produto, bool isInsert = true)
         {
-            if (!await _arquivoService.Salvar(produto.Imagem, produto.FileUpload))
+            if (!await arquivoService.Salvar(produto.Imagem, produto.FileUpload))
                 return NotificarError("Erro ao salvar arquivo.");
 
             if (!isInsert)
             {
-                var current = await _produtoRepository.BuscarPorId(produto.Id);
+                var current = await produtoRepository.BuscarPorId(produto.Id);
 
                 if (current is not null && current.Imagem != produto.Imagem)
-                    _arquivoService.Excluir(current.Imagem);
+                    arquivoService.Excluir(current.Imagem);
             }
 
             return true;
