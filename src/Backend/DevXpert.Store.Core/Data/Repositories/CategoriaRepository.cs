@@ -1,7 +1,7 @@
 ﻿using DevXpert.Store.Core.Business.Interfaces.Repositories;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Data.Context;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevXpert.Store.Core.Data.Repositories
 {
@@ -11,6 +11,7 @@ namespace DevXpert.Store.Core.Data.Repositories
         {
             return await Db.Categorias
                            .Include(c => c.Produto)
+                           .AsNoTracking()
                            .ToListAsync();
         }
 
@@ -18,6 +19,7 @@ namespace DevXpert.Store.Core.Data.Repositories
         {
             return await Db.Categorias
                            .Include(c => c.Produto)
+                           .AsNoTracking()
                            .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
