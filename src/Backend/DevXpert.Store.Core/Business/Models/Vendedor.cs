@@ -1,13 +1,10 @@
-﻿using DevXpert.Store.Core.Business.Validations;
+﻿using DevXpert.Store.Core.Business.Models.Base;
+using DevXpert.Store.Core.Business.Validations;
 
 namespace DevXpert.Store.Core.Business.Models
 {
-    public class Vendedor : BaseEntity
+    public class Vendedor : PessoaBase
     {
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Senha { get; set; }
-
         #region NAVIGATION PROPERTIES
         public Guid ProdutoId { get; set; }
         public IEnumerable<Produto> Produto { get; set; }

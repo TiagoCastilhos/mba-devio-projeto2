@@ -1,5 +1,5 @@
-﻿using DevXpert.Store.Core.Business.Models;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using DevXpert.Store.Core.Business.Models.Base;
 
 namespace DevXpert.Store.Core.Business.Interfaces.Repositories
 {
