@@ -9,12 +9,10 @@ namespace DevXpert.Store.Core.Business.Services
     public class VendedorService(IVendedorRepository vendedorRepository,
                                   INotificador notificador) : BaseService(notificador), IVendedorService
     {
-        private readonly IVendedorRepository _vendedorRepository = vendedorRepository;
-
         #region READ
         public async Task<Vendedor> BuscarPorId(Guid id)
         {
-            return await _vendedorRepository.BuscarPorId(id);
+            return await vendedorRepository.BuscarPorId(id);
         }
         #endregion
 
@@ -23,7 +21,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(vendedor, true)) return false;
 
-            await _vendedorRepository.Adicionar(vendedor);
+            await vendedorRepository.Adicionar(vendedor);
 
             return true;
         }
@@ -32,7 +30,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(vendedor, true)) return false;
 
-            await _vendedorRepository.Atualizar(vendedor);
+            await vendedorRepository.Atualizar(vendedor);
 
             return true;
         }
@@ -41,13 +39,13 @@ namespace DevXpert.Store.Core.Business.Services
         #region METHODS
         public void Dispose()
         {
-            _vendedorRepository?.Dispose();
+            vendedorRepository?.Dispose();
             GC.SuppressFinalize(this);
         }
 
         public async Task Salvar()
         {
-            await _vendedorRepository.Salvar();
+            await vendedorRepository.Salvar();
         }
 
         private bool Validate(Vendedor vendedor, bool isInsert = false)
@@ -57,7 +55,7 @@ namespace DevXpert.Store.Core.Business.Services
             var expression = PredicateBuilder.New<Vendedor>(m => m.Nome == vendedor.Nome);
             if (!isInsert) expression = expression.And(m => m.Id != vendedor.Id);
 
-            if (_vendedorRepository.Pesquisar(expression).Result.Any())
+            if (vendedorRepository.Pesquisar(expression).Result.Any())
                 return NotificarError("Vendedor já cadastrado.");
 
             return true;

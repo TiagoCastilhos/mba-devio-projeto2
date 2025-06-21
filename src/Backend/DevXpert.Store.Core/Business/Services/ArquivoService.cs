@@ -13,13 +13,12 @@ namespace DevXpert.Store.Core.Business.Services
                                 IOptions<ArquivoSettings> arquivoSettings) : BaseService(notificador), IArquivoService
     {
         private readonly ArquivoSettings _arquivoSettings = arquivoSettings.Value;
-        private readonly IWebHostEnvironment _environment = environment;
 
         public bool Excluir(string fileName)
         {
             if (fileName == _arquivoSettings.DefaultImage) return true;
 
-            var filePath = $"{_environment.WebRootPath}{_arquivoSettings.BasePath.Replace("~", string.Empty)}{fileName}";
+            var filePath = $"{environment.WebRootPath}{_arquivoSettings.BasePath.Replace("~", string.Empty)}{fileName}";
 
             if (File.Exists(filePath))
                 File.Delete(filePath);
@@ -29,13 +28,10 @@ namespace DevXpert.Store.Core.Business.Services
 
         public async Task<bool> Salvar(string fileName, IFormFile file)
         {
-            if (fileName == _arquivoSettings.DefaultImage || !string.IsNullOrEmpty(fileName) && file is null)
-                return true;
-
             if (file.Length == 0)
                 return NotificarError("Arquivo Corrompido ou vazio.");
 
-            var filePath = $"{_environment.WebRootPath}{_arquivoSettings.BasePath.Replace("~", string.Empty)}{fileName}";
+            var filePath = $"{environment.WebRootPath}{_arquivoSettings.BasePath.Replace("~", string.Empty)}{fileName}";
 
             if (File.Exists(filePath))
                 return NotificarError("Já existe um arquivo com este nome.");
