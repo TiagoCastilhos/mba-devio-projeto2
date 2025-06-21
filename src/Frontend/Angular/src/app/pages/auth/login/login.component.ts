@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { ToasterService } from '../../../services/toaster.service';
 
@@ -15,31 +16,30 @@ import { ToasterService } from '../../../services/toaster.service';
   standalone: false,
 })
 export class LoginComponent {
-  fb = inject(FormBuilder);
-  authenticationService = inject(AuthenticationService);
-  toasterService = inject(ToasterService);
-  loginForm: FormGroup<LoginForm> = this.fb.group<LoginForm>({
-    email: this.fb.nonNullable.control<string>('cliente@teste.com', [
-      Validators.required,
-    ]),
-    password: this.fb.nonNullable.control<string>('Senha@123', [
-      Validators.required,
-    ]),
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private authenticationService = inject(AuthenticationService);
+  private toasterService = inject(ToasterService);
+  protected loginForm: FormGroup<LoginForm> = this.fb.group<LoginForm>({
+    email: this.fb.nonNullable.control<string>('', [Validators.required]),
+    password: this.fb.nonNullable.control<string>('', [Validators.required]),
   });
 
   onSubmit() {
     if (!this.loginForm.valid) {
-      console.log('invalid');
+      this.toasterService.warning('O formulário possui erros!');
       return;
     }
     const login = this.loginForm.getRawValue();
     this.authenticationService.login(login.email, login.password).subscribe({
       next: (res) => {
-        if (res.success)
+        if (res.success) {
           this.toasterService.success('Login efetuado com sucesso!');
+          this.router.navigate(['']);
+        }
       },
       error: (err) => {
-        this.toasterService.success(err);
+        this.toasterService.error(err.error.errors);
       },
     });
   }
