@@ -9,7 +9,8 @@ namespace DevXpert.Store.Core.Business.Models
         public string Senha { get; set; }
 
         #region NAVIGATION PROPERTIES
-       //TODO: MAPEAR LISTA DE FAVORITOS
+        public Guid ProdutoId { get; set; }
+        public IEnumerable<Produto> Produtos { get; set; }
         #endregion
 
         public Cliente()

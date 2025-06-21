@@ -21,14 +21,14 @@ namespace DevXpert.Store.API.Controllers
     public class AuthController(INotificador notificador,
                                IAppIdentityUser user,
                                IOptions<JWTSettings> jwtSettings,
-                               IVendedorService vendedorService,
+                               IClienteService clienteService,
                                SignInManager<IdentityUser> signInManager,
                                UserManager<IdentityUser> userManager) : MainController(notificador, user)
     {
         private readonly SignInManager<IdentityUser> _signInManager = signInManager;
         private readonly UserManager<IdentityUser> _userManager = userManager;
         private readonly JWTSettings _jwtSettings = jwtSettings.Value;
-        private readonly IVendedorService _vendedorService = vendedorService;
+        private readonly IClienteService _clienteService = clienteService;
 
         [AllowAnonymous]
         [HttpPost("register")]
@@ -51,10 +51,10 @@ namespace DevXpert.Store.API.Controllers
                 return CustomResponse(HttpStatusCode.BadRequest);
             }
 
-            if (!await _vendedorService.Adicionar(new Vendedor(Guid.Parse(user.Id), user.UserName, user.Email, usuarioRegistro.Password)))
-                return CustomResponse(HttpStatusCode.BadRequest, "Falha ao cadastrar vendedor.");
+            if (!await _clienteService.Adicionar(new Cliente(Guid.Parse(user.Id), user.UserName, user.Email, usuarioRegistro.Password)))
+                return CustomResponse(HttpStatusCode.BadRequest, "Falha ao cadastrar cliente.");
 
-            await _vendedorService.Salvar();
+            await _clienteService.Salvar();
 
             await _signInManager.SignInAsync(user, false);
 
@@ -68,8 +68,12 @@ namespace DevXpert.Store.API.Controllers
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, true);
+            
+            var cliente = await _clienteService.BuscarPorEmail(login.Email);
+            
+            //TODO: PERMITIR LOGIN DE ADMIN OU VENDEDOR PELA API???
 
-            if (!result.Succeeded)
+            if (!result.Succeeded || cliente is null)
                 return CustomResponse(HttpStatusCode.BadRequest, "Usuário ou senha incorretos.");
 
             return CustomResponse(HttpStatusCode.OK, await GerarJWT(login.Email));
