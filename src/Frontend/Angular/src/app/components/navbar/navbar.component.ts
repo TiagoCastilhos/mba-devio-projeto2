@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  private router = inject(Router);
+  private authenticationService = inject(AuthenticationService);
+  usuarioLogado = this.authenticationService.getAuthToken();
 
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/home']);
+  }
 }

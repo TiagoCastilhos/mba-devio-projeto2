@@ -36,4 +36,8 @@ export class AuthenticationService {
     const token = sessionStorage.getItem('access_token');
     return token;
   }
+
+  logout() {
+    sessionStorage.removeItem('access_token');
+  }
 }
