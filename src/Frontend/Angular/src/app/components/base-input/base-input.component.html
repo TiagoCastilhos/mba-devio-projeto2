@@ -1,1 +1,10 @@
-<p>base-input works!</p>
+<label [for]="label()">{{ label() }}</label>
+<input
+  class="form-control"
+  [type]="type()"
+  [id]="label()"
+  [(ngModel)]="value"
+  (input)="onChange && onChange(value)"
+  (focus)="onTouched && onTouched()"
+  [disabled]="isDisabled"
+/>
