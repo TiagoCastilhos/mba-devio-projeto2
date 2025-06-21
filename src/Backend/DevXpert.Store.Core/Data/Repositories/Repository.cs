@@ -1,8 +1,8 @@
-﻿using DevXpert.Store.Core.Business.Interfaces.Repositories;
-using DevXpert.Store.Core.Business.Models;
+﻿using System.Linq.Expressions;
+using DevXpert.Store.Core.Business.Interfaces.Repositories;
+using DevXpert.Store.Core.Business.Models.Base;
 using DevXpert.Store.Core.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace DevXpert.Store.Core.Data.Repositories
 {

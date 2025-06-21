@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace DevXpert.Store.Core.Business.Models
+namespace DevXpert.Store.Core.Business.Models.Base
 {
     public abstract class BaseEntity
     {
