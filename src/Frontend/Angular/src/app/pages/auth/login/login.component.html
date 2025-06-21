@@ -1,1 +1,17 @@
-<p>login works!</p>
+<form [formGroup]="loginForm">
+  <app-base-input
+    formControlName="email"
+    label="E-mail"
+    type="email"
+  ></app-base-input>
+
+  <app-base-input
+    formControlName="senha"
+    label="Senha"
+    type="password"
+  ></app-base-input>
+
+  <app-base-button type="submit">
+    Login
+  </app-base-button>
+</form>
