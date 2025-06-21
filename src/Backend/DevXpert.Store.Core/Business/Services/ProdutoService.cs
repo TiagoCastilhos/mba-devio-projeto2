@@ -42,7 +42,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto, true)) return false;
 
-            await ManipularImagem(produto, true);
+            if(await ManipularImagem(produto, true)) return false;
 
             await produtoRepository.Adicionar(produto);
 
@@ -53,7 +53,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto)) return false;
 
-            await ManipularImagem(produto, false);
+            if(await ManipularImagem(produto, false)) return false;           
 
             await produtoRepository.Atualizar(produto);
 
