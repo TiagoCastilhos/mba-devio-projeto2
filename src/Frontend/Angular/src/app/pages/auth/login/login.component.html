@@ -1,17 +1,19 @@
-<form [formGroup]="loginForm">
-  <app-base-input
-    formControlName="email"
-    label="E-mail"
-    type="email"
-  ></app-base-input>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <app-base-input
+      formControlName="email"
+      label="E-mail"
+      type="email"
+    ></app-base-input>
+  </div>
 
-  <app-base-input
-    formControlName="senha"
-    label="Senha"
-    type="password"
-  ></app-base-input>
+  <div class="mb-3">
+    <app-base-input
+      formControlName="password"
+      label="Senha"
+      type="password"
+    ></app-base-input>
+  </div>
 
-  <app-base-button type="submit">
-    Login
-  </app-base-button>
+  <app-base-button type="submit"> Login </app-base-button>
 </form>
