@@ -10,10 +10,13 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class NavbarComponent {
   private router = inject(Router);
   private authenticationService = inject(AuthenticationService);
-  usuarioLogado = this.authenticationService.getAuthToken();
 
   logout() {
     this.authenticationService.logout();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
+  }
+
+  isLoggedIn(): boolean {
+    return this.authenticationService.isLoggedIn();
   }
 }
