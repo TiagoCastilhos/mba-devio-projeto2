@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { ToasterService } from '../../../services/toaster.service';
+import { passwordRegex } from '../validators/password-match.validator';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,10 @@ export class LoginComponent {
   private toasterService = inject(ToasterService);
   protected loginForm: FormGroup<LoginForm> = this.fb.group<LoginForm>({
     email: this.fb.nonNullable.control<string>('', [Validators.required]),
-    password: this.fb.nonNullable.control<string>('', [Validators.required]),
+    password: this.fb.nonNullable.control<string>('', [
+      Validators.required,
+      Validators.pattern(passwordRegex)
+    ]),
   });
 
   onSubmit() {
