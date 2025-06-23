@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ToasterService } from '../../../services/toaster.service';
-import { Produto } from '../models/produto';
+import { Produto } from '../../../models/produto';
 import { ProdutosService } from '../services/produtos/produtos.service';
 
 @Component({

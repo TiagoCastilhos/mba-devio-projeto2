@@ -67,8 +67,18 @@ export class AuthenticationService {
     return true;
   }
 
+  getUser(): User | undefined {
+    const token = this.getAuthToken();
+
+    if (!token) {
+      return undefined;
+    }
+
+    return this.readToken(token);
+  }
+
   private tokenExpired(token: string) {
-    const expiry = this.getUser(token).exp;
+    const expiry = this.readToken(token).exp;
     return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
 
@@ -80,8 +90,7 @@ export class AuthenticationService {
     }
   }
 
-  // Pode ser usado depois para obter o nome do usuario logado e a role
-  private getUser(token: string): User {
+  private readToken(token: string): User {
     const payload = JSON.parse(atob(token.split('.')[1]));
 
     return {

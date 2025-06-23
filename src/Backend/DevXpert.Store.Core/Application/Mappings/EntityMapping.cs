@@ -8,12 +8,10 @@ namespace DevXpert.Store.Core.Application.Mappings
         #region Categoria
         public static IEnumerable<CategoriaViewModel> MapToListCategoriaViewModel(IEnumerable<Categoria> categorias)
         {
-            List<CategoriaViewModel> list = [];
+            if (categorias is null || !categorias.Any())
+                return [];
 
-            foreach (var categoria in categorias)
-                list.Add(MapToCategoriaViewModel(categoria));
-
-            return list;
+            return [.. categorias.Select(MapToCategoriaViewModel)];
         }
 
         public static CategoriaViewModel MapToCategoriaViewModel(Categoria categoria)
@@ -23,7 +21,7 @@ namespace DevXpert.Store.Core.Application.Mappings
                 Nome = categoria.Nome,
                 Descricao = categoria.Descricao,
                 Ativo = categoria.Ativo,
-                QuantidadeProdutos = categoria.Produto.Count(),
+                QuantidadeProdutos = categoria.Produto?.Count() ?? 0,
             };
         }
 

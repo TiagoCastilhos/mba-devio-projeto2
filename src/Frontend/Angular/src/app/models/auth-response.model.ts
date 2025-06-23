@@ -1,4 +1,3 @@
-export type AuthResponse = {
-    success: boolean;
-    data: string;
-}
+import { CustomResponse } from "./custom-response";
+
+export type AuthResponse = CustomResponse<string>;
