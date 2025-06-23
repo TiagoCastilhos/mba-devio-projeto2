@@ -1,0 +1,9 @@
+services:
+
+  angular:
+    image: ${DOCKER_REGISTRY-}angular
+    build:
+      context: src/Frontend/Angular
+      dockerfile: Dockerfile
+    ports:
+      - "4000:80"
