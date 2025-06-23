@@ -21,6 +21,7 @@ namespace DevXpert.Store.API.Controllers
         private readonly IProdutoService _produtoService = produtoService;
 
         #region READ
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         //TODO: IMPLEMENTAR FILTRO PARA BUSCAR POR PARTE OU TODA DESCRICAO

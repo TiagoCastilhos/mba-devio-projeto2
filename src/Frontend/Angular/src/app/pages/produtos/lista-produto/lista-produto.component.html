@@ -1,12 +1,14 @@
-@for (produto of (produtos$ | async); track $index) {
-<div class="col-3">
-  <div class="card" [routerLink]="produto.id" style="cursor: pointer">
-    <img src="..." class="card-img-top" alt="..." />
-    <div class="card-body">
-      <p class="card-text">
-        {{ produto.nome }}
-      </p>
+<div class="row">
+  @for (produto of (produtos$ | async); track $index) {
+  <div class="col-3">
+    <div class="card" [routerLink]="produto.id" style="cursor: pointer">
+      <img src="..." class="card-img-top" alt="..." />
+      <div class="card-body">
+        <p class="card-text">
+          {{ produto.nome }}
+        </p>
+      </div>
     </div>
   </div>
+  }
 </div>
-}
