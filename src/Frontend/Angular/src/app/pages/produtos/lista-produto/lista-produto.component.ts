@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ProdutosService } from '../services/produtos/produtos.service';
+import { Component, inject } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { ToasterService } from '../../../services/toaster.service';
 import { Produto } from '../models/produto';
-import { Observable } from 'rxjs';
+import { ProdutosService } from '../services/produtos/produtos.service';
 
 @Component({
   selector: 'app-lista-produto',
@@ -10,5 +11,8 @@ import { Observable } from 'rxjs';
 })
 export class ListaProdutoComponent {
   _produtoService = inject(ProdutosService);
-  produtos$: Observable<Produto[]> = this._produtoService.obterTodos();
+  _toasterService = inject(ToasterService);
+  produtos$: Observable<Produto[]> = this._produtoService
+    .obterTodos()
+    .pipe(map((res) => res.data));
 }
