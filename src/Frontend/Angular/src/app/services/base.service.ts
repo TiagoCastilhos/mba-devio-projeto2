@@ -1,3 +1,3 @@
-export abstract class BaseService {
-  constructor() { }
-}
+import { HttpHeaders } from '@angular/common/http';
+
+export abstract class BaseService {}

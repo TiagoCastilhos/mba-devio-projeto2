@@ -6,6 +6,6 @@ import { Component, input } from '@angular/core';
   templateUrl: './base-button.component.html',
 })
 export class BaseButtonComponent {
-  type = input('type');
+  type = input('button');
   class = input('btn btn-primary');
 }

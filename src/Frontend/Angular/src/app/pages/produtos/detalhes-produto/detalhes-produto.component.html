@@ -1,1 +1,42 @@
-<p>detalhes-produto works!</p>
+<div *ngIf="produto$ | async as produto">
+  <div class="row">
+    <div class="offset-1 col-3">
+      <!-- <img [src]="'data:image/png;base64, ' + produto.imagem" /> -->
+    </div>
+
+    <div class="offset-1 col-3">
+      <a href="#">{{ produto.categoria.nome }}</a>
+      <h3>
+        <strong>
+          {{ produto.nome }}
+        </strong>
+      </h3>
+      <h2>{{ produto.preco | currency : "BRL" }}</h2>
+    </div>
+
+    <div class="offset-1 col-3">
+      <div class="card">
+        <div class="card-body d-flex flex-column">
+          <h3>{{ produto.preco | currency : "BRL" }}</h3>
+
+          <h4>{{ produto.estoque ? "Em estoque" : "Indisponível" }}</h4>
+
+          <app-base-button [class]="'btn btn-outline-warning w-100'">
+            Adicionar a Favoritos
+          </app-base-button>
+
+          <div class="h6">
+            Vendido por:
+            <!-- {{ produto.vendedor.nome }}  -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <h3>Descrição</h3>
+    <hr />
+    <h5>{{ produto.descricao }}</h5>
+  </div>
+</div>
