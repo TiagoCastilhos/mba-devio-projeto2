@@ -11,15 +11,13 @@ export class ProdutosService extends BaseService {
 
   obterTodos() {
     return this.http.get<Produto[]>(
-      `${this.apiUrl}/Produtos`,
-      this.getHeaderJson()
+      `${this.apiUrl}/Produtos`
     );
   }
 
   obterPorId(id: string) {
     return this.http.get<Produto>(
-      `${this.apiUrl}/Produtos/${id}`,
-      this.getHeaderJson()
+      `${this.apiUrl}/Produtos/${id}`
     );
   }
 }
