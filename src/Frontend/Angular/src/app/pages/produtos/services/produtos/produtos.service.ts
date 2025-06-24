@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { CustomResponse } from '../../../../models/custom-response';
 import { BaseService } from '../../../../services/base.service';
-import { Produto } from '../../models/produto';
+import { Produto } from '../../../../models/produto';
 
 @Injectable()
 export class ProdutosService extends BaseService {
