@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DevXpert.Store.Core.Migrations
+namespace DevXpert.Store.Core.data.migrations
 {
     public partial class FirstMigration : Migration
     {
@@ -224,6 +224,28 @@ namespace DevXpert.Store.Core.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CLIENTES_PRODUTOS",
+                columns: table => new
+                {
+                    ClientesId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ProdutosId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CLIENTES_PRODUTOS", x => new { x.ClientesId, x.ProdutosId });
+                    table.ForeignKey(
+                        name: "FK_CLIENTES_PRODUTOS_CLIENTES_ClientesId",
+                        column: x => x.ClientesId,
+                        principalTable: "CLIENTES",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CLIENTES_PRODUTOS_PRODUTOS_ProdutosId",
+                        column: x => x.ProdutosId,
+                        principalTable: "PRODUTOS",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -279,6 +301,11 @@ namespace DevXpert.Store.Core.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CLIENTES_PRODUTOS_ProdutosId",
+                table: "CLIENTES_PRODUTOS",
+                column: "ProdutosId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PRODUTO_NOME",
                 table: "PRODUTOS",
                 column: "Nome");
@@ -329,16 +356,19 @@ namespace DevXpert.Store.Core.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CLIENTES");
-
-            migrationBuilder.DropTable(
-                name: "PRODUTOS");
+                name: "CLIENTES_PRODUTOS");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "CLIENTES");
+
+            migrationBuilder.DropTable(
+                name: "PRODUTOS");
 
             migrationBuilder.DropTable(
                 name: "CATEGORIAS");

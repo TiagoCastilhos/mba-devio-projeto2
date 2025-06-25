@@ -53,7 +53,7 @@ namespace DevXpert.Store.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] CategoriaViewModel categoriaViewModel)
+        public async Task<IActionResult> Post([FromBody]CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 

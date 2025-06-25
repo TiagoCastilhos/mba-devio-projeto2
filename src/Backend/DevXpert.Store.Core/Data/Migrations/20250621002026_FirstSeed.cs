@@ -1,16 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
-namespace DevXpert.Store.Core.Data.Migrations
+namespace DevXpert.Store.Core.data.migrations
 {
-    /// <inheritdoc />
     public partial class FirstSeed : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
@@ -26,7 +19,7 @@ namespace DevXpert.Store.Core.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "f96e5735-7f8a-49a7-8fe1-64304e70257d", 0, "f1aef7e9-db61-4442-a01a-ea58d7609d21", "teste@teste.com", true, true, null, "TESTE@TESTE.COM", "TESTE@TESTE.COM", "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==", null, false, "fdb857cc-1f49-484f-bd6b-bfbba7fedfab", false, "teste@teste.com" });
+                values: new object[] { "f96e5735-7f8a-49a7-8fe1-64304e70257d", 0, "f1aef7e9-db61-4442-a01a-ea58d7609d21", "vendedor@teste.com", true, true, null, "VENDEDOR@TESTE.COM", "VENDEDOR@TESTE.COM", "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==", null, false, "fdb857cc-1f49-484f-bd6b-bfbba7fedfab", false, "vendedor@teste.com" });
 
             migrationBuilder.InsertData(
                 table: "CATEGORIAS",
@@ -41,7 +34,7 @@ namespace DevXpert.Store.Core.Data.Migrations
             migrationBuilder.InsertData(
                 table: "VENDEDORES",
                 columns: new[] { "Id", "Ativo", "Email", "Nome", "Senha" },
-                values: new object[] { new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257d"), true, "mail.teste@teste.com", "mail.teste@teste.com", "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==" });
+                values: new object[] { new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257d"), true, "vendedor@teste.com", "vendedor@teste.com", "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -60,7 +53,6 @@ namespace DevXpert.Store.Core.Data.Migrations
                 });
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(

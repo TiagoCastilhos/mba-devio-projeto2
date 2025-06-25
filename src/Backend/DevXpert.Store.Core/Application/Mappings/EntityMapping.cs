@@ -21,7 +21,8 @@ namespace DevXpert.Store.Core.Application.Mappings
                 Nome = categoria.Nome,
                 Descricao = categoria.Descricao,
                 Ativo = categoria.Ativo,
-                QuantidadeProdutos = categoria.Produto?.Count() ?? 0,
+
+                QuantidadeProdutos = (categoria.Produto?.Any()).GetValueOrDefault() ? categoria.Produto.Count() : 0
             };
         }
 

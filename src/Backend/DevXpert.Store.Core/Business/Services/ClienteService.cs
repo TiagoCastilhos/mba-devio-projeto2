@@ -14,6 +14,13 @@ namespace DevXpert.Store.Core.Business.Services
         {
             return await clienteRepository.BuscarPorId(id);
         }
+
+        public async Task<Cliente> BuscarPorEmail(string email)
+        {
+            var cliente = await _clienteRepository.Pesquisar(c => c.Email == email && c.Ativo);
+            
+            return cliente.FirstOrDefault();
+        }
         #endregion
 
         #region WRITE
