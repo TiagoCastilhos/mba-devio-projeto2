@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DevXpert.Store.Core.Migrations
+namespace DevXpert.Store.Core.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250620143034_FirstMigration")]
+    [Migration("20250621001941_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -21,6 +21,21 @@ namespace DevXpert.Store.Core.Migrations
             modelBuilder
                 .UseCollation("SQL_Latin1_General_CP1_CI_AI")
                 .HasAnnotation("ProductVersion", "9.0.6");
+
+            modelBuilder.Entity("ClienteProduto", b =>
+                {
+                    b.Property<Guid>("ClientesId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProdutosId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ClientesId", "ProdutosId");
+
+                    b.HasIndex("ProdutosId");
+
+                    b.ToTable("CLIENTES_PRODUTOS", (string)null);
+                });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Categoria", b =>
                 {
@@ -359,6 +374,21 @@ namespace DevXpert.Store.Core.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ClienteProduto", b =>
+                {
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Cliente", null)
+                        .WithMany()
+                        .HasForeignKey("ClientesId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Produto", null)
+                        .WithMany()
+                        .HasForeignKey("ProdutosId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Produto", b =>

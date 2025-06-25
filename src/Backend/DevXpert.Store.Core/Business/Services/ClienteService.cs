@@ -14,6 +14,13 @@ namespace DevXpert.Store.Core.Business.Services
         {
             return await clienteRepository.BuscarPorId(id);
         }
+
+        public async Task<Cliente> BuscarPorEmail(string email)
+        {
+            var cliente = await _clienteRepository.Pesquisar(c => c.Email == email && c.Ativo);
+            
+            return cliente.FirstOrDefault();
+        }
         #endregion
 
         #region WRITE
@@ -40,12 +47,6 @@ namespace DevXpert.Store.Core.Business.Services
         public async Task Salvar()
         {
             await clienteRepository.Salvar();
-        }
-
-        public void Dispose()
-        {
-            clienteRepository?.Dispose();
-            GC.SuppressFinalize(this);
         }
 
         private bool Validate(Cliente cliente, bool isInsert = false)

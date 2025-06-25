@@ -49,9 +49,9 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ```
 |-- docs
-|   |-- postman                  → Coleção postman com requisições para API
+|   |-- postman                      → Coleção postman com requisições para API
 |-- sql
-|   |-- script.sql   → Script idempotente do banco de dados (exclusivo SQL Server)
+|   |-- script.sql                   → Script idempotente do banco de dados (exclusivo SQL Server)
 |-- src
 |   |-- Backend
 |   |   |-- DevXpert.Store.Api       → API RESTful.
