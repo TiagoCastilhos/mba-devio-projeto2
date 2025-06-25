@@ -2,6 +2,7 @@
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace DevXpert.Store.Core.Data.Repositories
 {
@@ -9,29 +10,54 @@ namespace DevXpert.Store.Core.Data.Repositories
     {
         public override async Task<IEnumerable<Produto>> BuscarTodos()
         {
-            return await Db.Produtos
-                           .Include(p => p.Categoria)
-                           .Include(p => p.Vendedor)
+            return await ObterQueryProdutosIncluindoRelacoes()
                            .AsNoTracking()
                            .ToListAsync();
         }
 
         public override async Task<Produto> BuscarPorId(Guid id)
         {
-            return await Db.Produtos
-                           .Include(p => p.Categoria)
-                           .Include(p => p.Vendedor)
+            return await ObterQueryProdutosIncluindoRelacoes()
                            .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Produto>> BuscarPorCategoriaId(Guid categoriaId)
         {
-            return await Db.Produtos
-                           .Include(p => p.Categoria)
-                           .Include(p => p.Vendedor)
+            return await ObterQueryProdutosIncluindoRelacoes()
                            .Where(p => p.CategoriaId == categoriaId)
                            .AsNoTracking()
                            .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Produto>> BuscarPorNome(string nome)
+        {
+            return await ObterQueryProdutosIncluindoRelacoes()
+                .Where(p => p.Nome.Contains(nome))
+                .AsNoTracking()
+                .ToListAsync();       
+        }
+
+        public async Task<IEnumerable<Produto>> BuscarPorVendedorId(Guid vendedorId)
+        {
+            return await ObterQueryProdutosIncluindoRelacoes()
+                .Where(p => p.VendedorId == vendedorId)
+                .AsNoTracking()
+                .ToListAsync();       
+        }
+
+        public async Task<IEnumerable<Produto>> BuscarAtivos()
+        {
+            return await ObterQueryProdutosIncluindoRelacoes()
+                .Where(p => p.Ativo)
+                .AsNoTracking()
+                .ToListAsync();       
+        }
+        
+        private IIncludableQueryable<Produto, Vendedor> ObterQueryProdutosIncluindoRelacoes()
+        {
+            return Db.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Vendedor);
         }
     }
 }

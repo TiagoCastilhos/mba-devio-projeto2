@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { BaseButtonComponent } from '../../components/base-button/base-button.component';
+import { DetalhesProdutoComponent } from './detalhes-produto/detalhes-produto.component';
+import { ListaProdutoComponent } from './lista-produto/lista-produto.component';
 import { produtosRoutes } from './produtos.routes';
 import { ProdutosService } from './services/produtos/produtos.service';
 
-
-
 @NgModule({
-  declarations: [],
+  declarations: [ListaProdutoComponent, DetalhesProdutoComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(produtosRoutes)
+    RouterModule.forChild(produtosRoutes),
+    BaseButtonComponent,
   ],
-  providers: [
-    ProdutosService
-  ]
+  providers: [ProdutosService],
 })
-export class ProdutosModule { }
+export class ProdutosModule {}

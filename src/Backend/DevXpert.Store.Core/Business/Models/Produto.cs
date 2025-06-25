@@ -1,4 +1,5 @@
-﻿using DevXpert.Store.Core.Business.Validations;
+﻿using DevXpert.Store.Core.Business.Models.Base;
+using DevXpert.Store.Core.Business.Validations;
 using Microsoft.AspNetCore.Http;
 
 namespace DevXpert.Store.Core.Business.Models

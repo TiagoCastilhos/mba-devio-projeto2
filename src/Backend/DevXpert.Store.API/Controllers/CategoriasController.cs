@@ -23,6 +23,7 @@ namespace DevXpert.Store.API.Controllers
         #region READ
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [AllowAnonymous]
         //TODO: IMPLEMENTAR FILTRO PARA BUSCAR POR PARTE OU TODA DESCRICAO
         public async Task<IActionResult> GetAll()
         {

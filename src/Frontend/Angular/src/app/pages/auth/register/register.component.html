@@ -1,1 +1,24 @@
-<p>register works!</p>
+<div class="offset-4 col-4">
+    <div class="card">
+        <div class="card-body">
+            <h3>Login</h3>
+
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                    <app-base-input formControlName="email" label="E-mail" type="email"></app-base-input>
+                </div>
+
+                <div class="mb-3">
+                    <app-base-input formControlName="password" label="Senha" type="password"></app-base-input>
+                </div>
+
+                <div class="mb-3">
+                    <app-base-input formControlName="confirmPassword" label="Confirmar senha"
+                        type="password"></app-base-input>
+                </div>
+
+                <app-base-button type="submit"> Registrar </app-base-button>
+            </form>
+        </div>
+    </div>
+</div>

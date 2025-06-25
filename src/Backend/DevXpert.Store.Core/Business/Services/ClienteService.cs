@@ -9,12 +9,10 @@ namespace DevXpert.Store.Core.Business.Services
     public class ClienteService(IClienteRepository clienteRepository,
                                   INotificador notificador) : BaseService(notificador), IClienteService
     {
-        private readonly IClienteRepository _clienteRepository = clienteRepository;
-
         #region READ
         public async Task<Cliente> BuscarPorId(Guid id)
         {
-            return await _clienteRepository.BuscarPorId(id);
+            return await clienteRepository.BuscarPorId(id);
         }
 
         public async Task<Cliente> BuscarPorEmail(string email)
@@ -30,7 +28,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(cliente, true)) return false;
 
-            await _clienteRepository.Adicionar(cliente);
+            await clienteRepository.Adicionar(cliente);
 
             return true;
         }
@@ -39,7 +37,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(cliente, true)) return false;
 
-            await _clienteRepository.Atualizar(cliente);
+            await clienteRepository.Atualizar(cliente);
 
             return true;
         }
@@ -48,12 +46,12 @@ namespace DevXpert.Store.Core.Business.Services
         #region METHODS
         public async Task Salvar()
         {
-            await _clienteRepository.Salvar();
+            await clienteRepository.Salvar();
         }
 
         public void Dispose()
         {
-            _clienteRepository?.Dispose();
+            clienteRepository?.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -64,7 +62,7 @@ namespace DevXpert.Store.Core.Business.Services
             var expression = PredicateBuilder.New<Cliente>(m => m.Nome == cliente.Nome);
             if (!isInsert) expression = expression.And(m => m.Id != cliente.Id);
 
-            if (_clienteRepository.Pesquisar(expression).Result.Any())
+            if (clienteRepository.Pesquisar(expression).Result.Any())
                 return NotificarError("Cliente já cadastrado.");
 
             return true;
