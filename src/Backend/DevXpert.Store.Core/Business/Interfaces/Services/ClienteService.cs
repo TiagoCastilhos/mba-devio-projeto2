@@ -2,7 +2,7 @@
 
 namespace DevXpert.Store.Core.Business.Interfaces.Services
 {
-    public interface IClienteService : IDisposable
+    public interface IClienteService
     {
         Task<Cliente> BuscarPorId(Guid id);
         Task<bool> Adicionar(Cliente vendedor);

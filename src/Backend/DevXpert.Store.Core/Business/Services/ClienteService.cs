@@ -42,12 +42,6 @@ namespace DevXpert.Store.Core.Business.Services
             await clienteRepository.Salvar();
         }
 
-        public void Dispose()
-        {
-            clienteRepository?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         private bool Validate(Cliente cliente, bool isInsert = false)
         {
             if (!IsValid(cliente)) return false;

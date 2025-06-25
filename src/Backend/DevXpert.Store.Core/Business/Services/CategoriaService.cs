@@ -58,13 +58,6 @@ namespace DevXpert.Store.Core.Business.Services
         #endregion
 
         #region METHODS
-        public void Dispose()
-        {
-            categoriaRepository?.Dispose();
-            produtoRepository?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         public async Task Salvar()
         {
             await categoriaRepository.Salvar();

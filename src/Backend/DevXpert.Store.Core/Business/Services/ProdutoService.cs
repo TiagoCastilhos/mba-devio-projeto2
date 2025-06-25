@@ -82,12 +82,6 @@ namespace DevXpert.Store.Core.Business.Services
             await produtoRepository.Salvar();
         }
 
-        public void Dispose()
-        {
-            produtoRepository?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         private bool Validate(Produto produto, bool isInsert = false)
         {
             if (!IsValid(produto)) return false;
