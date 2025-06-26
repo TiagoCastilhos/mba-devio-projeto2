@@ -6,24 +6,27 @@ using LinqKit;
 
 namespace DevXpert.Store.Core.Business.Services
 {
-    public class CategoriaService(ICategoriaRepository categoriaRepository,
-                                  IProdutoRepository produtoRepository,
-                                  INotificador notificador) : BaseService(notificador), ICategoriaService
+    public class CategoriaService(
+        ICategoriaRepository categoriaRepository,
+        IProdutoRepository produtoRepository,
+        INotificador notificador) : BaseService(notificador), ICategoriaService
     {
         #region READ
-      
+
         public async Task<IEnumerable<Categoria>> BuscarTodos()
         {
             return await categoriaRepository.BuscarTodos();
-        }        
+        }
 
         public async Task<Categoria> BuscarPorId(Guid id)
         {
             return await categoriaRepository.BuscarPorId(id);
         }
+
         #endregion
 
         #region WRITE
+
         public async Task<bool> Adicionar(Categoria categoria)
         {
             if (!Validate(categoria, true)) return false;
@@ -55,9 +58,11 @@ namespace DevXpert.Store.Core.Business.Services
 
             return true;
         }
+
         #endregion
 
         #region METHODS
+
         public async Task Salvar()
         {
             await categoriaRepository.Salvar();
@@ -75,6 +80,7 @@ namespace DevXpert.Store.Core.Business.Services
 
             return true;
         }
+
         #endregion
     }
 }

@@ -14,31 +14,32 @@ namespace DevXpert.Store.API.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class CategoriasController(IAppIdentityUser user,
-                                      INotificador notificador,
-                                      ICategoriaService categoriaService) : MainController(notificador, user)
+    public class CategoriasController(
+        IAppIdentityUser user,
+        INotificador notificador,
+        ICategoriaService categoriaService) : MainController(notificador, user)
     {
-        private readonly ICategoriaService _categoriaService = categoriaService;
-
         #region READ
+
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [AllowAnonymous]
         //TODO: IMPLEMENTAR FILTRO PARA BUSCAR POR PARTE OU TODA DESCRICAO
         public async Task<IActionResult> GetAll()
         {
-            var categorias = await _categoriaService.BuscarTodos();
+            var categorias = await categoriaService.BuscarTodos();
             var lista = MapToList(categorias);
 
             return CustomResponse(HttpStatusCode.OK, lista);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var categoria = await _categoriaService.BuscarPorId(id);
+            var categoria = await categoriaService.BuscarPorId(id);
             var categoriaViewModel = MapToViewModel(categoria);
 
             if (categoriaViewModel is not null)
@@ -47,17 +48,19 @@ namespace DevXpert.Store.API.Controllers
             NotificarErro("Categoria não encontrada.");
             return CustomResponse(HttpStatusCode.NotFound);
         }
+
         #endregion
 
         #region WRITE
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody]CategoriaViewModel categoriaViewModel)
+        public async Task<IActionResult> Post([FromBody] CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            if (!await _categoriaService.Adicionar(MapToEntity(categoriaViewModel)))
+            if (!await categoriaService.Adicionar(MapToEntity(categoriaViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);
 
             await Salvar(categoriaViewModel.Id);
@@ -79,7 +82,7 @@ namespace DevXpert.Store.API.Controllers
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            if (!await _categoriaService.Atualizar(MapToEntity(categoriaViewModel)))
+            if (!await categoriaService.Atualizar(MapToEntity(categoriaViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);
 
             await Salvar(id);
@@ -91,38 +94,42 @@ namespace DevXpert.Store.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            if (!await _categoriaService.Excluir(id))
+            if (!await categoriaService.Excluir(id))
                 return CustomResponse(HttpStatusCode.BadRequest);
 
             await Salvar(id);
             return CustomResponse(HttpStatusCode.NoContent);
         }
+
         #endregion
 
-        #region PRIVATE_METHODS       
-        private static CategoriaViewModel MapToViewModel(Categoria categoria) => EntityMapping.MapToCategoriaViewModel(categoria);
+        #region PRIVATE_METHODS
 
-        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) => EntityMapping.MapToCategoria(categoriaViewModel);
+        private static CategoriaViewModel MapToViewModel(Categoria categoria) =>
+            EntityMapping.MapToCategoriaViewModel(categoria);
 
-        private static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) => EntityMapping.MapToListCategoriaViewModel(categorias);
+        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) =>
+            EntityMapping.MapToCategoria(categoriaViewModel);
+
+        private static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) =>
+            EntityMapping.MapToListCategoriaViewModel(categorias);
 
         private async Task Salvar(Guid id)
         {
             try
             {
-                await _categoriaService.Salvar();
+                await categoriaService.Salvar();
             }
             catch (DBConcurrencyException)
             {
-                if (await _categoriaService.BuscarPorId(id) is not null)
+                if (await categoriaService.BuscarPorId(id) is not null)
                     throw;
 
                 NotificarErro("Categoria não encontrada.");
                 return;
             }
         }
-        #endregion
 
+        #endregion
     }
 }
-
