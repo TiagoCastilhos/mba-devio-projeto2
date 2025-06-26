@@ -5,7 +5,6 @@ using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Models.Settings;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -100,8 +99,6 @@ namespace DevXpert.Store.API.Controllers
             });
 
             return tokenHandler.WriteToken(token);
-
-            //TODO: Criar objeto de retorno para o front angular salvar as informações na session/local storage
         }
 
         private async Task<List<Claim>> GetUserClaims(string email)

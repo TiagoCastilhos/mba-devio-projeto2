@@ -7,7 +7,7 @@ using LinqKit;
 namespace DevXpert.Store.Core.Business.Services
 {
     public class ClienteService(IClienteRepository clienteRepository,
-                                  INotificador notificador) : BaseService(notificador), IClienteService
+                                INotificador notificador) : BaseService(notificador), IClienteService
     {
         #region READ
         public async Task<Cliente> BuscarPorId(Guid id)
@@ -17,7 +17,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         public async Task<Cliente> BuscarPorEmail(string email)
         {
-            var cliente = await _clienteRepository.Pesquisar(c => c.Email == email && c.Ativo);
+            var cliente = await clienteRepository.Pesquisar(c => c.Email == email && c.Ativo);
             
             return cliente.FirstOrDefault();
         }
