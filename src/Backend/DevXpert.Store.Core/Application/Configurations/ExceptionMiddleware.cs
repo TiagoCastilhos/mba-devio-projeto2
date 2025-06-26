@@ -31,6 +31,7 @@ namespace DevXpert.Store.Core.Application.Configurations
             ex.Data.Add("QueryString", context.Request?.QueryString.ToString());
             ex.Data.Add("Exception Message", ex.Message);
 
+            Console.WriteLine(ex);
             //TODO: LOG TO FILE, DATABASE OR ANY OTHER LOGGING SYSTEM (ELMAH, SERILOG, etc)
         }
 

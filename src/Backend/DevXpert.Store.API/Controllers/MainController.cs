@@ -10,15 +10,14 @@ namespace DevXpert.Store.API.Controllers
     [ApiController]
     public abstract class MainController : ControllerBase
     {
-        private readonly INotificador _notificador;
-        public readonly IAppIdentityUser _user;
+        private readonly INotificador notificador;
         protected Guid UserId { get; set; }
         protected string UserName { get; set; }
 
         protected MainController(INotificador notificador,
                                  IAppIdentityUser user)
         {
-            _notificador = notificador;
+            this.notificador = notificador;
 
             if (user.IsAuthenticated())
             {
@@ -70,7 +69,7 @@ namespace DevXpert.Store.API.Controllers
 
         protected void NotificarErro(string errorMessage)
         {
-            _notificador.Handle(new Notificacao(errorMessage));
+            notificador.Handle(new Notificacao(errorMessage));
         }
 
         private Guid GetObjectId(object result)
@@ -81,7 +80,7 @@ namespace DevXpert.Store.API.Controllers
 
         private object SetErrors(object result)
         {
-            return _notificador.TemNotificacao() ? _notificador.ObterNotificacoes().Select(n => n.Mensagem) : result;
+            return notificador.TemNotificacao() ? notificador.ObterNotificacoes().Select(n => n.Mensagem) : result;
         }
     }
 }

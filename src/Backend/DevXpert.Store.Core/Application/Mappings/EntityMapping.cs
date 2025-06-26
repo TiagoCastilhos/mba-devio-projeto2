@@ -16,6 +16,8 @@ namespace DevXpert.Store.Core.Application.Mappings
 
         public static CategoriaViewModel MapToCategoriaViewModel(Categoria categoria)
         {
+            if (categoria is null) return null;
+
             return new CategoriaViewModel
             {
                 Nome = categoria.Nome,

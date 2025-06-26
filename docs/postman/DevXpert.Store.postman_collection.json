@@ -46,7 +46,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"teste@teste.com\",\n  \"password\": \"@Aa12345\"\n}",
+							"raw": "{\n  \"email\": \"cliente@teste.com\",\n  \"password\": \"@Aa12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -102,7 +102,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"teste1@teste.com\",\n  \"password\": \"@Aa12345\",\n  \"confirmpassword\":\"@Aa12345\"\n}",
+							"raw": "{\n  \"email\": \"cliente@teste.com\",\n  \"password\": \"@Aa12345\",\n  \"confirmpassword\":\"@Aa12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -170,7 +170,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \n  \"nome\": \"categoria posted\",\n  \"descricao\": \"descrição da categoria post\",\n  \"ativo\": 1\n}",
+							"raw": "{ \n  \"nome\": \"categoria posted 1\",\n  \"descricao\": \"descrição da categoria post\",\n  \"ativo\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -221,7 +221,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base}}Categorias?PageNumber=1&PageSize=10&OrderBy=nome&Desc=false",
+							"raw": "{{base}}Categorias",
 							"host": [
 								"{{base}}Categorias"
 							],
@@ -229,22 +229,27 @@
 								{
 									"key": "PageNumber",
 									"value": "1",
-									"description": "Numero da pagina"
+									"disabled": true
 								},
 								{
 									"key": "PageSize",
 									"value": "10",
-									"description": "Quantidade de registros por página"
+									"disabled": true
 								},
 								{
 									"key": "OrderBy",
 									"value": "nome",
-									"description": "Nome do campo pelo qual ordenar (Nome ou Descrição)"
+									"disabled": true
 								},
 								{
 									"key": "Desc",
 									"value": "false",
-									"description": "Ordenação ASC/DESC"
+									"disabled": true
+								},
+								{
+									"key": "Busca",
+									"value": "eletr",
+									"disabled": true
 								}
 							]
 						}
@@ -337,7 +342,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Categoria Posted updated\",\n    \"descricao\": \"Descrição da categoria post atualizada\",\n    \"id\": \"{{categoria_id}}\",\n    \"ativo\": 1\n}",
+							"raw": "{\n    \"nome\": \"Categoria Posted updated\",\n    \"descricao\": \"Descrição da categoria post atualizada\",\n    \"id\": \"{{categoria_id}}\",\n    \"ativo\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
