@@ -2,7 +2,7 @@
 
 namespace DevXpert.Store.Core.Business.Interfaces.Services
 {
-    public interface ICategoriaService : IDisposable
+    public interface ICategoriaService
     {
         Task<IEnumerable<Categoria>> BuscarTodos();
         Task<Categoria> BuscarPorId(Guid id);

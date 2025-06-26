@@ -6,7 +6,8 @@ namespace DevXpert.Store.Core.Business.Models
     public class Cliente : PessoaBase
     {
         #region NAVIGATION PROPERTIES
-       //TODO: MAPEAR LISTA DE FAVORITOS
+        public Guid ProdutoId { get; set; }
+        public IEnumerable<Produto> Produtos { get; set; }
         #endregion
 
         public Cliente()

@@ -18,6 +18,8 @@ namespace DevXpert.Store.Core.Business.Models
         #region NAVIGATION PROPERTIES
         public Categoria Categoria { get; set; }
         public Vendedor Vendedor { get; set; }
+        public Guid ClienteId { get; set; }
+        public IEnumerable<Cliente> Clientes { get; set; }
         #endregion
 
         public Produto()
