@@ -14,31 +14,32 @@ namespace DevXpert.Store.API.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class ProdutosController(IAppIdentityUser user,
-                                      INotificador notificador,
-                                      IProdutoService produtoService) : MainController(notificador, user)
+    public class ProdutosController(
+        IAppIdentityUser user,
+        INotificador notificador,
+        IProdutoService produtoService) : MainController(notificador, user)
     {
-        private readonly IProdutoService _produtoService = produtoService;
-
         #region READ
+
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         //TODO: IMPLEMENTAR FILTRO PARA BUSCAR POR PARTE OU TODA DESCRICAO
         public async Task<IActionResult> GetAll()
         {
-            var produtos = await _produtoService.BuscarTodos();
+            var produtos = await produtoService.BuscarTodos();
             var lista = MapToList(produtos);
 
             return CustomResponse(HttpStatusCode.OK, lista);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var produto = await _produtoService.BuscarPorId(id);
+            var produto = await produtoService.BuscarPorId(id);
             var produtoViewModel = MapToViewModel(produto);
 
             if (produtoViewModel is not null)
@@ -47,9 +48,11 @@ namespace DevXpert.Store.API.Controllers
             NotificarErro("Produto não encontrado.");
             return CustomResponse(HttpStatusCode.NotFound);
         }
+
         #endregion
 
         #region WRITE
+
         // [HttpPost]
         // [ProducesResponseType(StatusCodes.Status201Created)]
         // [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -97,32 +100,35 @@ namespace DevXpert.Store.API.Controllers
         //     await Salvar(id);
         //     return CustomResponse(HttpStatusCode.NoContent);
         // }
+
         #endregion
 
-        #region PRIVATE_METHODS       
+        #region PRIVATE_METHODS
+
         private static ProdutoViewModel MapToViewModel(Produto produto) => EntityMapping.MapToProdutoViewModel(produto);
 
-        private static Produto MapToEntity(ProdutoViewModel ProdutoViewModel) => EntityMapping.MapToProduto(ProdutoViewModel);
+        private static Produto MapToEntity(ProdutoViewModel ProdutoViewModel) =>
+            EntityMapping.MapToProduto(ProdutoViewModel);
 
-        private static IEnumerable<ProdutoViewModel> MapToList(IEnumerable<Produto> produtos) => EntityMapping.MapToListProdutoViewModel(produtos);
+        private static IEnumerable<ProdutoViewModel> MapToList(IEnumerable<Produto> produtos) =>
+            EntityMapping.MapToListProdutoViewModel(produtos);
 
         private async Task Salvar(Guid id)
         {
             try
             {
-                await _produtoService.Salvar();
+                await produtoService.Salvar();
             }
             catch (DBConcurrencyException)
             {
-                if (await _produtoService.BuscarPorId(id) is not null)
+                if (await produtoService.BuscarPorId(id) is not null)
                     throw;
 
                 NotificarErro("Produto não encontrada.");
                 return;
             }
         }
-        #endregion
 
+        #endregion
     }
 }
-

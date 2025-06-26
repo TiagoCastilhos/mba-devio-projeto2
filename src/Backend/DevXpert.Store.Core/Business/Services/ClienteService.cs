@@ -6,10 +6,12 @@ using LinqKit;
 
 namespace DevXpert.Store.Core.Business.Services
 {
-    public class ClienteService(IClienteRepository clienteRepository,
-                                INotificador notificador) : BaseService(notificador), IClienteService
+    public class ClienteService(
+        IClienteRepository clienteRepository,
+        INotificador notificador) : BaseService(notificador), IClienteService
     {
         #region READ
+
         public async Task<Cliente> BuscarPorId(Guid id)
         {
             return await clienteRepository.BuscarPorId(id);
@@ -18,12 +20,14 @@ namespace DevXpert.Store.Core.Business.Services
         public async Task<Cliente> BuscarPorEmail(string email)
         {
             var cliente = await clienteRepository.Pesquisar(c => c.Email == email && c.Ativo);
-            
+
             return cliente.FirstOrDefault();
         }
+
         #endregion
 
         #region WRITE
+
         public async Task<bool> Adicionar(Cliente cliente)
         {
             if (!Validate(cliente, true)) return false;
@@ -41,9 +45,11 @@ namespace DevXpert.Store.Core.Business.Services
 
             return true;
         }
+
         #endregion
 
         #region METHODS
+
         public async Task Salvar()
         {
             await clienteRepository.Salvar();
@@ -60,8 +66,8 @@ namespace DevXpert.Store.Core.Business.Services
                 return NotificarError("Cliente já cadastrado.");
 
             return true;
-        }      
+        }
+
         #endregion
     }
 }
-

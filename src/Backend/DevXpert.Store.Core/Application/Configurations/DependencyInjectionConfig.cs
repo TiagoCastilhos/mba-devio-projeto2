@@ -26,6 +26,7 @@ namespace DevXpert.Store.Core.Application.Configurations
             #endregion
 
             #region SERVICES
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IArquivoService, ArquivoService>();
             builder.Services.AddScoped<ICategoriaService, CategoriaService>();
             builder.Services.AddScoped<IProdutoService, ProdutoService>();
