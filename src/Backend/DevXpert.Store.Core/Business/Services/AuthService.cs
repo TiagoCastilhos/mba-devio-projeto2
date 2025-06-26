@@ -2,22 +2,21 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Models.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace DevXpert.Store.Core.Business.Interfaces.Services
+namespace DevXpert.Store.Core.Business.Services
 {
-    public class AuthService(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager,
-        IClienteService clienteService,
-        IOptions<JWTSettings> jwtSettings)
-        : IAuthService
+    public class AuthService(UserManager<IdentityUser> userManager,
+                             SignInManager<IdentityUser> signInManager,
+                             IClienteService clienteService,
+                             IOptions<JWTSettings> jwtSettings) : IAuthService
     {
-        private readonly JWTSettings _jwtSettings = jwtSettings.Value;
+        //private readonly JWTSettings _jwtSettings = jwtSettings.Value;
 
         public async Task<AuthResultViewModel> RegisterAsync(UserRegisterViewModel usuarioRegistro)
         {
@@ -53,7 +52,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
                 return new AuthResultViewModel
                 {
                     Success = false,
-                    Errors = new List<string> { "Falha ao cadastrar cliente." }
+                    Errors = ["Falha ao cadastrar cliente."]
                 };
             }
 
@@ -78,7 +77,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
                 return new AuthResultViewModel
                 {
                     Success = false,
-                    Errors = new List<string> { "Usuário ou senha incorretos." }
+                    Errors = ["Usuário ou senha incorretos."]
                 };
             }
 
@@ -89,7 +88,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
                 return new AuthResultViewModel
                 {
                     Success = false,
-                    Errors = new List<string> { "Este usuário não é um cliente." }
+                    Errors = ["Este usuário não é um cliente."]
                 };
             }
 
@@ -111,15 +110,15 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Issuer = _jwtSettings.Emissor,
+                Issuer = jwtSettings.Value.Emissor,
                 Claims = new Dictionary<string, object>
                 {
-                    { JwtRegisteredClaimNames.Aud, _jwtSettings.ValidoEm }
+                    { JwtRegisteredClaimNames.Aud, jwtSettings.Value.ValidoEm }
                 },
-                Expires = date.AddMinutes(_jwtSettings.ExpiracaoTokenMinutos),
+                Expires = date.AddMinutes(jwtSettings.Value.ExpiracaoTokenMinutos),
                 NotBefore = date,
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Jwt)),
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Value.Jwt)),
                     SecurityAlgorithms.HmacSha256Signature)
             });
 

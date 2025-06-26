@@ -7,18 +7,15 @@ using Microsoft.Extensions.Options;
 
 namespace DevXpert.Store.Core.Business.Services
 {
-    //TODO: EM PROD, SALVAR EM UM Blob Storage / S3 Bucket etc
     public class ArquivoService(INotificador notificador,
                                 IWebHostEnvironment environment,
                                 IOptions<ArquivoSettings> arquivoSettings) : BaseService(notificador), IArquivoService
     {
-        private readonly ArquivoSettings _arquivoSettings = arquivoSettings.Value;
-
         public bool Excluir(string fileName)
         {
-            if (fileName == _arquivoSettings.DefaultImage) return true;
+            if (fileName == arquivoSettings.Value.DefaultImage) return true;
 
-            var filePath = $"{environment.WebRootPath}{_arquivoSettings.BasePath.Replace("~", string.Empty)}{fileName}";
+            var filePath = $"{environment.WebRootPath}{arquivoSettings.Value.BasePath.Replace("~", string.Empty)}{fileName}";
 
             if (File.Exists(filePath))
                 File.Delete(filePath);
@@ -31,7 +28,7 @@ namespace DevXpert.Store.Core.Business.Services
             if (file.Length == 0)
                 return NotificarError("Arquivo Corrompido ou vazio.");
 
-            var filePath = $"{environment.WebRootPath}{_arquivoSettings.BasePath.Replace("~", string.Empty)}{fileName}";
+            var filePath = $"{environment.WebRootPath}{arquivoSettings.Value.BasePath.Replace("~", string.Empty)}{fileName}";
 
             if (File.Exists(filePath))
                 return NotificarError("Já existe um arquivo com este nome.");

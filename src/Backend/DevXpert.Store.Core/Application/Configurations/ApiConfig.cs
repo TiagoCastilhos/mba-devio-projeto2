@@ -40,7 +40,7 @@ namespace DevXpert.Store.Core.Application.Configurations
                                                                .AllowAnyHeader());
 
                 options.AddPolicy("Production", builder => builder.AllowAnyMethod()
-                                                                  .WithOrigins("https://kruger.marketplace.com/")
+                                                                  .WithOrigins("https://DevXpertStore.com/")
                                                                   .SetIsOriginAllowedToAllowWildcardSubdomains()
                                                                   .AllowAnyHeader()
                                                                   );
@@ -85,7 +85,7 @@ namespace DevXpert.Store.Core.Application.Configurations
 
             app.UseGlobalizationConfig()
                .UseHttpsRedirection()
-               //.UseMiddleware<ExceptionMiddleware>()
+               .UseMiddleware<ExceptionMiddleware>()
                //.UseMiddleware<SecurityMiddleware>(app.Environment)
                .UseStaticFiles()
                .UseRouting()

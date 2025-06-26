@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.MVC.Controllers;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Business.Models;
 
-namespace Kruger.Marketplace.MVC.Controllers
+namespace DevXpert.Store.MVC.Controllers
 {
     [Authorize]
     [Route("categorias")]
@@ -18,9 +17,9 @@ namespace Kruger.Marketplace.MVC.Controllers
     {
         private readonly ICategoriaService _categoriaService = categoriaService;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busca)
         {
-            return View(await _categoriaService.BuscarTodos());
+            return View(await _categoriaService.BuscarTodos(busca));
         }
 
         [Route("detalhes/{id:Guid}")]

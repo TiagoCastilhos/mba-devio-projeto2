@@ -4,5 +4,6 @@ namespace DevXpert.Store.Core.Business.Interfaces.Repositories
 {
     public interface ICategoriaRepository : IRepository<Categoria>
     {
+
     }
 }
