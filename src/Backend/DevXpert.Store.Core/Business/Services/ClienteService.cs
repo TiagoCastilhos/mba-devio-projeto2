@@ -6,9 +6,8 @@ using LinqKit;
 
 namespace DevXpert.Store.Core.Business.Services
 {
-    public class ClienteService(
-        IClienteRepository clienteRepository,
-        INotificador notificador) : BaseService(notificador), IClienteService
+    public class ClienteService(IClienteRepository clienteRepository,
+                                INotificador notificador) : BaseService(notificador), IClienteService
     {
         #region READ
 

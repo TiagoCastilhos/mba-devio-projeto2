@@ -31,7 +31,7 @@ namespace DevXpert.Store.API.Controllers
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]        
         public async Task<IActionResult> GetById(Guid id)
         {
             var categoriaViewModel = MapToViewModel(await categoriaService.BuscarPorId(id));
@@ -48,6 +48,7 @@ namespace DevXpert.Store.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Post([FromBody]CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -64,6 +65,7 @@ namespace DevXpert.Store.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Put(Guid id, [FromBody] CategoriaViewModel categoriaViewModel)
         {
             if (categoriaViewModel is null || id != categoriaViewModel.Id)
@@ -84,6 +86,7 @@ namespace DevXpert.Store.API.Controllers
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (!await categoriaService.Excluir(id))

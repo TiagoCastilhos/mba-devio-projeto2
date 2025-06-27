@@ -35,12 +35,12 @@ namespace DevXpert.Store.Core.Data.Mappings
                    .HasColumnType("DECIMAL(18,2)");
 
             builder.HasOne(p => p.Categoria)
-                   .WithMany(p => p.Produto)
+                   .WithMany(p => p.Produtos)
                    .HasForeignKey(p => p.CategoriaId)
                    .HasConstraintName("FK_PRODUTO_CATEGORIAID");
 
             builder.HasOne(p => p.Vendedor)
-                   .WithMany(p => p.Produto)
+                   .WithMany(p => p.Produtos)
                    .HasForeignKey(p => p.VendedorId)
                    .HasConstraintName("FK_PRODUTO_VENDEDORID");
 

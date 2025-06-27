@@ -3,11 +3,21 @@ using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace DevXpert.Store.Core.Data.Repositories
 {
     public class ProdutoRepository(AppDbContext context) : Repository<Produto>(context), IProdutoRepository
     {
+        public override async Task<IEnumerable<Produto>> Pesquisar(Expression<Func<Produto, bool>> filtro)
+        {
+            return await Db.Produtos
+                           .Include(c => c.Clientes)
+                           .AsNoTracking()
+                           .Where(filtro)
+                           .ToListAsync();
+        }
+
         public override async Task<IEnumerable<Produto>> BuscarTodos()
         {
             return await ObterQueryProdutosIncluindoRelacoes()

@@ -7,7 +7,7 @@ namespace DevXpert.Store.Core.Business.Models
     {
         #region NAVIGATION PROPERTIES
         public Guid ProdutoId { get; set; }
-        public IEnumerable<Produto> Produto { get; set; }
+        public IEnumerable<Produto> Produtos { get; set; }
         #endregion
 
         public Vendedor()

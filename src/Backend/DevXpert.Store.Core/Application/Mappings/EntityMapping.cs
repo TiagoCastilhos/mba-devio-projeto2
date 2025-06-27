@@ -24,7 +24,7 @@ namespace DevXpert.Store.Core.Application.Mappings
                 Descricao = categoria.Descricao,
                 Ativo = categoria.Ativo,
 
-                QuantidadeProdutos = (categoria.Produto?.Any()).GetValueOrDefault() ? categoria.Produto.Count() : 0
+                QuantidadeProdutos = (categoria.Produtos?.Any()).GetValueOrDefault() ? categoria.Produtos.Count() : 0
             };
         }
 
@@ -40,15 +40,15 @@ namespace DevXpert.Store.Core.Application.Mappings
             List<ProdutoViewModel> list = [];
 
             foreach (var produto in produtos)
-            {
                 list.Add(MapToProdutoViewModel(produto));
-            }
 
             return list;
         }
 
         public static ProdutoViewModel MapToProdutoViewModel(Produto produto)
         {
+            if (produto  is null) return null;
+
             return new ProdutoViewModel
             {
                 Id = produto.Id,

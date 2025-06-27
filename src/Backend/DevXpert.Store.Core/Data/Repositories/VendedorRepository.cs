@@ -10,7 +10,7 @@ namespace DevXpert.Store.Core.Data.Repositories
         public override async Task<Vendedor> BuscarPorId(Guid id)
         {
             return await Db.Vendedores
-                           .Include(c => c.Produto.Where(p => p.Ativo))
+                           .Include(c => c.Produtos)
                            .FirstOrDefaultAsync(c => c.Id == id);
         }
     }

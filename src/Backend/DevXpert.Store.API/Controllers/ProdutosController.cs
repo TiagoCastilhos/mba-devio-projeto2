@@ -14,21 +14,17 @@ namespace DevXpert.Store.API.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class ProdutosController(
-        IAppIdentityUser user,
-        INotificador notificador,
-        IProdutoService produtoService) : MainController(notificador, user)
+    public class ProdutosController(IAppIdentityUser user,
+                                    INotificador notificador,
+                                    IProdutoService produtoService) : MainController(notificador, user)
     {
         #region READ
-
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        //TODO: IMPLEMENTAR FILTRO PARA BUSCAR POR PARTE OU TODA DESCRICAO
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(string busca)
         {
-            var produtos = await produtoService.BuscarTodos();
-            var lista = MapToList(produtos);
+            var lista = MapToList(await produtoService.BuscarTodos(busca, true));
 
             return CustomResponse(HttpStatusCode.OK, lista);
         }
@@ -39,8 +35,7 @@ namespace DevXpert.Store.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var produto = await produtoService.BuscarPorId(id);
-            var produtoViewModel = MapToViewModel(produto);
+            var produtoViewModel = MapToViewModel(await produtoService.BuscarPorId(id));
 
             if (produtoViewModel is not null)
                 return CustomResponse(HttpStatusCode.OK, produtoViewModel);
@@ -53,20 +48,23 @@ namespace DevXpert.Store.API.Controllers
 
         #region WRITE
 
-        // [HttpPost]
-        // [ProducesResponseType(StatusCodes.Status201Created)]
-        // [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        // public async Task<IActionResult> Post([FromBody] ProdutoViewModel ProdutoViewModel)
-        // {
-        //     if (!ModelState.IsValid) return CustomResponse(ModelState);
+        //TODO: CRIAR EP PARA ADICIONAR PRODUTO FAVORITO AO CLIENTE
 
-        //     if (!await _ProdutoService.Adicionar(MapToEntity(ProdutoViewModel)))
-        //         return CustomResponse(HttpStatusCode.BadRequest);
+        //TODO: CRIAR EP PARA REMOVER PRODUTO FAVORITO DO CLIENTE
+        //[HttpPost]
+        //[ProducesResponseType(StatusCodes.Status201Created)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> Post([FromBody] ProdutoViewModel ProdutoViewModel)
+        //{
+        //    if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        //     await Salvar(ProdutoViewModel.Id);
+        //    if (!await produtoService.Adicionar(MapToEntity(ProdutoViewModel)))
+        //        return CustomResponse(HttpStatusCode.BadRequest);
 
-        //     return CustomResponse(HttpStatusCode.Created, ProdutoViewModel);
-        // }
+        //    await Salvar(ProdutoViewModel.Id);
+
+        //    return CustomResponse(HttpStatusCode.Created, ProdutoViewModel);
+        //}
 
         // [HttpPut("{id:guid}")]
         // [ProducesResponseType(StatusCodes.Status204NoContent)]

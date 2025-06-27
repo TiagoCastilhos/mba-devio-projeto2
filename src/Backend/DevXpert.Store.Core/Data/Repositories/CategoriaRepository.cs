@@ -11,7 +11,7 @@ namespace DevXpert.Store.Core.Data.Repositories
         public override async Task<IEnumerable<Categoria>> Pesquisar(Expression<Func<Categoria, bool>> filtro)
         {
             return await Db.Categorias
-                           .Include(c => c.Produto)
+                           .Include(c => c.Produtos)
                            .AsNoTracking()
                            .Where(filtro)
                            .ToListAsync();
@@ -20,7 +20,7 @@ namespace DevXpert.Store.Core.Data.Repositories
         public override async Task<IEnumerable<Categoria>> BuscarTodos()
         {
             return await Db.Categorias
-                           .Include(c => c.Produto)
+                           .Include(c => c.Produtos)
                            .AsNoTracking()
                            .Where(c => c.Ativo)
                            .ToListAsync();
@@ -29,7 +29,7 @@ namespace DevXpert.Store.Core.Data.Repositories
         public override async Task<Categoria> BuscarPorId(Guid id)
         {
             return await Db.Categorias
-                           .Include(c => c.Produto)
+                           .Include(c => c.Produtos)
                            .AsNoTracking()
                            .FirstOrDefaultAsync(c => c.Id == id && c.Ativo);
         }

@@ -3,17 +3,18 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using LinqKit;
+using System.Linq.Expressions;
 
 namespace DevXpert.Store.Core.Business.Services
 {
     public class ProdutoService(INotificador notificador,
-                                IProdutoRepository produtoRepository,                               
+                                IProdutoRepository produtoRepository,
                                 IArquivoService arquivoService) : BaseService(notificador), IProdutoService
     {
         #region READ
-        public async Task<IEnumerable<Produto>> BuscarTodos()
+        public async Task<IEnumerable<Produto>> BuscarTodos(string busca, bool? ativo)
         {
-            return await produtoRepository.BuscarTodos();
+            return await produtoRepository.Pesquisar(MontarFiltro(busca, ativo));
         }
 
         public async Task<Produto> BuscarPorId(Guid id)
@@ -21,19 +22,9 @@ namespace DevXpert.Store.Core.Business.Services
             return await produtoRepository.BuscarPorId(id);
         }
 
-        public async Task<IEnumerable<Produto>> BuscarPorNome(string nome)
-        {
-            return await produtoRepository.BuscarPorNome(nome);
-        }
-
         public async Task<IEnumerable<Produto>> BuscarPorVendedorId(Guid vendedorId)
         {
             return await produtoRepository.BuscarPorVendedorId(vendedorId);
-        }
-        
-        public async Task<IEnumerable<Produto>> BuscarAtivos()
-        {
-            return await produtoRepository.BuscarAtivos();
         }
         #endregion
 
@@ -42,7 +33,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto, true)) return false;
 
-            if(await ManipularImagem(produto, true)) return false;
+            if (await ManipularImagem(produto, true)) return false;
 
             await produtoRepository.Adicionar(produto);
 
@@ -53,7 +44,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto)) return false;
 
-            if(await ManipularImagem(produto, false)) return false;           
+            if (await ManipularImagem(produto, false)) return false;
 
             await produtoRepository.Atualizar(produto);
 
@@ -86,10 +77,10 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!IsValid(produto)) return false;
 
-            var expression = PredicateBuilder.New<Produto>(m => m.Nome == produto.Nome);
-            if (!isInsert) expression = expression.And(m => m.Id != produto.Id);
+            var filtro = PredicateBuilder.New<Produto>(m => m.Nome == produto.Nome);
+            if (!isInsert) filtro = filtro.And(m => m.Id != produto.Id);
 
-            if (produtoRepository.Pesquisar(expression).Result.Any())
+            if (produtoRepository.Pesquisar(filtro).Result.Any())
                 return NotificarError("Produto já cadastrado.");
 
             return true;
@@ -109,7 +100,20 @@ namespace DevXpert.Store.Core.Business.Services
             }
 
             return true;
-        }       
+        }
+
+        private static Expression<Func<Produto, bool>> MontarFiltro(string buscar, bool? ativo)
+        {
+            Expression<Func<Produto, bool>> filtro = c => true;
+
+            if (ativo.HasValue)
+                filtro = filtro.And(p => p.Ativo == ativo);
+
+            if (!string.IsNullOrEmpty(buscar))
+                filtro = filtro.And(p => p.Nome.Contains(buscar) || p.Descricao.Contains(buscar));
+
+            return filtro;
+        }
         #endregion
     }
 }
