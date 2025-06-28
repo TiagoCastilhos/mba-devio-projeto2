@@ -1,0 +1,11 @@
+.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropdown > .dropdown-toggle:active {
+  pointer-events: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

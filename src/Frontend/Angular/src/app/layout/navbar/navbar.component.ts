@@ -10,7 +10,8 @@ import { map } from 'rxjs';
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, FontAwesomeModule, CommonModule],
-  templateUrl: './navbar.component.html'
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
   faMagnifyingGlass = faMagnifyingGlass;
