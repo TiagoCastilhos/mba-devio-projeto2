@@ -6,10 +6,12 @@
       </div>
 
       <div class="col-6 d-flex gap-1">
-        <input placeholder="Pesquisar" class="form-control" />
-        <button class="btn btn-secondary col-0 text-center">
-          <fa-icon class="text-white" [icon]="faMagnifyingGlass"></fa-icon>
-        </button>
+        <div class="input-group">
+          <input placeholder="Pesquisar" class="form-control" />
+          <button class="btn btn-secondary col-0 text-center">
+            <fa-icon class="text-white" [icon]="faMagnifyingGlass"></fa-icon>
+          </button>
+        </div>
       </div>
 
       <div class="col-2 d-flex justify-content-end">
@@ -39,11 +41,7 @@
             <a class="nav-link dropdown-toggle cursor-pointer">Categoria</a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li *ngFor="let categoria of categorias$ | async">
-                <a
-                  class="dropdown-item"
-                  [routerLink]="['/produtos']"
-                  [queryParams]="{ categoriaId: categoria.id }"
-                >
+                <a class="dropdown-item" [routerLink]="['/produtos']" [queryParams]="{ categoriaId: categoria.id }">
                   {{ categoria.nome }}
                 </a>
               </li>
@@ -51,9 +49,7 @@
           </div>
         </li>
         <li class="nav-item cursor-pointer">
-          <a class="nav-link" [routerLink]="['/favoritos']">
-            Favoritos
-          </a>
+          <a class="nav-link" [routerLink]="['/favoritos']"> Favoritos </a>
         </li>
       </ul>
     </div>

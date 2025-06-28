@@ -1,5 +1,3 @@
-import { Categoria } from './categoria';
-
 export interface Produto {
   id: string;
   nome: string;
@@ -7,7 +5,8 @@ export interface Produto {
   preco: number;
   estoque: number;
   imagem: string;
-  categoria: Categoria;
+  categoria: string;
   categoriaId: string;
+  vendedor: string;
   favorito: boolean; //rever
 }
