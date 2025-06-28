@@ -8,4 +8,5 @@ import { Component, input } from '@angular/core';
 export class BaseButtonComponent {
   type = input('button');
   class = input('btn btn-primary');
+  disabled = input(false);
 }

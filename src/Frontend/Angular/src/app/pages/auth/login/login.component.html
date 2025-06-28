@@ -5,22 +5,23 @@
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <app-base-input
-            formControlName="email"
-            label="E-mail"
-            type="email"
-          ></app-base-input>
+          <app-base-input formControlName="email" label="E-mail" type="email"></app-base-input>
+          <div class="text-danger small"
+            *ngIf="(loginForm.get('email')?.dirty || loginForm.get('email')?.touched) && loginForm.get('email')?.errors">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">E-mail é obrigatório.</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">E-mail inválido.</span>
+          </div>
         </div>
 
         <div class="mb-3">
-          <app-base-input
-            formControlName="password"
-            label="Senha"
-            type="password"
-          ></app-base-input>
+          <app-base-input formControlName="password" label="Senha" type="password"></app-base-input>
+          <div class="text-danger small"
+            *ngIf="(loginForm.get('password')?.dirty || loginForm.get('password')?.touched) && loginForm.get('password')?.errors">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Senha é obrigatória.</span>
+          </div>
         </div>
 
-        <app-base-button type="submit"> Login </app-base-button>
+        <app-base-button [disabled]="!canSubmit()" type="submit"> Login </app-base-button>
       </form>
     </div>
   </div>

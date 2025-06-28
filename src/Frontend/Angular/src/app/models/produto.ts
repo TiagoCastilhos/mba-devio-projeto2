@@ -9,4 +9,5 @@ export interface Produto {
   imagem: string;
   categoria: Categoria;
   categoriaId: string;
+  favorito: boolean; //rever
 }
