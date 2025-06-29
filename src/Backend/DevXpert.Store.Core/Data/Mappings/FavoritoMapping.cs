@@ -26,5 +26,6 @@ public class FavoritoMapping : IEntityTypeConfiguration<Favorito>
         builder.ToTable("FAVORITOS");
 
         builder.Ignore(f => f.ValidationResult);
+        builder.Ignore(f => f.Ativo);
     }
 }

@@ -28,7 +28,7 @@ namespace DevXpert.Store.Core.Application.Configurations
             return builder;
         }
 
-        public async static Task<WebApplication> MigrateDatabase(this WebApplication app)
+        public static async Task<WebApplication> MigrateDatabase(this WebApplication app)
         {
             using var appContext = GetDbContext(app);
             appContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(5));
