@@ -33,7 +33,7 @@ public class FavoritoService(
 
     public async Task<bool> Excluir(Guid id)
     {
-        var favorito = favoritoRepository.BuscarPorId(id);
+        var favorito = await favoritoRepository.BuscarPorId(id);
 
         if (favorito is null) return NotificarError("Favorito não encontrado.");
 
