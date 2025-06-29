@@ -15,11 +15,10 @@ namespace DevXpert.Store.MVC.Controllers
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
-        private readonly ICategoriaService _categoriaService = categoriaService;
-
         public async Task<IActionResult> Index(string busca)
         {
-            return View(await _categoriaService.BuscarTodos(busca));
+            var categorias = CategoriaViewModel.MapToList(await categoriaService.BuscarTodos(busca, true));
+            return View(categorias);
         }
 
         [Route("detalhes/{id:Guid}")]
@@ -42,14 +41,14 @@ namespace DevXpert.Store.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
 
-            if (!await _categoriaService.Adicionar(MapToEntity(categoriaViewModel)))
+            if (!await categoriaService.Adicionar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
                 GetErrorsFromNotificador();
 
                 return View(categoriaViewModel);
             }
 
-            await _categoriaService.Salvar();
+            await categoriaService.Salvar();
 
             TempData["Sucesso"] = "Categoria Cadastrada.";
 
@@ -72,14 +71,14 @@ namespace DevXpert.Store.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
 
-            if (!await _categoriaService.Atualizar(MapToEntity(categoriaViewModel)))
+            if (!await categoriaService.Atualizar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
                 GetErrorsFromNotificador();
 
                 return View(categoriaViewModel);
             }
 
-            await _categoriaService.Salvar();
+            await categoriaService.Salvar();
 
             TempData["Sucesso"] = "Categoria Editada.";
 
@@ -98,14 +97,14 @@ namespace DevXpert.Store.MVC.Controllers
         {
             var categoriaViewModel = await GetById(id);
 
-            if (!await _categoriaService.Excluir(id))
+            if (!await categoriaService.Excluir(id))
             {
                 GetErrorsFromNotificador();
 
                 return View();
             }
 
-            await _categoriaService.Salvar();
+            await categoriaService.Salvar();
 
             TempData["Sucesso"] = "Categoria Excluída.";
 
@@ -119,20 +118,14 @@ namespace DevXpert.Store.MVC.Controllers
             if (id == Guid.Empty)
                 return NotFound();
 
-            var categoria = await _categoriaService.BuscarPorId(id);
-            var categoriaViewModel = MapToViewModel(categoria);
+            var categoria = await categoriaService.BuscarPorId(id);
+            var categoriaViewModel = CategoriaViewModel.MapToViewModel(categoria);
 
             if (categoriaViewModel is null)
                 return NotFound();
 
             return View(categoriaViewModel);
         }
-
-        private static CategoriaViewModel MapToViewModel(Categoria categoria) => EntityMapping.MapToCategoriaViewModel(categoria);
-
-        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) => EntityMapping.MapToCategoria(categoriaViewModel);
-
-        private static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) => EntityMapping.MapToListCategoriaViewModel(categorias);
 
         #endregion
     }

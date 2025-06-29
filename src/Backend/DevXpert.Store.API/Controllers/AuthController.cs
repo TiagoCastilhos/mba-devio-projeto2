@@ -10,8 +10,8 @@ namespace DevXpert.Store.API.Controllers
 {
     [Route("api/[controller]")]
     public class AuthController(INotificador notificador,
-                                IAppIdentityUser user,
-                                IAuthService authService) : MainController(notificador, user)
+        IAppIdentityUser user,
+        IAuthService authService) : MainController(notificador, user)
     {
         [AllowAnonymous]
         [HttpPost("register")]

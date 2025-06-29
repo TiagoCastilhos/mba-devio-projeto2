@@ -16,8 +16,6 @@ namespace DevXpert.Store.Core.Business.Services
                              IClienteService clienteService,
                              IOptions<JWTSettings> jwtSettings) : IAuthService
     {
-        //private readonly JWTSettings _jwtSettings = jwtSettings.Value;
-
         public async Task<AuthResultViewModel> RegisterAsync(UserRegisterViewModel usuarioRegistro)
         {
             var user = new IdentityUser
