@@ -1,14 +1,12 @@
-﻿using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.Core.Application.Mappings;
+﻿using System.Data;
+using System.Net;
+using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
-using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Net;
 
 namespace DevXpert.Store.API.Controllers
 {
@@ -24,7 +22,7 @@ namespace DevXpert.Store.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] string busca)
         {
-            var lista = MapToList(await categoriaService.BuscarTodos(busca, true));
+            var lista = CategoriaViewModel.MapToList(await categoriaService.BuscarTodos(busca, true));
 
             return CustomResponse(HttpStatusCode.OK, lista);
         }
@@ -34,7 +32,7 @@ namespace DevXpert.Store.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var categoriaViewModel = MapToViewModel(await categoriaService.BuscarPorId(id));
+            var categoriaViewModel = CategoriaViewModel.MapToViewModel(await categoriaService.BuscarPorId(id));
 
             if (categoriaViewModel is not null)
                 return CustomResponse(HttpStatusCode.OK, categoriaViewModel);
@@ -51,15 +49,15 @@ namespace DevXpert.Store.API.Controllers
         public async Task<IActionResult> Post([FromBody]CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-            if (!await categoriaService.Adicionar(MapToEntity(categoriaViewModel)))
+        
+            if (!await categoriaService.Adicionar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);
-
+        
             await Salvar(categoriaViewModel.Id);
-
+        
             return CustomResponse(HttpStatusCode.Created, categoriaViewModel);
         }
-
+        
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -71,16 +69,16 @@ namespace DevXpert.Store.API.Controllers
                 NotificarErro("O Id informado não é o mesmo passado na query.");
                 return CustomResponse(HttpStatusCode.BadRequest);
             }
-
+        
             if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-            if (!await categoriaService.Atualizar(MapToEntity(categoriaViewModel)))
+        
+            if (!await categoriaService.Atualizar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);
-
+        
             await Salvar(id);
             return CustomResponse(HttpStatusCode.NoContent);
         }
-
+        
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,19 +86,14 @@ namespace DevXpert.Store.API.Controllers
         {
             if (!await categoriaService.Excluir(id))
                 return CustomResponse(HttpStatusCode.BadRequest);
-
+        
             await Salvar(id);
             return CustomResponse(HttpStatusCode.NoContent);
         }
         #endregion
-
-        #region PRIVATE_METHODS       
-        private static CategoriaViewModel MapToViewModel(Categoria categoria) => EntityMapping.MapToCategoriaViewModel(categoria);
-
-        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) => EntityMapping.MapToCategoria(categoriaViewModel);
-
-        private static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) => EntityMapping.MapToListCategoriaViewModel(categorias);
-
+        
+        #region PRIVATE_METHODS
+        
         private async Task Salvar(Guid id)
         {
             try
@@ -111,9 +104,8 @@ namespace DevXpert.Store.API.Controllers
             {
                 if (await categoriaService.BuscarPorId(id) is not null)
                     throw;
-
+        
                 NotificarErro("Categoria não encontrada.");
-                return;
             }
         }
         #endregion
