@@ -28,12 +28,12 @@ namespace DevXpert.Store.Core.Application.Configurations
             return builder;
         }
 
-        public static WebApplication MigrateDatabase(this WebApplication app)
+        public async static Task<WebApplication> MigrateDatabase(this WebApplication app)
         {
             using var appContext = GetDbContext(app);
             appContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(5));
 
-            appContext.Database.Migrate();
+            await appContext.Database.MigrateAsync();
 
             return app;
         }

@@ -5,19 +5,16 @@ using DevXpert.Store.Core.Business.Services.Notificador;
 
 namespace DevXpert.Store.Core.Business.Services;
 
-public class FavoritoService(
-    IFavoritoRepository favoritoRepository,
-    INotificador notificador) : BaseService(notificador), IFavoritoService
+public class FavoritoService(IFavoritoRepository favoritoRepository,
+                             INotificador notificador) : BaseService(notificador), IFavoritoService
 {
     #region READ
 
     public async Task<IEnumerable<Favorito>> BuscarPorClienteId(Guid clienteId)
     {
-        return await favoritoRepository.Pesquisar(f => 
-            f.ClienteId == clienteId
-            && f.Produto.Ativo == true);
+        return await favoritoRepository.Pesquisar(f => f.ClienteId == clienteId && 
+                                                       f.Produto.Ativo == true);
     }
-
     #endregion
 
     #region WRITE
@@ -31,13 +28,13 @@ public class FavoritoService(
         return true;
     }
 
-    public async Task<bool> Excluir(Guid id)
+    public async Task<bool> Excluir(Guid clienteId, Guid produtoId)
     {
-        var favorito = await favoritoRepository.BuscarPorId(id);
+        var favorito = await favoritoRepository.BuscarPorClienteProduto(clienteId, produtoId);
 
         if (favorito is null) return NotificarError("Favorito não encontrado.");
 
-        await favoritoRepository.Excluir(id);
+        await favoritoRepository.Excluir(favorito.Id);
 
         return true;
     }
@@ -61,8 +58,8 @@ public class FavoritoService(
 
     private async Task<bool> Existe(Guid clienteId, Guid produtoId)
     {
-        return (await favoritoRepository.Pesquisar(f =>
-            f.ClienteId == clienteId && f.ProdutoId == produtoId)).Any();
+        return (await favoritoRepository.Pesquisar(f => f.ClienteId == clienteId && 
+                                                        f.ProdutoId == produtoId)).Any();
     }
 
     #endregion

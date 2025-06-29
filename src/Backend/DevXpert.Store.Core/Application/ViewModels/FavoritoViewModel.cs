@@ -6,7 +6,7 @@ public class FavoritoViewModel
 {
     public ProdutoViewModel Produto { get; set; }
 
-    public static FavoritoViewModel? MapToViewModel(Favorito favorito)
+    public static FavoritoViewModel MapToViewModel(Favorito favorito)
     {
         if (favorito == null) return null;
         

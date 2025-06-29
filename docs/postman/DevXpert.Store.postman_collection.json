@@ -10,7 +10,7 @@
 			"name": "Auth",
 			"item": [
 				{
-					"name": "Login",
+					"name": "Login Cliente",
 					"event": [
 						{
 							"listen": "test",
@@ -66,6 +66,118 @@
 					"response": []
 				},
 				{
+					"name": "Login Vendedor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode OK\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var result = JSON.parse(pm.response.text());\r",
+									"\r",
+									"pm.globals.set('access_token', result.data);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"vendedor@teste.com\",\n  \"password\": \"@Aa12345\",\n  \"isCliente\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}Auth/login",
+							"host": [
+								"{{base}}Auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode OK\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var result = JSON.parse(pm.response.text());\r",
+									"\r",
+									"pm.globals.set('access_token', result.data);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@teste.com\",\n  \"password\": \"@Aa12345\",\n  \"isCliente\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}Auth/login",
+							"host": [
+								"{{base}}Auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Register",
 					"event": [
 						{
@@ -102,7 +214,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"cliente@teste.com\",\n  \"password\": \"@Aa12345\",\n  \"confirmpassword\":\"@Aa12345\"\n}",
+							"raw": "{\n  \"email\": \"cliente1@teste.com\",\n  \"password\": \"@Aa12345\",\n  \"confirmpassword\":\"@Aa12345\",\n  \"isCliente\":true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -221,9 +333,324 @@
 							}
 						],
 						"url": {
-							"raw": "{{base}}Categorias",
+							"raw": "{{base}}Categorias?Busca=eletr",
 							"host": [
 								"{{base}}Categorias"
+							],
+							"query": [
+								{
+									"key": "PageNumber",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "PageSize",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "OrderBy",
+									"value": "nome",
+									"disabled": true
+								},
+								{
+									"key": "Desc",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "Busca",
+									"value": "eletr"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode OK\",  ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{base}}Categorias/{{categoria_id}}",
+							"host": [
+								"{{base}}Categorias"
+							],
+							"path": [
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode NoContent\",  ()=>{\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; x-api-version=1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Categoria Posted updated\",\n    \"descricao\": \"Descrição da categoria post atualizada\",\n    \"id\": \"{{categoria_id}}\",\n    \"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}Categorias/{{categoria_id}}",
+							"host": [
+								"{{base}}Categorias"
+							],
+							"path": [
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode NoContent\",  ()=>{\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; x-api-version=1.0"
+							}
+						],
+						"url": {
+							"raw": "{{base}}Categorias/{{categoria_id}}",
+							"host": [
+								"{{base}}Categorias"
+							],
+							"path": [
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produtos",
+			"item": [
+				{
+					"name": "Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode Created\",  ()=>{\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"var jsonData = JSON.parse(pm.response.text());\r",
+									"\r",
+									"pm.environment.set(\"categoria_id\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; x-api-version=1.0"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "CategoriaId",
+									"value": "59a5633f-e3f0-4758-9dd1-a4d4ee740bb0",
+									"type": "text"
+								},
+								{
+									"key": "Nome",
+									"value": "Camiseta regata",
+									"type": "text"
+								},
+								{
+									"key": "Descricao",
+									"value": "Teste Lorem Ipsum Dolet",
+									"type": "text"
+								},
+								{
+									"key": "Estoque",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "Preco",
+									"value": "50,99",
+									"type": "text"
+								},
+								{
+									"key": "FileUpload",
+									"type": "file",
+									"src": "postman-cloud:///1f052a90-f0fc-4dd0-90db-4f67fc1d348f"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base}}Produtos",
+							"host": [
+								"{{base}}Produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode OK\",  ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{base}}Produtos",
+							"host": [
+								"{{base}}Produtos"
 							],
 							"query": [
 								{
@@ -406,6 +833,227 @@
 							],
 							"path": [
 								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorito",
+			"item": [
+				{
+					"name": "Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode OK\",  ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{base}}favoritos",
+							"host": [
+								"{{base}}favoritos"
+							],
+							"query": [
+								{
+									"key": "PageNumber",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "PageSize",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "OrderBy",
+									"value": "nome",
+									"disabled": true
+								},
+								{
+									"key": "Desc",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "Busca",
+									"value": "eletr",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode OK\",  ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{base}}favoritos/6fa552cd-bdbf-4f4d-b298-987c3a140275",
+							"host": [
+								"{{base}}favoritos"
+							],
+							"path": [
+								"6fa552cd-bdbf-4f4d-b298-987c3a140275"
+							],
+							"query": [
+								{
+									"key": "PageNumber",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "PageSize",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "OrderBy",
+									"value": "nome",
+									"disabled": true
+								},
+								{
+									"key": "Desc",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "Busca",
+									"value": "eletr",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"StatusCode OK\",  ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{base}}favoritos/f5dd84d8-ccda-43e8-96cf-be0ccff0de3b",
+							"host": [
+								"{{base}}favoritos"
+							],
+							"path": [
+								"f5dd84d8-ccda-43e8-96cf-be0ccff0de3b"
+							],
+							"query": [
+								{
+									"key": "PageNumber",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "PageSize",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "OrderBy",
+									"value": "nome",
+									"disabled": true
+								},
+								{
+									"key": "Desc",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "Busca",
+									"value": "eletr",
+									"disabled": true
+								}
 							]
 						}
 					},

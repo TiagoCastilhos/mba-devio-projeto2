@@ -12,10 +12,9 @@ namespace DevXpert.Store.API.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
-public class FavoritosController(
-    IAppIdentityUser user,
-    INotificador notificador,
-    IFavoritoService favoritoService) : MainController(notificador, user)
+public class FavoritosController(IAppIdentityUser user,
+                                 INotificador notificador,
+                                 IFavoritoService favoritoService) : MainController(notificador, user)
 {
     #region READ
 
@@ -40,25 +39,21 @@ public class FavoritosController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Adicionar(Guid produtoId)
     {
-        var favorito = new Favorito
-        {
-            ClienteId = UserId,
-            ProdutoId = produtoId
-        };
+        var favorito = new Favorito(Guid.NewGuid(), UserId, produtoId);
 
         if (!await favoritoService.Adicionar(favorito))
             return CustomResponse(HttpStatusCode.BadRequest);
 
         await favoritoService.Salvar();
-        return CustomResponse(HttpStatusCode.OK, favorito);
+        return CustomResponse(HttpStatusCode.Created, favorito);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{produtoId:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid produtoId)
     {
-        if (!await favoritoService.Excluir(id))
+        if (!await favoritoService.Excluir(UserId, produtoId))
             return CustomResponse(HttpStatusCode.BadRequest);
         
         await favoritoService.Salvar();
