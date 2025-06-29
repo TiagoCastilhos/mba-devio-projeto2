@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DevXpert.Store.API.Controllers
 {
     [Route("api/[controller]")]
-    public class AuthController(
-        INotificador notificador,
+    public class AuthController(INotificador notificador,
         IAppIdentityUser user,
         IAuthService authService) : MainController(notificador, user)
     {
@@ -29,7 +28,6 @@ namespace DevXpert.Store.API.Controllers
                 NotificarErro(error);
 
             return CustomResponse(HttpStatusCode.BadRequest);
-
         }
 
         [AllowAnonymous]
@@ -47,7 +45,6 @@ namespace DevXpert.Store.API.Controllers
                 NotificarErro(error);
 
             return CustomResponse(HttpStatusCode.BadRequest);
-
         }
     }
 }

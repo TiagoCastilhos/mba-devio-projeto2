@@ -14,33 +14,27 @@ namespace DevXpert.Store.API.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class CategoriasController(
-        IAppIdentityUser user,
-        INotificador notificador,
-        ICategoriaService categoriaService) : MainController(notificador, user)
+    public class CategoriasController(IAppIdentityUser user,
+                                      INotificador notificador,
+                                      ICategoriaService categoriaService) : MainController(notificador, user)
     {
         #region READ
-
-        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        //TODO: IMPLEMENTAR FILTRO PARA BUSCAR POR PARTE OU TODA DESCRICAO
-        public async Task<IActionResult> GetAll()
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll([FromQuery] string busca)
         {
-            var categorias = await categoriaService.BuscarTodos();
-            var lista = MapToList(categorias);
+            var lista = MapToList(await categoriaService.BuscarTodos(busca, true));
 
             return CustomResponse(HttpStatusCode.OK, lista);
         }
 
-        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var categoria = await categoriaService.BuscarPorId(id);
-            var categoriaViewModel = MapToViewModel(categoria);
+            var categoriaViewModel = MapToViewModel(await categoriaService.BuscarPorId(id));
 
             if (categoriaViewModel is not null)
                 return CustomResponse(HttpStatusCode.OK, categoriaViewModel);
@@ -48,15 +42,13 @@ namespace DevXpert.Store.API.Controllers
             NotificarErro("Categoria não encontrada.");
             return CustomResponse(HttpStatusCode.NotFound);
         }
-
         #endregion
 
         #region WRITE
-
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] CategoriaViewModel categoriaViewModel)
+        public async Task<IActionResult> Post([FromBody]CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -100,19 +92,14 @@ namespace DevXpert.Store.API.Controllers
             await Salvar(id);
             return CustomResponse(HttpStatusCode.NoContent);
         }
-
         #endregion
 
-        #region PRIVATE_METHODS
+        #region PRIVATE_METHODS       
+        private static CategoriaViewModel MapToViewModel(Categoria categoria) => EntityMapping.MapToCategoriaViewModel(categoria);
 
-        private static CategoriaViewModel MapToViewModel(Categoria categoria) =>
-            EntityMapping.MapToCategoriaViewModel(categoria);
+        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) => EntityMapping.MapToCategoria(categoriaViewModel);
 
-        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) =>
-            EntityMapping.MapToCategoria(categoriaViewModel);
-
-        private static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) =>
-            EntityMapping.MapToListCategoriaViewModel(categorias);
+        private static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) => EntityMapping.MapToListCategoriaViewModel(categorias);
 
         private async Task Salvar(Guid id)
         {
@@ -129,7 +116,8 @@ namespace DevXpert.Store.API.Controllers
                 return;
             }
         }
-
         #endregion
+
     }
 }
+

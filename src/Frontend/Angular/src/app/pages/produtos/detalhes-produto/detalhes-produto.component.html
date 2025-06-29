@@ -1,11 +1,11 @@
 <div *ngIf="produto$ | async as produto">
   <div class="row">
-    <div class="offset-1 col-3">
-      <!-- <img [src]="'data:image/png;base64, ' + produto.imagem" /> -->
+    <div class="col-3">
+      <img [src]="produto.imagem" alt="{{ produto.nome }}" />
     </div>
 
-    <div class="offset-1 col-3">
-      <a href="#">{{ produto.categoria.nome }}</a>
+    <div class="offset-2 col-3">
+      <a>{{ produto.categoria }}</a>
       <h3>
         <strong>
           {{ produto.nome }}
@@ -19,16 +19,19 @@
         <div class="card-body d-flex flex-column">
           <h3>{{ produto.preco | currency : "BRL" }}</h3>
 
-          <h4>{{ produto.estoque ? "Em estoque" : "Indisponível" }}</h4>
+          <h4>
+            {{
+            produto.estoque
+            ? "Em estoque: " + produto.estoque
+            : "Indisponível"
+            }}
+          </h4>
 
-          <app-base-button [class]="'btn btn-outline-warning w-100'">
+          <app-base-button (click)="adicionarFavorito(produto.id)" [class]="'btn btn-outline-warning w-100'">
             Adicionar a Favoritos
           </app-base-button>
 
-          <div class="h6">
-            Vendido por:
-            <!-- {{ produto.vendedor.nome }}  -->
-          </div>
+          <div class="h6">Vendido por:{{ produto.vendedor }}</div>
         </div>
       </div>
     </div>
