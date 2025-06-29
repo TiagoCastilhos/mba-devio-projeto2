@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace DevXpert.Store.Core.Business.Models
 {
-    public class Produto : BaseEntityAtivavel
+    public class Produto : BaseEntity
     {
         public int Estoque { get; private set; }
         public decimal Preco { get; private set; }

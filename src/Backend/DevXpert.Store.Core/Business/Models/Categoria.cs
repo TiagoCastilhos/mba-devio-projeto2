@@ -3,7 +3,7 @@ using DevXpert.Store.Core.Business.Validations;
 
 namespace DevXpert.Store.Core.Business.Models
 {
-    public class Categoria : BaseEntityAtivavel
+    public class Categoria : BaseEntity
     {
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
