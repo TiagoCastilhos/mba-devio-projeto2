@@ -1,0 +1,35 @@
+<h3>Favoritos</h3>
+
+<div class="card">
+  @if(favoritos$ | async; as favoritos) {
+  <ul class="list-group list-group-flush">
+    @for (produto of favoritos; track produto.id) {
+    <li class="list-group-item cursor-pointer" [routerLink]="['/produtos', produto.id]">
+      <div class="row">
+        <div class="col-3">
+          <img class="img-fluid" [src]="produto.imagem" [alt]="produto.nome" />
+        </div>
+        <div class="col-9">
+          <h3>
+            {{ produto.nome }}
+          </h3>
+          <p>{{ produto.vendedor ? "por" + produto.vendedor : "" }}</p>
+          <p>{{ produto.descricao }}</p>
+          <p>{{ produto.preco | currency: 'BRL' }}</p>
+
+          <div class="row">
+            <div class="col-auto">
+              <button (click)="removerFavorito(produto.id); $event.stopPropagation()" type="button" class="btn btn-sm">
+                <fa-icon class="text-danger" [icon]="faTrashCan"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+  } @else {
+  <h1>Você ainda não tem produtos favoritos</h1>
+  }
+</div>
