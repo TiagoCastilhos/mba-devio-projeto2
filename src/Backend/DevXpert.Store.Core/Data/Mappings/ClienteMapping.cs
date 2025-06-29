@@ -34,16 +34,11 @@ namespace DevXpert.Store.Core.Data.Mappings
             builder.HasIndex(c => c.Nome)
                    .HasDatabaseName("IX_CLIENTE_NOME")
                    .HasFillFactor(80)
-                   .IsUnique(false);
-
-            builder.HasMany(c => c.Produtos)
-                   .WithMany(c => c.Clientes)
-                   .UsingEntity(c => c.ToTable("CLIENTES_PRODUTOS"));
+                   .IsUnique(false);           
 
             builder.ToTable("CLIENTES");
 
             builder.Ignore(c => c.ValidationResult);
-            builder.Ignore(c => c.ProdutoId);
         }
     }
 }

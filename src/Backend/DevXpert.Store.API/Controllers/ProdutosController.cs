@@ -1,8 +1,6 @@
 ﻿using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
-using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -14,10 +12,9 @@ namespace DevXpert.Store.API.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class ProdutosController(
-        IAppIdentityUser user,
-        INotificador notificador,
-        IProdutoService produtoService) : MainController(notificador, user)
+    public class ProdutosController(IAppIdentityUser user,
+                                    INotificador notificador,
+                                    IProdutoService produtoService) : MainController(notificador, user)
     {
         #region READ
 

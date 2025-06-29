@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevXpert.Store.Core.Data.Seed
 {
-    //TODO: MAPEAR A ROLE/CLAIM DO ADMIN
     public static class SeedDatabase
     {
         public static void Seed(ModelBuilder builder)
@@ -14,7 +13,7 @@ namespace DevXpert.Store.Core.Data.Seed
             var vendedorId = Guid.Parse("f96e5735-7f8a-49a7-8fe1-64304e70257d");
 
             var senha = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==";//@Aa12345
-                         
+
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "1", Name = "Administrator", NormalizedName = "ADMINISTRADOR", ConcurrencyStamp = "2c5e174e-3b0e-446f-86af-483d56fd7210" },
                 new IdentityRole { Id = "2", Name = "Vendedor", NormalizedName = "VENDEDOR", ConcurrencyStamp = "16aacd76-5c6d-418a-884c-116871ca2fe0" },
@@ -74,7 +73,7 @@ namespace DevXpert.Store.Core.Data.Seed
             );
 
             builder.Entity<Cliente>().HasData(
-                new Cliente(vendedorId, "cliente@teste.com", "cliente@teste.com", senha)
+                new Cliente(clienteId, "cliente@teste.com", "cliente@teste.com", senha)
             );
 
             builder.Entity<Categoria>().HasData(
@@ -88,6 +87,13 @@ namespace DevXpert.Store.Core.Data.Seed
                 new Produto(Guid.Parse("5fa99536-a7c8-403d-a0a0-373f30773054"), 20, 60, "Mouse", "mouse com fio", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
                 new Produto(Guid.Parse("26361398-ab18-4efd-879f-1f0ad1bb6d9e"), 15, 100, "Teclado", "teclado mecânico", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
                 new Produto(Guid.Parse("6fa552cd-bdbf-4f4d-b298-987c3a140275"), 28, 780, "Monitor", "Monitor curso 27", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId, false)
+            );
+
+            builder.Entity<Favorito>().HasData(
+                new Favorito(Guid.Parse("7f5c5026-518c-4ea2-abe5-8934920d1a27"), clienteId, Guid.Parse("f5dd84d8-ccda-43e8-96cf-be0ccff0de3b")),
+                new Favorito(Guid.Parse("115a7dde-7803-4836-9799-49046e1d7fb1"), clienteId, Guid.Parse("5fa99536-a7c8-403d-a0a0-373f30773054")),
+                new Favorito(Guid.Parse("4f45533c-1f36-46e5-acdb-fbb7e56254ac"), clienteId, Guid.Parse("26361398-ab18-4efd-879f-1f0ad1bb6d9e")),
+                new Favorito(Guid.Parse("099cb44e-44d8-45f2-960c-47139b38bc52"), clienteId, Guid.Parse("6fa552cd-bdbf-4f4d-b298-987c3a140275"))
             );
         }
     }

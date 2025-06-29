@@ -11,9 +11,24 @@ public class FavoritoRepository(AppDbContext context) : Repository<Favorito>(con
     public override async Task<IEnumerable<Favorito>> Pesquisar(Expression<Func<Favorito, bool>> predicate)
     {
         return await Db.Favoritos
-            .AsNoTracking()
-            .Include(f => f.Produto)
-            .Where(predicate)
-            .ToListAsync();
+                       .Include(f => f.Produto)
+                           .ThenInclude(f=> f.Categoria)
+                       .AsNoTracking()
+                       .Where(predicate)
+                       .ToListAsync();
+    }
+
+    public async Task<Favorito> BuscarPorClienteProduto(Guid clienteId, Guid produtoId)
+    {
+        return await Db.Favoritos
+                       .FirstOrDefaultAsync(f => f.ClienteId == clienteId &&
+                                                 f.ProdutoId == produtoId);
+    }
+
+    public bool ExcluirLote(Guid produtoId)
+    {
+        Db.Favoritos.RemoveRange(Db.Favoritos.Where(f => f.ProdutoId == produtoId));
+
+        return true;
     }
 }

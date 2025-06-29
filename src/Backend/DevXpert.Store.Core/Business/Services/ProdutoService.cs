@@ -7,7 +7,8 @@ using LinqKit;
 namespace DevXpert.Store.Core.Business.Services
 {
     public class ProdutoService(INotificador notificador,
-                                IProdutoRepository produtoRepository,                               
+                                IProdutoRepository produtoRepository,
+                                IFavoritoRepository favoritoRepository,
                                 IArquivoService arquivoService) : BaseService(notificador), IProdutoService
     {
         #region READ
@@ -68,7 +69,7 @@ namespace DevXpert.Store.Core.Business.Services
 
             arquivoService.Excluir(produto.Imagem);
 
-            //TODO: EXCLUIR OS FAVORITOS DOS CLIENTES
+            favoritoRepository.ExcluirLote(id);
 
             await produtoRepository.Excluir(id);
 

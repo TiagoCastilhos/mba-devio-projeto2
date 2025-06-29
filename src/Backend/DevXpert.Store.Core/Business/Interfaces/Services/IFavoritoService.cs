@@ -6,6 +6,6 @@ public interface IFavoritoService
 {
     Task<IEnumerable<Favorito>> BuscarPorClienteId(Guid clienteId);
     Task<bool> Adicionar(Favorito favorito);
-    Task<bool> Excluir(Guid id);
+    Task<bool> Excluir(Guid clienteId, Guid ProdutoId);
     Task Salvar();
 }

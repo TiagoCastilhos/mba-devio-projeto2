@@ -11,14 +11,20 @@ public class FavoritoMapping : IEntityTypeConfiguration<Favorito>
         builder.HasKey(f => f.Id);
 
         builder.HasOne(f => f.Cliente)
-            .WithMany(c => c.Favoritos)
-            .HasForeignKey(f => f.ClienteId);
+               .WithMany(c => c.Favoritos)
+               .HasForeignKey(f => f.ClienteId);
 
         builder.HasOne(f => f.Produto)
-            .WithMany(p => p.Favoritos)
-            .HasForeignKey(f => f.ProdutoId);
+               .WithMany(p => p.Favoritos)
+               .HasForeignKey(f => f.ProdutoId);
 
         builder.HasIndex(f => new { f.ClienteId, f.ProdutoId })
-            .IsUnique();
+               .HasDatabaseName("UQ_FAVORITO_CLIENTEID_PRODUTOID")
+               .HasFillFactor(80)
+               .IsUnique(true);
+
+        builder.ToTable("FAVORITOS");
+
+        builder.Ignore(f => f.ValidationResult);
     }
 }

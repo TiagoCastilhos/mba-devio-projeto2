@@ -60,7 +60,7 @@ namespace DevXpert.Store.Core.Application.Configurations
             return builder;
         }
 
-          
+
         #endregion
 
         #region WebApplication
@@ -95,12 +95,9 @@ namespace DevXpert.Store.Core.Application.Configurations
             return app;
         }
 
-        public static IApplicationBuilder UseEndPointsConfiguration(this IApplicationBuilder app)
+        public static WebApplication UseEndPointsConfiguration(this WebApplication app)
         {
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.MapControllers();
 
             return app;
         }
