@@ -127,6 +127,10 @@ namespace DevXpert.Store.MVC.Controllers
             return View(categoriaViewModel);
         }
 
+        private static CategoriaViewModel MapToViewModel(Categoria categoria) => EntityMapping.MapToCategoriaViewModel(categoria);
+
+        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) => EntityMapping.MapToCategoria(categoriaViewModel);
+
         #endregion
     }
 }
