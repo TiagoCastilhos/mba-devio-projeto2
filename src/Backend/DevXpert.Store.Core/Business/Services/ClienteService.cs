@@ -17,7 +17,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         public async Task<Cliente> BuscarPorEmail(string email)
         {
-            var cliente = await _clienteRepository.Pesquisar(c => c.Email == email && c.Ativo);
+            var cliente = await clienteRepository.Pesquisar(c => c.Email == email && c.Ativo);
             
             return cliente.FirstOrDefault();
         }
@@ -25,6 +25,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         #region WRITE
         public async Task<bool> Adicionar(Cliente cliente)
+
         {
             if (!Validate(cliente, true)) return false;
 

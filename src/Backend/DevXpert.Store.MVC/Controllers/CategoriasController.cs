@@ -133,8 +133,6 @@ namespace Kruger.Marketplace.MVC.Controllers
 
         private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) => EntityMapping.MapToCategoria(categoriaViewModel);
 
-        private static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) => EntityMapping.MapToListCategoriaViewModel(categorias);
-
         #endregion
     }
 }
