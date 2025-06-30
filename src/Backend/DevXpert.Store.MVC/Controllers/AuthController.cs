@@ -1,6 +1,6 @@
 ﻿using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
-using DevXpert.Store.Core.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,16 +10,16 @@ public class AuthController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly AppDbContext _context;
+    private readonly IVendedorService _vendedorService;
 
     public AuthController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
-        AppDbContext context)
+        IVendedorService vendedorService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _context = context;
+        _vendedorService = vendedorService;
     }
 
     public IActionResult Registrar()
@@ -43,7 +43,7 @@ public class AuthController : Controller
 
         if (result.Succeeded)
         {
-            await AddVendedor(user);
+            await AddVendedor(user, registrarUsuario);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return LocalRedirect(Url.Content("~/"));
         }
@@ -51,10 +51,10 @@ public class AuthController : Controller
         return View(registrarUsuario);
     }
 
-    private async Task AddVendedor(IdentityUser user)
+    private async Task AddVendedor(IdentityUser user, UserRegisterViewModel registrarUsuario)
     {
         var userId = await _userManager.GetUserIdAsync(user);
-        await _context.Vendedores.AddAsync(new Vendedor { Id = new Guid(userId) });
-        await _context.SaveChangesAsync();
+        await _vendedorService.Adicionar(new Vendedor { Id = new Guid(userId), Email =  registrarUsuario.Email, Nome = registrarUsuario.Email, Senha = registrarUsuario.Password});
+        await _vendedorService.Salvar();
     }
 }
