@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
 import { ProdutosService } from '../services/produtos/produtos.service';
+import { FavoritosService } from '../../../services/favoritos.service';
 
 @Component({
   selector: 'app-detalhes-produto',
@@ -10,12 +11,13 @@ import { ProdutosService } from '../services/produtos/produtos.service';
 })
 export class DetalhesProdutoComponent {
   _produtoService = inject(ProdutosService);
+  _favoritoService = inject(FavoritosService);
   _route = inject(ActivatedRoute);
   produto$ = this._produtoService
     .obterPorId(this._route.snapshot.paramMap.get('id')!)
     .pipe(map((res) => res.data));
 
   adicionarFavorito(produtoId: string) {
-    this._produtoService.adicionarFavoritos(produtoId);
+    this._favoritoService.adicionar(produtoId);
   }
 }

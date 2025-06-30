@@ -2,9 +2,10 @@ import { Component, inject } from '@angular/core';
 import * as regular from '@fortawesome/free-regular-svg-icons';
 import * as solid from '@fortawesome/free-solid-svg-icons';
 import { map, Observable } from 'rxjs';
-import { Produto } from '../../../models/produto';
+import { Produto } from '../../../models/produto.model';
 import { ToasterService } from '../../../services/toaster.service';
 import { ProdutosService } from '../services/produtos/produtos.service';
+import { FavoritosService } from '../../../services/favoritos.service';
 
 @Component({
   selector: 'app-lista-produto',
@@ -17,6 +18,7 @@ export class ListaProdutoComponent {
   faStarRegular = regular.faStar;
 
   _produtoService = inject(ProdutosService);
+  _favoritoService = inject(FavoritosService);
   _toasterService = inject(ToasterService);
   produtos$: Observable<Produto[]> = this._produtoService
     .obterTodos()
@@ -28,11 +30,11 @@ export class ListaProdutoComponent {
     produto.favorito = !(produto.favorito ?? false);
 
     !produto.favorito
-      ? this._produtoService.adicionarFavoritos(produto.id).subscribe({
+      ? this._favoritoService.adicionar(produto.id).subscribe({
         next: (res) => this._toasterService.success(),
         error: (err) => this._toasterService.error(),
       })
-      : this._produtoService.removerFavoritos(produto.id).subscribe({
+      : this._favoritoService.delete(produto.id).subscribe({
         next: (res) => this._toasterService.success(),
         error: (err) => this._toasterService.error(),
       });

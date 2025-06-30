@@ -1,18 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { tap } from 'rxjs';
 import { AuthResponse } from '../models/auth-response.model';
 import { User } from '../models/user.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationService extends BaseService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
-
-  constructor() { }
 
   register(email: string, password: string) {
     return this.http.post<{ success: boolean, data: string }>(

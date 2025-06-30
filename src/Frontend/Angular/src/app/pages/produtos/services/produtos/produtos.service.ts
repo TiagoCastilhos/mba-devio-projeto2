@@ -1,19 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { CustomResponse } from '../../../../models/custom-response';
-import { Produto } from '../../../../models/produto';
+import { Produto } from '../../../../models/produto.model';
 import { BaseService } from '../../../../services/base.service';
 
 @Injectable()
 export class ProdutosService extends BaseService {
   private _http = inject(HttpClient);
-  private _apiUrl = environment.apiUrl;
 
   obterTodos() {
     return this._http
-      .get<CustomResponse<Produto[]>>(`${this._apiUrl}/Produtos`)
+      .get<CustomResponse<Produto[]>>(`${this.apiUrl}/Produtos`)
       .pipe(
         tap((response) => {
           if (response.success) {
@@ -27,7 +26,7 @@ export class ProdutosService extends BaseService {
 
   obterPorId(id: string) {
     return this._http
-      .get<CustomResponse<Produto>>(`${this._apiUrl}/Produtos/${id}`)
+      .get<CustomResponse<Produto>>(`${this.apiUrl}/Produtos/${id}`)
       .pipe(
         tap((response) => {
           if (response.success) {
@@ -35,15 +34,5 @@ export class ProdutosService extends BaseService {
           }
         })
       );
-  }
-
-  adicionarFavoritos(produtoId: string): Observable<CustomResponse<any>> {
-    const url = `${this._apiUrl}/Produtos/adicionar-favorito/${produtoId}`; // temporario
-    return this._http.post<CustomResponse<any>>(url, {});
-  }
-
-  removerFavoritos(produtoId: string): Observable<CustomResponse<any>> {
-    const url = `${this._apiUrl}/Produtos/remover-favorito/${produtoId}`; // temporario
-    return this._http.delete<CustomResponse<any>>(url);
   }
 }

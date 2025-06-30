@@ -4,7 +4,8 @@ import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { map, Observable } from 'rxjs';
-import { Produto } from '../../models/produto';
+import { Produto } from '../../models/produto.model';
+import { FavoritosService } from '../../services/favoritos.service';
 import { ToasterService } from '../../services/toaster.service';
 import { ProdutosService } from '../produtos/services/produtos/produtos.service';
 
@@ -12,19 +13,19 @@ import { ProdutosService } from '../produtos/services/produtos/produtos.service'
   selector: 'app-favoritos',
   imports: [AsyncPipe, FontAwesomeModule, RouterLink, CurrencyPipe],
   templateUrl: './favoritos.component.html',
-  providers: [ProdutosService],
+  providers: [ProdutosService, FavoritosService],
 })
 export class FavoritosComponent {
   _toasterService = inject(ToasterService);
-  _produtosService = inject(ProdutosService);
-  favoritos$: Observable<Produto[]> = this._produtosService
-    .obterTodos()
+  _favoritosService = inject(FavoritosService);
+  favoritos$: Observable<{ produto: Produto }[]> = this._favoritosService
+    .buscarPorClienteId()
     .pipe(map((res) => res.data));
 
   faTrashCan = faTrashCan;
 
   removerFavorito(produtoId: string) {
-    this._produtosService.removerFavoritos(produtoId).subscribe({
+    this._favoritosService.delete(produtoId).subscribe({
       next: () => {
         this._toasterService.success('Produto removido de favoritos!');
       },
