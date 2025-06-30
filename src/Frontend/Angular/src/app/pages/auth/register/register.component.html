@@ -6,18 +6,35 @@
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div class="mb-3">
                     <app-base-input formControlName="email" label="E-mail" type="email"></app-base-input>
+                    <div class="text-danger small"
+                        *ngIf="(registerForm.get('email')?.dirty || registerForm.get('email')?.touched) && registerForm.get('email')?.errors">
+                        <span *ngIf="registerForm.get('email')?.errors?.['required']">E-mail é obrigatório.</span>
+                        <span *ngIf="registerForm.get('email')?.errors?.['email']">E-mail inválido.</span>
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <app-base-input formControlName="password" label="Senha" type="password"></app-base-input>
+                    <div class="text-danger small"
+                        *ngIf="(registerForm.get('password')?.dirty || registerForm.get('password')?.touched) && registerForm.get('password')?.errors">
+                        <span *ngIf="registerForm.get('password')?.errors?.['required']">Senha é obrigatória.</span>
+                        <span *ngIf="registerForm.get('password')?.errors?.['pattern']">Senha precisa conter no mínimo 6
+                            caracteres, contendo pelo menos: 1 número, 1 letra maiúscula, 1 letra minúscula e 1
+                            caractere especial.</span>
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <app-base-input formControlName="confirmPassword" label="Confirmar senha"
                         type="password"></app-base-input>
+                    <div class="text-danger small"
+                        *ngIf="(registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched) && registerForm.get('confirmPassword')?.errors">
+                        <span *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Senhas não
+                            coincidem.</span>
+                    </div>
                 </div>
 
-                <app-base-button type="submit"> Registrar </app-base-button>
+                <app-base-button type="submit" [disabled]="!this.canSubmit()"> Registrar </app-base-button>
             </form>
         </div>
     </div>

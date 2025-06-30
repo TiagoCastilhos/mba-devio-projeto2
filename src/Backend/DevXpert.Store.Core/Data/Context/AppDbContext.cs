@@ -8,14 +8,13 @@ namespace DevXpert.Store.Core.Data.Context
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext(options)
     {
-
         #region DB SET
         public DbSet<Categoria> Categorias{ get; set; }
+        public DbSet<Cliente> Clientes{ get; set; }
+        public DbSet<Favorito> Favoritos{ get; set; }
         public DbSet<Produto> Produtos{ get; set; }
         public DbSet<Vendedor> Vendedores{ get; set; }
-        public DbSet<Cliente> Clientes{ get; set; }
         #endregion
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

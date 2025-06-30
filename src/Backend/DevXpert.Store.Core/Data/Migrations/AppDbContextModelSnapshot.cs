@@ -19,21 +19,6 @@ namespace DevXpert.Store.Core.data.migrations
                 .UseCollation("SQL_Latin1_General_CP1_CI_AI")
                 .HasAnnotation("ProductVersion", "9.0.6");
 
-            modelBuilder.Entity("ClienteProduto", b =>
-                {
-                    b.Property<Guid>("ClientesId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ProdutosId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ClientesId", "ProdutosId");
-
-                    b.HasIndex("ProdutosId");
-
-                    b.ToTable("CLIENTES_PRODUTOS", (string)null);
-                });
-
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Categoria", b =>
                 {
                     b.Property<Guid>("Id")
@@ -121,11 +106,61 @@ namespace DevXpert.Store.Core.data.migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257d"),
+                            Id = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
                             Ativo = true,
                             Email = "cliente@teste.com",
                             Nome = "cliente@teste.com",
                             Senha = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg =="
+                        });
+                });
+
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Favorito", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ClienteId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProdutoId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.HasIndex("ClienteId", "ProdutoId")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_FAVORITO_CLIENTEID_PRODUTOID")
+                        .HasAnnotation("SqlServer:FillFactor", 80);
+
+                    b.ToTable("FAVORITOS", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7f5c5026-518c-4ea2-abe5-8934920d1a27"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("f5dd84d8-ccda-43e8-96cf-be0ccff0de3b")
+                        },
+                        new
+                        {
+                            Id = new Guid("115a7dde-7803-4836-9799-49046e1d7fb1"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("5fa99536-a7c8-403d-a0a0-373f30773054")
+                        },
+                        new
+                        {
+                            Id = new Guid("4f45533c-1f36-46e5-acdb-fbb7e56254ac"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("26361398-ab18-4efd-879f-1f0ad1bb6d9e")
+                        },
+                        new
+                        {
+                            Id = new Guid("099cb44e-44d8-45f2-960c-47139b38bc52"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("6fa552cd-bdbf-4f4d-b298-987c3a140275")
                         });
                 });
 
@@ -556,19 +591,23 @@ namespace DevXpert.Store.Core.data.migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ClienteProduto", b =>
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Favorito", b =>
                 {
-                    b.HasOne("DevXpert.Store.Core.Business.Models.Cliente", null)
-                        .WithMany()
-                        .HasForeignKey("ClientesId")
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Cliente", "Cliente")
+                        .WithMany("Favoritos")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DevXpert.Store.Core.Business.Models.Produto", null)
-                        .WithMany()
-                        .HasForeignKey("ProdutosId")
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Produto", "Produto")
+                        .WithMany("Favoritos")
+                        .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Produto", b =>
@@ -646,6 +685,16 @@ namespace DevXpert.Store.Core.data.migrations
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Categoria", b =>
                 {
                     b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Cliente", b =>
+                {
+                    b.Navigation("Favoritos");
+                });
+
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Produto", b =>
+                {
+                    b.Navigation("Favoritos");
                 });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Vendedor", b =>

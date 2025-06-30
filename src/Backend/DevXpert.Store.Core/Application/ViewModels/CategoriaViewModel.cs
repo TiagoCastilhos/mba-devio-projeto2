@@ -1,6 +1,8 @@
 ﻿using DevXpert.Store.Core.Common.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using DevXpert.Store.Core.Application.Mappings;
+using DevXpert.Store.Core.Business.Models;
 
 namespace DevXpert.Store.Core.Application.ViewModels
 {
@@ -19,5 +21,14 @@ namespace DevXpert.Store.Core.Application.ViewModels
         public bool Ativo { get; set; }
 
         public int QuantidadeProdutos { get; set; }
+        
+        public static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) 
+            => EntityMapping.MapToCategoria(categoriaViewModel);
+        
+        public static IEnumerable<CategoriaViewModel> MapToList(IEnumerable<Categoria> categorias) => 
+            EntityMapping.MapToListCategoriaViewModel(categorias);
+        
+        public static CategoriaViewModel MapToViewModel(Categoria categoria) => 
+            EntityMapping.MapToCategoriaViewModel(categoria);
     }
 }

@@ -26,8 +26,10 @@ namespace DevXpert.Store.Core.Application.Configurations
             #endregion
 
             #region SERVICES
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IArquivoService, ArquivoService>();
             builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+            builder.Services.AddScoped<IFavoritoService, FavoritoService>();
             builder.Services.AddScoped<IProdutoService, ProdutoService>();
             builder.Services.AddScoped<IVendedorService, VendedorService>();
             builder.Services.AddScoped<IClienteService, ClienteService>();
@@ -35,6 +37,7 @@ namespace DevXpert.Store.Core.Application.Configurations
 
             #region REPOSITORIES
             builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            builder.Services.AddScoped<IFavoritoRepository, FavoritoRepository>();
             builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
             builder.Services.AddScoped<IVendedorRepository, VendedorRepository>();
             builder.Services.AddScoped<IClienteRepository, ClienteRepository>();

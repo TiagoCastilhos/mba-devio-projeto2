@@ -62,7 +62,6 @@ namespace DevXpert.Store.Core.Data.Mappings
 
             builder.Ignore(p => p.ValidationResult);
             builder.Ignore(p => p.FileUpload);
-            builder.Ignore(c => c.ClienteId);
         }
     }
 }

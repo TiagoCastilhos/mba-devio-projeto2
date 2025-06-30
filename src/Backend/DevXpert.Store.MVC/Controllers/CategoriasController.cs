@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.MVC.Controllers;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Business.Models;
 
-namespace Kruger.Marketplace.MVC.Controllers
+namespace DevXpert.Store.MVC.Controllers
 {
     [Authorize]
     [Route("categorias")]
@@ -16,11 +15,10 @@ namespace Kruger.Marketplace.MVC.Controllers
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
-        private readonly ICategoriaService _categoriaService = categoriaService;
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busca)
         {
-            return View(await _categoriaService.BuscarTodos());
+            var categorias = CategoriaViewModel.MapToList(await categoriaService.BuscarTodos(busca, true));
+            return View(categorias);
         }
 
         [Route("detalhes/{id:Guid}")]
@@ -43,14 +41,14 @@ namespace Kruger.Marketplace.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
 
-            if (!await _categoriaService.Adicionar(MapToEntity(categoriaViewModel)))
+            if (!await categoriaService.Adicionar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
                 GetErrorsFromNotificador();
 
                 return View(categoriaViewModel);
             }
 
-            await _categoriaService.Salvar();
+            await categoriaService.Salvar();
 
             TempData["Sucesso"] = "Categoria Cadastrada.";
 
@@ -73,14 +71,14 @@ namespace Kruger.Marketplace.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
 
-            if (!await _categoriaService.Atualizar(MapToEntity(categoriaViewModel)))
+            if (!await categoriaService.Atualizar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
                 GetErrorsFromNotificador();
 
                 return View(categoriaViewModel);
             }
 
-            await _categoriaService.Salvar();
+            await categoriaService.Salvar();
 
             TempData["Sucesso"] = "Categoria Editada.";
 
@@ -99,14 +97,14 @@ namespace Kruger.Marketplace.MVC.Controllers
         {
             var categoriaViewModel = await GetById(id);
 
-            if (!await _categoriaService.Excluir(id))
+            if (!await categoriaService.Excluir(id))
             {
                 GetErrorsFromNotificador();
 
                 return View();
             }
 
-            await _categoriaService.Salvar();
+            await categoriaService.Salvar();
 
             TempData["Sucesso"] = "Categoria Excluída.";
 
@@ -120,8 +118,8 @@ namespace Kruger.Marketplace.MVC.Controllers
             if (id == Guid.Empty)
                 return NotFound();
 
-            var categoria = await _categoriaService.BuscarPorId(id);
-            var categoriaViewModel = MapToViewModel(categoria);
+            var categoria = await categoriaService.BuscarPorId(id);
+            var categoriaViewModel = CategoriaViewModel.MapToViewModel(categoria);
 
             if (categoriaViewModel is null)
                 return NotFound();
