@@ -12,7 +12,7 @@ export class ProdutosService extends BaseService {
 
   getAll(url: string) {
     return this._http
-      .get<CustomResponse<Produto[]>>(`${this.apiUrl}${url}}`)
+      .get<CustomResponse<Produto[]>>(`${this.apiUrl}${url}`)
       .pipe(
         tap((response) => {
           if (response.success) {

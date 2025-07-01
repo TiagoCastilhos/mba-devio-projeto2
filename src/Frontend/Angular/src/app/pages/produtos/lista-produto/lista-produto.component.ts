@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as regular from '@fortawesome/free-regular-svg-icons';
 import * as solid from '@fortawesome/free-solid-svg-icons';
-import { map, Observable, tap } from 'rxjs';
 import { Produto } from '../../../models/produto.model';
 import { FavoritosService } from '../../../services/favoritos.service';
 import { ToasterService } from '../../../services/toaster.service';
@@ -14,21 +13,27 @@ import { ProdutosService } from '../services/produtos/produtos.service';
   templateUrl: './lista-produto.component.html',
   styleUrl: './lista-produto.component.css',
 })
-export class ListaProdutoComponent {
+export class ListaProdutoComponent implements OnInit {
   faStarSolid = solid.faStar;
   faStarRegular = regular.faStar;
 
   private _produtoService = inject(ProdutosService);
   private _favoritoService = inject(FavoritosService);
   private _toasterService = inject(ToasterService);
+  private _route = inject(ActivatedRoute);
   private _router = inject(Router);
+  produtos: Produto[] = [];
 
-  produtos$: Observable<Produto[]> = this._produtoService
-    .getAll(this._router.url)
-    .pipe(
-      tap({ error: (err) => this._toasterService.error(err?.error?.errors) }),
-      map((res) => res.data)
-    );
+  ngOnInit(): void {
+    this._route.queryParams.subscribe((params) => {
+      this._produtoService.getAll(this._router.url).subscribe({
+        next: (res) => {
+          this.produtos = res.data;
+        },
+        error: (err) => this._toasterService.error(err?.error?.errors),
+      });
+    });
+  }
 
   alternarFavorito(produto: Produto) {
     !produto.favorito
