@@ -13,7 +13,7 @@ public class FavoritoService(IFavoritoRepository favoritoRepository,
     public async Task<IEnumerable<Favorito>> BuscarPorClienteId(Guid clienteId)
     {
         return await favoritoRepository.Pesquisar(f => f.ClienteId == clienteId && 
-                                                       f.Produto.Ativo == true);
+                                                       f.Produto.Ativo);
     }
     #endregion
 

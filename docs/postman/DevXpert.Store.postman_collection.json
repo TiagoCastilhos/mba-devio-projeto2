@@ -333,34 +333,22 @@
 							}
 						],
 						"url": {
-							"raw": "{{base}}Categorias?Busca=eletr",
+							"raw": "{{base}}Categorias?Busca=destinada&CategoriaId&VendedorId",
 							"host": [
 								"{{base}}Categorias"
 							],
 							"query": [
 								{
-									"key": "PageNumber",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "PageSize",
-									"value": "10",
-									"disabled": true
-								},
-								{
-									"key": "OrderBy",
-									"value": "nome",
-									"disabled": true
-								},
-								{
-									"key": "Desc",
-									"value": "false",
-									"disabled": true
-								},
-								{
 									"key": "Busca",
-									"value": "eletr"
+									"value": "destinada"
+								},
+								{
+									"key": "CategoriaId",
+									"value": null
+								},
+								{
+									"key": "VendedorId",
+									"value": null
 								}
 							]
 						}
