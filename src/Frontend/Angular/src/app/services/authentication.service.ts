@@ -1,21 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { AuthResponse } from '@models/auth-response.model';
+import { CustomResponse } from '@models/custom-response';
+import { User } from '@models/user.model';
 import { tap } from 'rxjs';
-import { AuthResponse } from '../models/auth-response.model';
-import { User } from '../models/user.model';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationService extends BaseService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
-
-  constructor() { }
 
   register(email: string, password: string) {
-    return this.http.post<{ success: boolean, data: string }>(
+    return this.http.post<CustomResponse<string>>(
       `${this.apiUrl}/Auth/register`,
       {
         email: email,
@@ -30,7 +28,7 @@ export class AuthenticationService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<{ success: boolean, data: string }>(
+    return this.http.post<CustomResponse<string>>(
       `${this.apiUrl}/Auth/login`,
       {
         email: email,

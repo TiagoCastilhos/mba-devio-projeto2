@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthenticationService } from '../../services/authentication.service';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CategoriasService } from '../../services/categorias.service';
-import { CommonModule } from '@angular/common';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { AuthenticationService } from '@services/authentication.service';
+import { CategoriasService } from '@services/categorias.service';
 import { map } from 'rxjs';
 
 @Component({

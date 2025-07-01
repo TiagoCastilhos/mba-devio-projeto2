@@ -1,5 +1,5 @@
 
-export interface Categoria {
+export type Categoria = {
     id: string;
     nome: string;
     descricao: string;
