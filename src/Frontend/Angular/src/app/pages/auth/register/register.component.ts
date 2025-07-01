@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../../services/authentication.service';
-import { ToasterService } from '../../../services/toaster.service';
+import { AuthenticationService } from '@services/authentication.service';
+import { ToasterService } from '@services/toaster.service';
 import { passwordMatchValidator, passwordRegex } from '../validators/password-match.validator';
 
 @Component({

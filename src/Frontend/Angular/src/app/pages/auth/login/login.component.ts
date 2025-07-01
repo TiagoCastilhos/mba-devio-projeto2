@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../../services/authentication.service';
-import { ToasterService } from '../../../services/toaster.service';
+import { AuthenticationService } from '@services/authentication.service';
+import { ToasterService } from '@services/toaster.service';
 
 @Component({
   selector: 'app-login',

@@ -1,4 +1,4 @@
-export interface Produto {
+export type Produto = {
   id: string;
   nome: string;
   descricao: string;
@@ -7,6 +7,6 @@ export interface Produto {
   imagem: string;
   categoria: string;
   categoriaId: string;
-  vendedor: string;
+  vendedorId: string;
   favorito: boolean; //rever
-}
+};

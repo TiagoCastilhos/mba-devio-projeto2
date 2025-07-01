@@ -48,9 +48,12 @@
             </ul>
           </div>
         </li>
+        <!-- precisa validar role? -->
+        @if(isLoggedIn()) {
         <li class="nav-item cursor-pointer">
           <a class="nav-link" [routerLink]="['/favoritos']"> Favoritos </a>
         </li>
+        }
       </ul>
     </div>
   </nav>
