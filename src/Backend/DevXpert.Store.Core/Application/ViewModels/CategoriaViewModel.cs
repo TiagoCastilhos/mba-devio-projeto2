@@ -30,5 +30,8 @@ namespace DevXpert.Store.Core.Application.ViewModels
         
         public static CategoriaViewModel MapToViewModel(Categoria categoria) => 
             EntityMapping.MapToCategoriaViewModel(categoria);
+
+        public void Ativar() => Ativo = true;
+        public void Inativar() => Ativo = false;
     }
 }
