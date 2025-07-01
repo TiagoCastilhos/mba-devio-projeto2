@@ -41,6 +41,8 @@ namespace DevXpert.Store.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
 
+            categoriaViewModel.Ativo = true;
+
             if (!await categoriaService.Adicionar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
                 GetErrorsFromNotificador();
@@ -70,6 +72,8 @@ namespace DevXpert.Store.MVC.Controllers
 
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
+
+            categoriaViewModel.Ativo = true;
 
             if (!await categoriaService.Atualizar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
