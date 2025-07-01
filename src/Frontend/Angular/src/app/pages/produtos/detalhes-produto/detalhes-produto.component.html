@@ -27,9 +27,11 @@
             }}
           </h4>
 
+          @if (!favorito) {
           <app-base-button (click)="adicionarFavorito(produto.id)" [class]="'btn btn-outline-warning w-100'">
             Adicionar a Favoritos
           </app-base-button>
+          }
 
           <div class="h6">Vendido por:{{ produto.vendedor }}</div>
         </div>

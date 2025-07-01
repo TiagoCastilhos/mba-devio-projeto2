@@ -1,7 +1,7 @@
 <h3>Favoritos</h3>
 
 <div class="card">
-  @if(favoritos$ | async; as favoritos) {
+  @if(favoritos) {
   <ul class="list-group list-group-flush">
     @for (favorito of favoritos; track favorito.produto.id) {
     <li class="list-group-item cursor-pointer" [routerLink]="['/produtos', favorito.produto.id]">
