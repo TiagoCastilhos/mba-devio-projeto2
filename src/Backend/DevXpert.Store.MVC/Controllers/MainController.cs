@@ -1,7 +1,6 @@
 ﻿using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DevXpert.Store.MVC.Controllers
 {
