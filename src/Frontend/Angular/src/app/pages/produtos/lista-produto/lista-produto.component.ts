@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import * as regular from '@fortawesome/free-regular-svg-icons';
 import * as solid from '@fortawesome/free-solid-svg-icons';
 import { map, Observable, tap } from 'rxjs';
@@ -17,13 +18,17 @@ export class ListaProdutoComponent {
   faStarSolid = solid.faStar;
   faStarRegular = regular.faStar;
 
-  _produtoService = inject(ProdutosService);
-  _favoritoService = inject(FavoritosService);
-  _toasterService = inject(ToasterService);
-  produtos$: Observable<Produto[]> = this._produtoService.obterTodos().pipe(
-    tap({ error: (err) => this._toasterService.error(err?.error?.errors) }),
-    map((res) => res.data)
-  );
+  private _produtoService = inject(ProdutosService);
+  private _favoritoService = inject(FavoritosService);
+  private _toasterService = inject(ToasterService);
+  private _router = inject(Router);
+
+  produtos$: Observable<Produto[]> = this._produtoService
+    .getAll(this._router.url)
+    .pipe(
+      tap({ error: (err) => this._toasterService.error(err?.error?.errors) }),
+      map((res) => res.data)
+    );
 
   alternarFavorito(produto: Produto) {
     !produto.favorito

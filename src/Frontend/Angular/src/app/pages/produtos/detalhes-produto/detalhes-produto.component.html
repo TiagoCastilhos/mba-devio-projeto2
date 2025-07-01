@@ -21,19 +21,27 @@
 
           <h4>
             {{
-            produto.estoque
-            ? "Em estoque: " + produto.estoque
-            : "Indisponível"
+              produto.estoque
+                ? "Em estoque: " + produto.estoque
+                : "Indisponível"
             }}
           </h4>
 
           @if (!favorito) {
-          <app-base-button (click)="adicionarFavorito(produto.id)" [class]="'btn btn-outline-warning w-100'">
+          <app-base-button
+            (click)="adicionarFavorito(produto.id)"
+            [class]="'btn btn-outline-warning w-100'"
+          >
             Adicionar a Favoritos
           </app-base-button>
           }
 
-          <div class="h6">Vendido por:{{ produto.vendedor }}</div>
+          <a
+            [routerLink]="['/produto']"
+            [queryParams]="{ vendedorId: produto.vendedorId }"
+          >
+            Acessar vendedor
+          </a>
         </div>
       </div>
     </div>

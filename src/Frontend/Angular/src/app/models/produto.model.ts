@@ -7,6 +7,6 @@ export type Produto = {
   imagem: string;
   categoria: string;
   categoriaId: string;
-  vendedor: string;
+  vendedorId: string;
   favorito: boolean; //rever
-}
+};

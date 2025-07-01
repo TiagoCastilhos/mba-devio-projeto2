@@ -13,7 +13,7 @@
           <h3>
             {{ favorito.produto.nome }}
           </h3>
-          <p>{{ favorito.produto.vendedor ? "por" + favorito.produto.vendedor : "" }}</p>
+          <p>{{ favorito.produto.vendedorId ? "por" + favorito.produto.vendedorId : "" }}</p>
           <p>{{ favorito.produto.descricao }}</p>
           <p>{{ favorito.produto.preco | currency: 'BRL' }}</p>
 

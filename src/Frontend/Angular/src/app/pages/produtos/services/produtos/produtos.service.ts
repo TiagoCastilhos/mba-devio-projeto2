@@ -10,9 +10,9 @@ import { BaseService } from '../../../../services/base.service';
 export class ProdutosService extends BaseService {
   private _http = inject(HttpClient);
 
-  obterTodos() {
+  getAll(url: string) {
     return this._http
-      .get<CustomResponse<Produto[]>>(`${this.apiUrl}/Produtos`)
+      .get<CustomResponse<Produto[]>>(`${this.apiUrl}${url}}`)
       .pipe(
         tap((response) => {
           if (response.success) {
