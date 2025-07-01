@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 import { AuthResponse } from '../models/auth-response.model';
+import { CustomResponse } from '../models/custom-response';
 import { User } from '../models/user.model';
 import { BaseService } from './base.service';
 
@@ -12,7 +13,7 @@ export class AuthenticationService extends BaseService {
   private http = inject(HttpClient);
 
   register(email: string, password: string) {
-    return this.http.post<{ success: boolean, data: string }>(
+    return this.http.post<CustomResponse<string>>(
       `${this.apiUrl}/Auth/register`,
       {
         email: email,
@@ -27,7 +28,7 @@ export class AuthenticationService extends BaseService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<{ success: boolean, data: string }>(
+    return this.http.post<CustomResponse<string>>(
       `${this.apiUrl}/Auth/login`,
       {
         email: email,
