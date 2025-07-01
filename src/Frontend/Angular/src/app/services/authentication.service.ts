@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { AuthResponse } from '@models/auth-response.model';
+import { CustomResponse } from '@models/custom-response';
+import { User } from '@models/user.model';
 import { tap } from 'rxjs';
-import { AuthResponse } from '../models/auth-response.model';
-import { CustomResponse } from '../models/custom-response';
-import { User } from '../models/user.model';
 import { BaseService } from './base.service';
 
 @Injectable({

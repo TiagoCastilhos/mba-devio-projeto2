@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
+import { CustomResponse } from '@models/custom-response';
+import { Produto } from '@models/produto.model';
+import { BaseService } from '@services/base.service';
 import { tap } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
-import { CustomResponse } from '../../../../models/custom-response';
-import { Produto } from '../../../../models/produto.model';
-import { BaseService } from '../../../../services/base.service';
 
 @Injectable()
 export class ProdutosService extends BaseService {

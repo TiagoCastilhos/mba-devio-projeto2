@@ -2,9 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as regular from '@fortawesome/free-regular-svg-icons';
 import * as solid from '@fortawesome/free-solid-svg-icons';
-import { Produto } from '../../../models/produto.model';
-import { FavoritosService } from '../../../services/favoritos.service';
-import { ToasterService } from '../../../services/toaster.service';
+import { Produto } from '@models/produto.model';
+import { FavoritosService } from '@services/favoritos.service';
+import { ToasterService } from '@services/toaster.service';
 import { ProdutosService } from '../services/produtos/produtos.service';
 
 @Component({

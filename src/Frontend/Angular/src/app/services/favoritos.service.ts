@@ -1,9 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
+import { environment } from "@environments/environment";
+import { CustomResponse } from "@models/custom-response";
+import { Produto } from "@models/produto.model";
 import { Observable, tap } from "rxjs";
-import { environment } from "../../environments/environment";
-import { CustomResponse } from "../models/custom-response";
-import { Produto } from "../models/produto.model";
 import { BaseService } from "./base.service";
 
 @Injectable()

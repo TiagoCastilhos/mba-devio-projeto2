@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CustomResponse } from '@models/custom-response';
+import { Produto } from '@models/produto.model';
+import { FavoritosService } from '@services/favoritos.service';
+import { ToasterService } from '@services/toaster.service';
 import { map, Observable, tap } from 'rxjs';
-import { CustomResponse } from '../../../models/custom-response';
-import { Produto } from '../../../models/produto.model';
-import { FavoritosService } from '../../../services/favoritos.service';
-import { ToasterService } from '../../../services/toaster.service';
 import { ProdutosService } from '../services/produtos/produtos.service';
 
 @Component({

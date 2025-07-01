@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import * as regular from '@fortawesome/free-regular-svg-icons';
 import * as solid from '@fortawesome/free-solid-svg-icons';
-import { Produto } from '../../models/produto.model';
+import { Produto } from '@models/produto.model';
 
 @Component({
   selector: 'app-produto-card',
