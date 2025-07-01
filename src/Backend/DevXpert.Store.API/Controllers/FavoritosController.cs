@@ -21,7 +21,7 @@ public class FavoritosController(IAppIdentityUser user,
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> BuscarPorClienteId()
+    public async Task<IActionResult> GetAll()
     {
         var favoritos = await favoritoService.BuscarPorClienteId(UserId);
 
@@ -37,7 +37,7 @@ public class FavoritosController(IAppIdentityUser user,
     [HttpPost("{produtoId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Adicionar(Guid produtoId)
+    public async Task<IActionResult> Post(Guid produtoId)
     {
         var favorito = new Favorito(Guid.NewGuid(), UserId, produtoId);
 
