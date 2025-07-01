@@ -17,17 +17,14 @@ namespace DevXpert.Store.API.Controllers
                                     IProdutoService produtoService) : MainController(notificador, user)
     {
         #region READ
-
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        //TODO: IMPLEMENTAR FILTRO PARA BUSCAR POR PARTE OU TODA DESCRICAO
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string busca, Guid? vendedorId, Guid? categoriaId)
         {
-            var produtos = await produtoService.BuscarTodos();
-            var lista = ProdutoViewModel.MapToList(produtos);
+            var produtos = await produtoService.BuscarTodos(busca, vendedorId, categoriaId);
 
-            return CustomResponse(HttpStatusCode.OK, lista);
+            return CustomResponse(HttpStatusCode.OK, ProdutoViewModel.MapToList(produtos));
         }
 
         [AllowAnonymous]

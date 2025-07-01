@@ -14,6 +14,7 @@ namespace DevXpert.Store.Core.Business.Services
     public class AuthService(UserManager<IdentityUser> userManager,
                              SignInManager<IdentityUser> signInManager,
                              IClienteService clienteService,
+                             IVendedorService vendedorService,
                              IOptions<JWTSettings> jwtSettings) : IAuthService
     {
         public async Task<AuthResultViewModel> RegisterAsync(UserRegisterViewModel usuarioRegistro)
@@ -28,42 +29,17 @@ namespace DevXpert.Store.Core.Business.Services
             var result = await userManager.CreateAsync(user, usuarioRegistro.Password);
 
             if (!result.Succeeded)
-            {
-                return new AuthResultViewModel
-                {
-                    Success = false,
-                    Errors = result.Errors.Select(e => e.Description).ToList()
-                };
-            }
+                return AuthViewModel(false, [.. result.Errors.Select(e => e.Description)]);
 
-            await userManager.AddToRoleAsync(user, "Cliente");
+            bool registered = usuarioRegistro.IsCliente ? await HandleCliente(user, usuarioRegistro.Password) :
+                                                          await HandleVendedor(user, usuarioRegistro.Password);
 
-            var cliente = new Cliente(
-                Guid.Parse(user.Id),
-                user.UserName,
-                user.Email,
-                usuarioRegistro.Password);
+            if (!registered)
+                return AuthViewModel(false, [$"Falha ao cadastrar {(usuarioRegistro.IsCliente ? "cliente" : "vendedor")}."]);
 
-            if (!await clienteService.Adicionar(cliente))
-            {
-                await userManager.DeleteAsync(user);
-                return new AuthResultViewModel
-                {
-                    Success = false,
-                    Errors = ["Falha ao cadastrar cliente."]
-                };
-            }
-
-            await clienteService.Salvar();
             await signInManager.SignInAsync(user, false);
 
-            var token = await GerarJwt(user.Email);
-
-            return new AuthResultViewModel
-            {
-                Success = true,
-                Token = token
-            };
+            return await GerarJwt(user.Email);
         }
 
         public async Task<AuthResultViewModel> LoginAsync(UserLoginViewModel login)
@@ -71,35 +47,15 @@ namespace DevXpert.Store.Core.Business.Services
             var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, false, true);
 
             if (!result.Succeeded)
-            {
-                return new AuthResultViewModel
-                {
-                    Success = false,
-                    Errors = ["Usuário ou senha incorretos."]
-                };
-            }
+                return AuthViewModel(false, ["Usuário ou senha incorretos."]);
 
-            var cliente = await clienteService.BuscarPorEmail(login.Email);
+            if (!await UsuarioExists(login.Email))
+                return AuthViewModel(false, [$"Este usuário não é um {(login.IsCliente ? "cliente" : "vendedor")}."]);
 
-            if (cliente is null)
-            {
-                return new AuthResultViewModel
-                {
-                    Success = false,
-                    Errors = ["Este usuário não é um cliente."]
-                };
-            }
-
-            var token = await GerarJwt(login.Email);
-
-            return new AuthResultViewModel
-            {
-                Success = true,
-                Token = token
-            };
+            return await GerarJwt(login.Email);
         }
 
-        private async Task<string> GerarJwt(string email)
+        private async Task<AuthResultViewModel> GerarJwt(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var date = DateTime.Now;
@@ -120,7 +76,7 @@ namespace DevXpert.Store.Core.Business.Services
                     SecurityAlgorithms.HmacSha256Signature)
             });
 
-            return tokenHandler.WriteToken(token);
+            return AuthViewModel(true, [], tokenHandler.WriteToken(token));
         }
 
         private async Task<List<Claim>> GetUserClaims(string email)
@@ -130,7 +86,7 @@ namespace DevXpert.Store.Core.Business.Services
 
             var claims = new List<Claim>()
             {
-                new(ClaimTypes.Name, user.UserName!),
+                new(ClaimTypes.Name, user.UserName),
                 new(ClaimTypes.NameIdentifier, user.Id)
             };
 
@@ -138,6 +94,54 @@ namespace DevXpert.Store.Core.Business.Services
                 claims.Add(new(ClaimTypes.Role, role));
 
             return claims;
+        }
+
+        private async Task<bool> HandleVendedor(IdentityUser user, string password)
+        {
+            await userManager.AddToRoleAsync(user, "Vendedor");
+
+            var vendedor = new Vendedor(Guid.Parse(user.Id), user.UserName, user.Email, password);
+
+            if (await vendedorService.Adicionar(vendedor))
+            {
+                await vendedorService.Salvar();
+                return true;
+            }
+
+            await userManager.DeleteAsync(user);
+            return false;
+        }
+
+        private async Task<bool> HandleCliente(IdentityUser user, string password)
+        {
+            await userManager.AddToRoleAsync(user, "Cliente");
+
+            var cliente = new Cliente(Guid.Parse(user.Id), user.UserName, user.Email, password);
+
+            return await clienteService.Adicionar(cliente);
+        }
+
+        private async Task<bool> UsuarioExists(string email)
+        {
+
+            var claims = await GetUserClaims(email);
+            return claims[2].Value switch
+            {
+                "Cliente" => await clienteService.BuscarPorEmail(email) is not null,
+                "Vendedor" => await vendedorService.BuscarPorEmail(email) is not null,
+                "Administrator" => true,
+                _ => false,
+            };
+        }
+
+        private static AuthResultViewModel AuthViewModel(bool success, List<string> errors, string token = "")
+        {
+            return new AuthResultViewModel()
+            {
+                Success = success,
+                Token = token,
+                Errors = errors
+            };
         }
     }
 }

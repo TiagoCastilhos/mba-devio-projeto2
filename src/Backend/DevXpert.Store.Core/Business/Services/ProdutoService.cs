@@ -3,6 +3,7 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using LinqKit;
+using System.Linq.Expressions;
 
 namespace DevXpert.Store.Core.Business.Services
 {
@@ -12,30 +13,15 @@ namespace DevXpert.Store.Core.Business.Services
                                 IArquivoService arquivoService) : BaseService(notificador), IProdutoService
     {
         #region READ
-        public async Task<IEnumerable<Produto>> BuscarTodos()
+        public async Task<IEnumerable<Produto>> BuscarTodos(string busca, Guid? vendedorId, Guid? categoriaId, bool? ativo = true)
         {
-            return await produtoRepository.BuscarTodos();
+            return await produtoRepository.Pesquisar(MontarFiltro(busca, vendedorId, categoriaId, ativo));
         }
 
         public async Task<Produto> BuscarPorId(Guid id)
         {
             return await produtoRepository.BuscarPorId(id);
-        }
-
-        public async Task<IEnumerable<Produto>> BuscarPorNome(string nome)
-        {
-            return await produtoRepository.BuscarPorNome(nome);
-        }
-
-        public async Task<IEnumerable<Produto>> BuscarPorVendedorId(Guid vendedorId)
-        {
-            return await produtoRepository.BuscarPorVendedorId(vendedorId);
-        }
-        
-        public async Task<IEnumerable<Produto>> BuscarAtivos()
-        {
-            return await produtoRepository.BuscarAtivos();
-        }
+        }                              
         #endregion
 
         #region WRITE
@@ -110,7 +96,26 @@ namespace DevXpert.Store.Core.Business.Services
             }
 
             return true;
-        }       
+        }
+
+        private static Expression<Func<Produto, bool>> MontarFiltro(string buscar, Guid? vendedorId, Guid? categoriaId, bool? ativo)
+        {
+            Expression<Func<Produto, bool>> expression = p => true;
+
+            if (ativo.HasValue)
+                expression = expression.And(p => p.Ativo == ativo);
+
+            if (vendedorId.HasValue && vendedorId != Guid.Empty)
+                expression = expression.And(p => p.VendedorId == vendedorId);
+
+            if (categoriaId.HasValue && categoriaId != Guid.Empty)
+                expression = expression.And(p => p.CategoriaId == categoriaId);
+
+            if (!string.IsNullOrEmpty(buscar))
+                expression = expression.And(p => p.Nome.Contains(buscar) || p.Descricao.Contains(buscar));
+
+            return expression;
+        }
         #endregion
     }
 }
