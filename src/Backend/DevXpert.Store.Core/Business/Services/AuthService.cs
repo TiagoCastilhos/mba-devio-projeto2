@@ -1,0 +1,147 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Interfaces.Services;
+using DevXpert.Store.Core.Business.Models;
+using DevXpert.Store.Core.Business.Models.Settings;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+
+namespace DevXpert.Store.Core.Business.Services
+{
+    public class AuthService(UserManager<IdentityUser> userManager,
+                             SignInManager<IdentityUser> signInManager,
+                             IClienteService clienteService,
+                             IVendedorService vendedorService,
+                             IOptions<JWTSettings> jwtSettings) : IAuthService
+    {
+        public async Task<AuthResultViewModel> RegisterAsync(UserRegisterViewModel usuarioRegistro)
+        {
+            var user = new IdentityUser
+            {
+                UserName = usuarioRegistro.Email,
+                Email = usuarioRegistro.Email,
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(user, usuarioRegistro.Password);
+
+            if (!result.Succeeded)
+                return AuthViewModel(false, [.. result.Errors.Select(e => e.Description)]);
+
+            bool registered = usuarioRegistro.IsCliente ? await HandleCliente(user, usuarioRegistro.Password) :
+                                                          await HandleVendedor(user, usuarioRegistro.Password);
+
+            if (!registered)
+                return AuthViewModel(false, [$"Falha ao cadastrar {(usuarioRegistro.IsCliente ? "cliente" : "vendedor")}."]);
+
+            await signInManager.SignInAsync(user, false);
+
+            return await GerarJwt(user.Email);
+        }
+
+        public async Task<AuthResultViewModel> LoginAsync(UserLoginViewModel login)
+        {
+            var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, false, true);
+
+            if (!result.Succeeded)
+                return AuthViewModel(false, ["Usuário ou senha incorretos."]);
+
+            if (!await UsuarioExists(login.Email))
+                return AuthViewModel(false, [$"Este usuário não é um {(login.IsCliente ? "cliente" : "vendedor")}."]);
+
+            return await GerarJwt(login.Email);
+        }
+
+        private async Task<AuthResultViewModel> GerarJwt(string email)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var date = DateTime.Now;
+            var claims = await GetUserClaims(email);
+
+            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Issuer = jwtSettings.Value.Emissor,
+                Claims = new Dictionary<string, object>
+                {
+                    { JwtRegisteredClaimNames.Aud, jwtSettings.Value.ValidoEm }
+                },
+                Expires = date.AddMinutes(jwtSettings.Value.ExpiracaoTokenMinutos),
+                NotBefore = date,
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Value.Jwt)),
+                    SecurityAlgorithms.HmacSha256Signature)
+            });
+
+            return AuthViewModel(true, [], tokenHandler.WriteToken(token));
+        }
+
+        private async Task<List<Claim>> GetUserClaims(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            var roles = await userManager.GetRolesAsync(user);
+
+            var claims = new List<Claim>()
+            {
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.NameIdentifier, user.Id)
+            };
+
+            foreach (var role in roles)
+                claims.Add(new(ClaimTypes.Role, role));
+
+            return claims;
+        }
+
+        private async Task<bool> HandleVendedor(IdentityUser user, string password)
+        {
+            await userManager.AddToRoleAsync(user, "Vendedor");
+
+            var vendedor = new Vendedor(Guid.Parse(user.Id), user.UserName, user.Email, password);
+
+            if (await vendedorService.Adicionar(vendedor))
+            {
+                await vendedorService.Salvar();
+                return true;
+            }
+
+            await userManager.DeleteAsync(user);
+            return false;
+        }
+
+        private async Task<bool> HandleCliente(IdentityUser user, string password)
+        {
+            await userManager.AddToRoleAsync(user, "Cliente");
+
+            var cliente = new Cliente(Guid.Parse(user.Id), user.UserName, user.Email, password);
+
+            return await clienteService.Adicionar(cliente);
+        }
+
+        private async Task<bool> UsuarioExists(string email)
+        {
+
+            var claims = await GetUserClaims(email);
+            return claims[2].Value switch
+            {
+                "Cliente" => await clienteService.BuscarPorEmail(email) is not null,
+                "Vendedor" => await vendedorService.BuscarPorEmail(email) is not null,
+                "Administrator" => true,
+                _ => false,
+            };
+        }
+
+        private static AuthResultViewModel AuthViewModel(bool success, List<string> errors, string token = "")
+        {
+            return new AuthResultViewModel()
+            {
+                Success = success,
+                Token = token,
+                Errors = errors
+            };
+        }
+    }
+}

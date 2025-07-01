@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DevXpert.Store.Core.Migrations
+namespace DevXpert.Store.Core.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -102,6 +102,66 @@ namespace DevXpert.Store.Core.Migrations
                         .HasAnnotation("SqlServer:FillFactor", 80);
 
                     b.ToTable("CLIENTES", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            Ativo = true,
+                            Email = "cliente@teste.com",
+                            Nome = "cliente@teste.com",
+                            Senha = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg =="
+                        });
+                });
+
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Favorito", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ClienteId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProdutoId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.HasIndex("ClienteId", "ProdutoId")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_FAVORITO_CLIENTEID_PRODUTOID")
+                        .HasAnnotation("SqlServer:FillFactor", 80);
+
+                    b.ToTable("FAVORITOS", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7f5c5026-518c-4ea2-abe5-8934920d1a27"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("f5dd84d8-ccda-43e8-96cf-be0ccff0de3b")
+                        },
+                        new
+                        {
+                            Id = new Guid("115a7dde-7803-4836-9799-49046e1d7fb1"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("5fa99536-a7c8-403d-a0a0-373f30773054")
+                        },
+                        new
+                        {
+                            Id = new Guid("4f45533c-1f36-46e5-acdb-fbb7e56254ac"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("26361398-ab18-4efd-879f-1f0ad1bb6d9e")
+                        },
+                        new
+                        {
+                            Id = new Guid("099cb44e-44d8-45f2-960c-47139b38bc52"),
+                            ClienteId = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257c"),
+                            ProdutoId = new Guid("6fa552cd-bdbf-4f4d-b298-987c3a140275")
+                        });
                 });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Produto", b =>
@@ -243,8 +303,8 @@ namespace DevXpert.Store.Core.Migrations
                         {
                             Id = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257d"),
                             Ativo = true,
-                            Email = "mail.teste@teste.com",
-                            Nome = "mail.teste@teste.com",
+                            Email = "vendedor@teste.com",
+                            Nome = "vendedor@teste.com",
                             Senha = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg =="
                         });
                 });
@@ -390,16 +450,48 @@ namespace DevXpert.Store.Core.Migrations
                             Id = "f96e5735-7f8a-49a7-8fe1-64304e70257d",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "f1aef7e9-db61-4442-a01a-ea58d7609d21",
-                            Email = "teste@teste.com",
+                            Email = "vendedor@teste.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
-                            NormalizedEmail = "TESTE@TESTE.COM",
-                            NormalizedUserName = "TESTE@TESTE.COM",
+                            NormalizedEmail = "VENDEDOR@TESTE.COM",
+                            NormalizedUserName = "VENDEDOR@TESTE.COM",
                             PasswordHash = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "fdb857cc-1f49-484f-bd6b-bfbba7fedfab",
                             TwoFactorEnabled = false,
-                            UserName = "teste@teste.com"
+                            UserName = "vendedor@teste.com"
+                        },
+                        new
+                        {
+                            Id = "f96e5735-7f8a-49a7-8fe1-64304e70257c",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f1aef7e9-db61-4442-a01a-ea58d7609d21",
+                            Email = "cliente@teste.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "CLIENTE@TESTE.COM",
+                            NormalizedUserName = "CLIENTE@TESTE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "fdb857cc-1f49-484f-bd6b-bfbba7fedfab",
+                            TwoFactorEnabled = false,
+                            UserName = "cliente@teste.com"
+                        },
+                        new
+                        {
+                            Id = "f96e5735-7f8a-49a7-8fe1-64304e70257b",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f1aef7e9-db61-4442-a01a-ea58d7609d21",
+                            Email = "admin@teste.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ADMIN@TESTE.COM",
+                            NormalizedUserName = "ADMIN@TESTE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "fdb857cc-1f49-484f-bd6b-bfbba7fedfab",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@teste.com"
                         });
                 });
 
@@ -465,8 +557,18 @@ namespace DevXpert.Store.Core.Migrations
                     b.HasData(
                         new
                         {
+                            UserId = "f96e5735-7f8a-49a7-8fe1-64304e70257b",
+                            RoleId = "1"
+                        },
+                        new
+                        {
                             UserId = "f96e5735-7f8a-49a7-8fe1-64304e70257d",
                             RoleId = "2"
+                        },
+                        new
+                        {
+                            UserId = "f96e5735-7f8a-49a7-8fe1-64304e70257c",
+                            RoleId = "3"
                         });
                 });
 
@@ -487,6 +589,25 @@ namespace DevXpert.Store.Core.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Favorito", b =>
+                {
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Cliente", "Cliente")
+                        .WithMany("Favoritos")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Produto", "Produto")
+                        .WithMany("Favoritos")
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Produto", b =>
@@ -564,6 +685,16 @@ namespace DevXpert.Store.Core.Migrations
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Categoria", b =>
                 {
                     b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Cliente", b =>
+                {
+                    b.Navigation("Favoritos");
+                });
+
+            modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Produto", b =>
+                {
+                    b.Navigation("Favoritos");
                 });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Vendedor", b =>

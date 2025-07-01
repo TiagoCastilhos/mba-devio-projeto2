@@ -3,14 +3,16 @@ using DevXpert.Store.Core.Common.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using DevXpert.Store.Core.Application.Mappings;
+using DevXpert.Store.Core.Business.Models;
 
 namespace DevXpert.Store.Core.Application.ViewModels
 {
     public class ProdutoViewModel : BaseEntityViewModel
     {
         [DisplayName("Produto")]
-        [Required(ErrorMessage = "Informe o campo Nome da Categoria.")]
-        [MaxLength(100, ErrorMessage = "O campo Nome da Categoria deve ter no máximo 100 caracteres.")]
+        [Required(ErrorMessage = "Informe o campo Nome do Produto.")]
+        [MaxLength(100, ErrorMessage = "O campo Nome do Produto deve ter no máximo 100 caracteres.")]
         public string Nome { get; set; }
 
         [DisplayName("Descrição")]
@@ -59,5 +61,14 @@ namespace DevXpert.Store.Core.Application.ViewModels
         {
             Imagem = FileUpload is not null ? $"{Id}_{FileUpload.FileName}" : !string.IsNullOrEmpty(Imagem) ? Imagem : imageName;
         }
+        
+        public static ProdutoViewModel MapToViewModel(Produto produto) => 
+            EntityMapping.MapToProdutoViewModel(produto);
+
+        public static Produto MapToEntity(ProdutoViewModel produtoViewModel) =>
+            EntityMapping.MapToProduto(produtoViewModel);
+
+        public static IEnumerable<ProdutoViewModel> MapToList(IEnumerable<Produto> produtos) =>
+            EntityMapping.MapToListProdutoViewModel(produtos);
     }
 }

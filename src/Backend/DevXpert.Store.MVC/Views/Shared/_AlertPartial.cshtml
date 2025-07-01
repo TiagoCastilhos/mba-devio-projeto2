@@ -1,0 +1,28 @@
+﻿<div style="padding-top: 15px"></div>
+
+<div id="modalAlert" name="modalAlert">
+@if (TempData["Sucesso"] != null || ViewData["Sucesso"] != null)
+{
+    var mensagem = TempData["Sucesso"] != null ? TempData["Sucesso"] : ViewData["Sucesso"];
+
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <h3 id="msgRetorno">@Html.Raw(mensagem)</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!ViewContext.ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @foreach (var erro in ViewContext.ViewData.ModelState)
+        {
+            @foreach (var message in erro.Value.Errors)
+            {
+                var mensagem = message.ErrorMessage;
+                <h3 id="msgRetorno">@Html.Raw(mensagem)</h3>
+            }
+        }
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+</div>

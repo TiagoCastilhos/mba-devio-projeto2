@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DevXpert.Store.Core.Data.Migrations
+namespace DevXpert.Store.Core.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250620145643_FirstSeed")]
+    [Migration("20250621002026_FirstSeed")]
     partial class FirstSeed
     {
         /// <inheritdoc />
@@ -21,6 +21,21 @@ namespace DevXpert.Store.Core.Data.Migrations
             modelBuilder
                 .UseCollation("SQL_Latin1_General_CP1_CI_AI")
                 .HasAnnotation("ProductVersion", "9.0.6");
+
+            modelBuilder.Entity("ClienteProduto", b =>
+                {
+                    b.Property<Guid>("ClientesId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProdutosId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ClientesId", "ProdutosId");
+
+                    b.HasIndex("ProdutosId");
+
+                    b.ToTable("CLIENTES_PRODUTOS", (string)null);
+                });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Categoria", b =>
                 {
@@ -246,8 +261,8 @@ namespace DevXpert.Store.Core.Data.Migrations
                         {
                             Id = new Guid("f96e5735-7f8a-49a7-8fe1-64304e70257d"),
                             Ativo = true,
-                            Email = "mail.teste@teste.com",
-                            Nome = "mail.teste@teste.com",
+                            Email = "vendedor@teste.com",
+                            Nome = "vendedor@teste.com",
                             Senha = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg =="
                         });
                 });
@@ -393,16 +408,16 @@ namespace DevXpert.Store.Core.Data.Migrations
                             Id = "f96e5735-7f8a-49a7-8fe1-64304e70257d",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "f1aef7e9-db61-4442-a01a-ea58d7609d21",
-                            Email = "teste@teste.com",
+                            Email = "vendedor@teste.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
-                            NormalizedEmail = "TESTE@TESTE.COM",
-                            NormalizedUserName = "TESTE@TESTE.COM",
+                            NormalizedEmail = "VENDEDOR@TESTE.COM",
+                            NormalizedUserName = "VENDEDOR@TESTE.COM",
                             PasswordHash = "AQAAAAIAAYagAAAAEB1kPW44o68VpBeoDRUByh20VsgylM2MkdGJ9kzepRkS0wkgOqDnahg5xEkN++ogbg ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "fdb857cc-1f49-484f-bd6b-bfbba7fedfab",
                             TwoFactorEnabled = false,
-                            UserName = "teste@teste.com"
+                            UserName = "vendedor@teste.com"
                         });
                 });
 
@@ -490,6 +505,21 @@ namespace DevXpert.Store.Core.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ClienteProduto", b =>
+                {
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Cliente", null)
+                        .WithMany()
+                        .HasForeignKey("ClientesId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DevXpert.Store.Core.Business.Models.Produto", null)
+                        .WithMany()
+                        .HasForeignKey("ProdutosId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DevXpert.Store.Core.Business.Models.Produto", b =>

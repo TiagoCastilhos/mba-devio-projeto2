@@ -8,7 +8,6 @@ import {
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { ToasterService } from '../../../services/toaster.service';
-import { passwordRegex } from '../validators/password-match.validator';
 
 @Component({
   selector: 'app-login',
@@ -22,18 +21,20 @@ export class LoginComponent {
   private authenticationService = inject(AuthenticationService);
   private toasterService = inject(ToasterService);
   protected loginForm: FormGroup<LoginForm> = this.fb.group<LoginForm>({
-    email: this.fb.nonNullable.control<string>('', [Validators.required]),
-    password: this.fb.nonNullable.control<string>('', [
+    email: this.fb.nonNullable.control<string>('', [
       Validators.required,
-      Validators.pattern(passwordRegex)
+      Validators.email
+    ]),
+    password: this.fb.nonNullable.control<string>('', [
+      Validators.required
     ]),
   });
 
   onSubmit() {
-    if (!this.loginForm.valid) {
-      this.toasterService.warning('O formulário possui erros!');
+    if (!this.canSubmit()) {
       return;
     }
+
     const login = this.loginForm.getRawValue();
     this.authenticationService.login(login.email, login.password).subscribe({
       next: (res) => {
@@ -46,6 +47,10 @@ export class LoginComponent {
         this.toasterService.error(err.error.errors);
       },
     });
+  }
+
+  canSubmit(): boolean {
+    return this.loginForm.valid;
   }
 }
 

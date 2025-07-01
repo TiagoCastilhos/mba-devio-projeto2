@@ -6,6 +6,7 @@ import { DetalhesProdutoComponent } from './detalhes-produto/detalhes-produto.co
 import { ListaProdutoComponent } from './lista-produto/lista-produto.component';
 import { produtosRoutes } from './produtos.routes';
 import { ProdutosService } from './services/produtos/produtos.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [ListaProdutoComponent, DetalhesProdutoComponent],
@@ -13,7 +14,8 @@ import { ProdutosService } from './services/produtos/produtos.service';
     CommonModule,
     RouterModule.forChild(produtosRoutes),
     BaseButtonComponent,
+    FontAwesomeModule
   ],
   providers: [ProdutosService],
 })
-export class ProdutosModule {}
+export class ProdutosModule { }

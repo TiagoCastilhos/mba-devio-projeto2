@@ -3,6 +3,7 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using LinqKit;
+using System.Linq.Expressions;
 
 namespace DevXpert.Store.Core.Business.Services
 {
@@ -11,11 +12,10 @@ namespace DevXpert.Store.Core.Business.Services
                                   INotificador notificador) : BaseService(notificador), ICategoriaService
     {
         #region READ
-      
-        public async Task<IEnumerable<Categoria>> BuscarTodos()
+        public async Task<IEnumerable<Categoria>> BuscarTodos(string busca, bool? ativo)
         {
-            return await categoriaRepository.BuscarTodos();
-        }        
+            return await categoriaRepository.Pesquisar(MontarFiltro(busca, ativo));
+        }
 
         public async Task<Categoria> BuscarPorId(Guid id)
         {
@@ -58,13 +58,6 @@ namespace DevXpert.Store.Core.Business.Services
         #endregion
 
         #region METHODS
-        public void Dispose()
-        {
-            categoriaRepository?.Dispose();
-            produtoRepository?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         public async Task Salvar()
         {
             await categoriaRepository.Salvar();
@@ -74,13 +67,26 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!IsValid(categoria)) return false;
 
-            var expression = PredicateBuilder.New<Categoria>(m => m.Nome == categoria.Nome);
-            if (!isInsert) expression = expression.And(m => m.Id != categoria.Id);
+            var filtro = PredicateBuilder.New<Categoria>(m => m.Nome == categoria.Nome);
+            if (!isInsert) filtro = filtro.And(m => m.Id != categoria.Id);
 
-            if (categoriaRepository.Pesquisar(expression).Result.Any())
+            if (categoriaRepository.Pesquisar(filtro).Result.Any())
                 return NotificarError("Categoria já cadastrada.");
 
             return true;
+        }
+
+        private static Expression<Func<Categoria, bool>> MontarFiltro(string buscar, bool? ativo)
+        {
+            Expression<Func<Categoria, bool>> expression = c => true;
+
+            if (ativo.HasValue)
+                expression = expression.And(c => c.Ativo == ativo);
+
+            if (!string.IsNullOrEmpty(buscar))
+                expression = expression.And(c => c.Nome.Contains(buscar) || c.Descricao.Contains(buscar));
+
+            return expression;
         }
         #endregion
     }

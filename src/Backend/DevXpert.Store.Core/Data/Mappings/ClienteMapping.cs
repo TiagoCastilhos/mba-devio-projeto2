@@ -8,37 +8,37 @@ namespace DevXpert.Store.Core.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Cliente> builder)
         {
-            builder.HasKey(v => v.Id);
+            builder.HasKey(c => c.Id);
 
-            builder.Property(v => v.Nome)
+            builder.Property(c => c.Nome)
                    .IsRequired()
                    .HasColumnType("VARCHAR(100)");
 
-            builder.Property(v => v.Email)
+            builder.Property(c => c.Email)
                    .IsRequired()
                    .HasColumnType("VARCHAR(100)");
 
-            builder.Property(v => v.Senha)
+            builder.Property(c => c.Senha)
                    .IsRequired()
                    .HasColumnType("VARCHAR(256)");
 
-            builder.Property(v => v.Ativo)
+            builder.Property(c => c.Ativo)
                    .IsRequired()
                    .HasColumnType("BIT");
 
-            builder.HasIndex(v => v.Email)
+            builder.HasIndex(c => c.Email)
                    .HasDatabaseName("UQ_CLIENTE_EMAIL")
                    .HasFillFactor(80)
                    .IsUnique();
 
-            builder.HasIndex(v => v.Nome)
+            builder.HasIndex(c => c.Nome)
                    .HasDatabaseName("IX_CLIENTE_NOME")
                    .HasFillFactor(80)
-                   .IsUnique(false);
+                   .IsUnique(false);           
 
             builder.ToTable("CLIENTES");
 
-            builder.Ignore(v => v.ValidationResult);
+            builder.Ignore(c => c.ValidationResult);
         }
     }
 }

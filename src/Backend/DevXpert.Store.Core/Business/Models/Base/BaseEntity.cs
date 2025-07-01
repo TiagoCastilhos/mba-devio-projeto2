@@ -19,14 +19,8 @@ namespace DevXpert.Store.Core.Business.Models.Base
             throw new NotImplementedException();
         }
 
-        public void Ativar()
-        {
-            Ativo = true;
-        }
+        public void Ativar() => Ativo = true;
 
-        public void Inativar()
-        {
-            Ativo = false;
-        }
+        public void Inativar() => Ativo = false;
     }
 }

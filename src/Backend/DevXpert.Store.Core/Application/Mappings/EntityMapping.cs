@@ -16,12 +16,15 @@ namespace DevXpert.Store.Core.Application.Mappings
 
         public static CategoriaViewModel MapToCategoriaViewModel(Categoria categoria)
         {
+            if (categoria is null) return null;
+
             return new CategoriaViewModel
             {
                 Nome = categoria.Nome,
                 Descricao = categoria.Descricao,
                 Ativo = categoria.Ativo,
-                QuantidadeProdutos = categoria.Produto?.Count() ?? 0,
+                Id = categoria.Id,
+                QuantidadeProdutos = (categoria.Produto?.Any()).GetValueOrDefault() ? categoria.Produto.Count() : 0
             };
         }
 

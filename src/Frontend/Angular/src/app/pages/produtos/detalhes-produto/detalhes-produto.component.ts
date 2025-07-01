@@ -14,4 +14,8 @@ export class DetalhesProdutoComponent {
   produto$ = this._produtoService
     .obterPorId(this._route.snapshot.paramMap.get('id')!)
     .pipe(map((res) => res.data));
+
+  adicionarFavorito(produtoId: string) {
+    this._produtoService.adicionarFavoritos(produtoId);
+  }
 }

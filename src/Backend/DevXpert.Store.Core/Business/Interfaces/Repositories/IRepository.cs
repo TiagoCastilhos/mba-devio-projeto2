@@ -3,7 +3,7 @@ using DevXpert.Store.Core.Business.Models.Base;
 
 namespace DevXpert.Store.Core.Business.Interfaces.Repositories
 {
-    public interface IRepository<TEntity> : IDisposable where TEntity : BaseEntity
+    public interface IRepository<TEntity> where TEntity : BaseEntity
     {
         Task<IEnumerable<TEntity>> Pesquisar(Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> BuscarTodos();

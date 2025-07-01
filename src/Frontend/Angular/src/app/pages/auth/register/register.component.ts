@@ -18,12 +18,15 @@ export class RegisterComponent {
   private toasterService = inject(ToasterService);
   protected registerForm: FormGroup<RegisterForm> = this.fb.group<RegisterForm>(
     {
-      email: this.fb.nonNullable.control<string>('', [Validators.required]),
+      email: this.fb.nonNullable.control<string>('', [
+        Validators.required,
+        Validators.email
+      ]),
       password: this.fb.nonNullable.control<string>('', [
         Validators.required,
         Validators.pattern(passwordRegex)
       ]),
-      confirmPassword: this.fb.nonNullable.control<string>('', [Validators.required]),
+      confirmPassword: this.fb.nonNullable.control<string>(''),
     },
     {
       validators: passwordMatchValidator()
@@ -31,10 +34,10 @@ export class RegisterComponent {
   );
 
   onSubmit() {
-    if (!this.registerForm.valid) {
-      this.toasterService.warning('O formulário possui erros!');
+    if (!this.canSubmit()) {
       return;
     }
+
     const register = this.registerForm.getRawValue();
     this.authenticationService.register(register.email, register.password).subscribe({
       next: (res) => {
@@ -47,6 +50,10 @@ export class RegisterComponent {
         this.toasterService.error(err.error.errors);
       },
     });
+  }
+
+  canSubmit(): boolean {
+    return this.registerForm.valid;
   }
 }
 

@@ -14,6 +14,13 @@ namespace DevXpert.Store.Core.Business.Services
         {
             return await vendedorRepository.BuscarPorId(id);
         }
+
+        public async Task<Vendedor> BuscarPorEmail(string email)
+        {
+            var vendedor = await vendedorRepository.Pesquisar(v => v.Email == email && v.Ativo);
+
+            return vendedor.FirstOrDefault();
+        }
         #endregion
 
         #region WRITE
@@ -37,12 +44,6 @@ namespace DevXpert.Store.Core.Business.Services
         #endregion
 
         #region METHODS
-        public void Dispose()
-        {
-            vendedorRepository?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         public async Task Salvar()
         {
             await vendedorRepository.Salvar();
