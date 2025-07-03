@@ -25,9 +25,11 @@ public class FavoritoRepository(AppDbContext context) : Repository<Favorito>(con
                                                  f.ProdutoId == produtoId);
     }
 
-    public bool ExcluirLote(Guid produtoId)
+    public async Task<bool> ExcluirLote(Guid produtoId)
     {
-        Db.Favoritos.RemoveRange(Db.Favoritos.Where(f => f.ProdutoId == produtoId));
+        await Db.Favoritos
+            .Where(f => f.ProdutoId == produtoId)
+            .ExecuteDeleteAsync();
 
         return true;
     }

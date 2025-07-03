@@ -1,3 +1,4 @@
+using System.Data;
 using System.Net;
 using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
@@ -44,20 +45,38 @@ public class FavoritosController(IAppIdentityUser user,
         if (!await favoritoService.Adicionar(favorito))
             return CustomResponse(HttpStatusCode.BadRequest);
 
-        await favoritoService.Salvar();
+        await Salvar(favorito.Id);
         return CustomResponse(HttpStatusCode.Created, favorito);
     }
 
-    [HttpDelete("{produtoId:guid}")]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid produtoId)
+    public async Task<IActionResult> Delete(Guid id)
     {
-        if (!await favoritoService.Excluir(UserId, produtoId))
+        if (!await favoritoService.Excluir(id))
             return CustomResponse(HttpStatusCode.BadRequest);
         
-        await favoritoService.Salvar();
+        await Salvar(id);
         return CustomResponse(HttpStatusCode.NoContent);
+    }
+    #endregion
+    
+    #region PRIVATE_METHODS
+        
+    private async Task Salvar(Guid id)
+    {
+        try
+        {
+            await favoritoService.Salvar();
+        }
+        catch (DBConcurrencyException)
+        {
+            if (await favoritoService.BuscarPorId(id) is not null)
+                throw;
+        
+            NotificarErro("Categoria não encontrada.");
+        }
     }
     #endregion
 }
