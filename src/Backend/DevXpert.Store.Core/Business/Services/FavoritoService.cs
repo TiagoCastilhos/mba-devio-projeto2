@@ -15,6 +15,12 @@ public class FavoritoService(IFavoritoRepository favoritoRepository,
         return await favoritoRepository.Pesquisar(f => f.ClienteId == clienteId && 
                                                        f.Produto.Ativo);
     }
+    
+    public async Task<Favorito> BuscarPorId(Guid id)
+    {
+        return await favoritoRepository.BuscarPorId(id);
+    }                              
+    
     #endregion
 
     #region WRITE
@@ -28,9 +34,9 @@ public class FavoritoService(IFavoritoRepository favoritoRepository,
         return true;
     }
 
-    public async Task<bool> Excluir(Guid clienteId, Guid produtoId)
+    public async Task<bool> Excluir(Guid id)
     {
-        var favorito = await favoritoRepository.BuscarPorClienteProduto(clienteId, produtoId);
+        var favorito = await favoritoRepository.BuscarPorId(id);
 
         if (favorito is null) return NotificarError("Favorito não encontrado.");
 

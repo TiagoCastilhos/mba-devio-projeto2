@@ -55,7 +55,7 @@ namespace DevXpert.Store.Core.Business.Services
 
             arquivoService.Excluir(produto.Imagem);
 
-            favoritoRepository.ExcluirLote(id);
+            await favoritoRepository.ExcluirLote(id);
 
             await produtoRepository.Excluir(id);
 

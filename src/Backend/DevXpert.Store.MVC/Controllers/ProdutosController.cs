@@ -2,18 +2,15 @@
 using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
-using DevXpert.Store.Core.Business.Models;
-using DevXpert.Store.Core.Business.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DevXpert.Store.MVC.Controllers
 {
     [Authorize]
     [Route("produtos")]
-    public class ProdutosController(IProdutoService produtoService, 
+    public class ProdutosController(IProdutoService produtoService,
                                     ICategoriaService categoriaService,
                                     INotificador notificador,
                                     IAppIdentityUser user) : MainController(notificador, user)
@@ -22,17 +19,17 @@ namespace DevXpert.Store.MVC.Controllers
         private readonly ICategoriaService _categoriaService = categoriaService;
 
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator,Vendedor")]
         public async Task<IActionResult> Index()
         {
             //Se usuario estiver autenticado, mostra apenas os produtos dele
-            var produtos = _user.IsAuthenticated()
-                ? await _produtoService.BuscarPorVendedorId(UserId)
-                : await _produtoService.BuscarTodos();
+            var produtos = await _produtoService.BuscarTodos(null, UserId, null);
 
             //Mapeia as entidades para a ViewModel e envia para a View
-            return View(MapToViewModelList(produtos));
+            return View(ProdutoViewModel.MapToList(produtos));
         }
+
+
         [Route("novo")]
         public async Task<IActionResult> Create()
         {
@@ -48,18 +45,18 @@ namespace DevXpert.Store.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm] ProdutoViewModel produtoViewModel)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 produtoViewModel.Categorias = await BuscarCategorias(); //para recarregar as categorias
-                return View(produtoViewModel); 
+                return View(produtoViewModel);
             }
 
             //definindo o vendedor
             produtoViewModel.SetVendedorId(UserId);
             //definindo o nome da imagem
-            produtoViewModel.SetImageProperties(null); 
-            
-            if (!await _produtoService.Adicionar(MapToEntity(produtoViewModel)))
+            produtoViewModel.SetImageProperties(null);
+
+            if (!await _produtoService.Adicionar(ProdutoViewModel.MapToEntity(produtoViewModel)))
             {
                 //Se houver falhas, exibe o erro e retorna a view
                 GetErrorsFromNotificador();
@@ -80,10 +77,10 @@ namespace DevXpert.Store.MVC.Controllers
             var produto = await _produtoService.BuscarPorId(id);
 
             //verifca existencia do produto e se pertence ao usuario logado
-            if(produto == null || produto.VendedorId != UserId)
+            if (produto == null || produto.VendedorId != UserId)
                 return NotFound();
 
-            return View(MapToViewModel(produto));
+            return View(ProdutoViewModel.MapToViewModel(produto));
         }
 
         [HttpGet("editar/{id:guid}")]
@@ -95,7 +92,7 @@ namespace DevXpert.Store.MVC.Controllers
             if (produto == null || produto.VendedorId != UserId)
                 return NotFound();
 
-            var viewModel = MapToViewModel(produto);
+            var viewModel = ProdutoViewModel.MapToViewModel(produto);
             viewModel.Categorias = await BuscarCategorias();
 
             return View(viewModel);
@@ -119,7 +116,7 @@ namespace DevXpert.Store.MVC.Controllers
             produtoViewModel.SetVendedorId(UserId);
             produtoViewModel.SetImageProperties(null);
 
-            if(!await _produtoService.Atualizar(MapToEntity(produtoViewModel)))
+            if (!await _produtoService.Atualizar(ProdutoViewModel.MapToEntity(produtoViewModel)))
             {
                 GetErrorsFromNotificador();
                 produtoViewModel.Categorias = await BuscarCategorias();
@@ -138,7 +135,7 @@ namespace DevXpert.Store.MVC.Controllers
             if (produto != null || produto.VendedorId != UserId)
                 return NotFound();
 
-            return View(MapToViewModel(produto));
+            return View(ProdutoViewModel.MapToViewModel(produto));
         }
 
         [HttpPost("excluir/{id:guid}"), ActionName("Delete")]
@@ -146,13 +143,13 @@ namespace DevXpert.Store.MVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var produto = await _produtoService.BuscarPorId(id);
-            if(produto == null || produto.VendedorId != UserId)
+            if (produto == null || produto.VendedorId != UserId)
                 return NotFound();
 
-            if(!await _produtoService.Excluir(id))
+            if (!await _produtoService.Excluir(id))
             {
                 GetErrorsFromNotificador();
-                return View(MapToViewModel(produto));
+                return View(ProdutoViewModel.MapToViewModel(produto));
             }
 
             await _produtoService.Salvar();
@@ -163,22 +160,14 @@ namespace DevXpert.Store.MVC.Controllers
 
 
         #region #region PRIVATE METHODS
-        
+
         //Retorna a lista de categorias já convertendo para ViewModel
         private async Task<IEnumerable<CategoriaViewModel>> BuscarCategorias()
         {
-            var categorias = await _categoriaService.BuscarTodos();
+            var categorias = await _categoriaService.BuscarTodos(string.Empty, true);
             return categorias.Select(EntityMapping.MapToCategoriaViewModel);
         }
 
-        private static ProdutoViewModel MapToViewModel(Produto produto) =>
-            EntityMapping.MapToProdutoViewModel(produto);
-
-        private static IEnumerable<ProdutoViewModel> MapToViewModelList(IEnumerable<Produto> produtos) =>
-            EntityMapping.MapToListProdutoViewModel(produtos);
-
-        private static Produto MapToEntity(ProdutoViewModel viewModel) =>
-            EntityMapping.MapToProduto(viewModel);
         #endregion
     }
 }
