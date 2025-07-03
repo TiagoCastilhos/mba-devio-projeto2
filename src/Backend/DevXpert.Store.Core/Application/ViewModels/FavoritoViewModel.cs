@@ -4,6 +4,7 @@ namespace DevXpert.Store.Core.Application.ViewModels;
 
 public class FavoritoViewModel
 {
+    public Guid Id { get; set; }
     public ProdutoViewModel Produto { get; set; }
 
     public static FavoritoViewModel MapToViewModel(Favorito favorito)
@@ -12,6 +13,7 @@ public class FavoritoViewModel
         
         return new FavoritoViewModel
         {
+            Id = favorito.Id,
             Produto = ProdutoViewModel.MapToViewModel(favorito.Produto)
         };
     }
