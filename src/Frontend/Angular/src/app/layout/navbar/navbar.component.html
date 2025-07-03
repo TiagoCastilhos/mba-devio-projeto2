@@ -2,13 +2,13 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <div class="col-2 mr-5">
-        <a class="navbar-brand" routerLink="">XpertStore</a>
+        <a class="navbar-brand" (click)="search({ })" routerLink="">XpertStore</a>
       </div>
 
       <div class="col-6 d-flex gap-1">
         <div class="input-group">
           <input [(ngModel)]="busca" placeholder="Pesquisar" class="form-control" (keyup.enter)="search({ })" />
-          <button class="btn btn-secondary col-0 text-center" (click)="search({})">
+          <button class="btn btn-secondary col-0 text-center" (click)="search({ busca: busca })">
             <fa-icon class="text-white" [icon]="faMagnifyingGlass"></fa-icon>
           </button>
         </div>

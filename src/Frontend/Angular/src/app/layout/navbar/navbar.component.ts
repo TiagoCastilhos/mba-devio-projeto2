@@ -48,7 +48,7 @@ export class NavbarComponent {
     return this._authenticationService.isLoggedIn();
   }
 
-  search({ categoriaId = '' }) {
-    this._produtosService.getAll({ categoriaId, busca: this.busca }).subscribe();
+  search({ busca = '', categoriaId = '' }) {
+    this._produtosService.getAll({ categoriaId, busca }).subscribe();
   }
 }
