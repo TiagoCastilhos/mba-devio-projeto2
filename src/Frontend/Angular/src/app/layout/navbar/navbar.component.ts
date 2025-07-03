@@ -1,38 +1,54 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '@services/authentication.service';
 import { CategoriasService } from '@services/categorias.service';
 import { map } from 'rxjs';
+import { ProdutosService } from '../../pages/produtos/services/produtos/produtos.service';
+import { ToasterService } from '@services/toaster.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, FontAwesomeModule, CommonModule],
+  imports: [RouterLink, FontAwesomeModule, CommonModule, FormsModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
+  providers: [
+  ]
 })
 export class NavbarComponent {
   faMagnifyingGlass = faMagnifyingGlass;
 
-  private router = inject(Router);
-  private authenticationService = inject(AuthenticationService);
-  private categoriasService = inject(CategoriasService);
+  private _router = inject(Router);
+  private _authenticationService = inject(AuthenticationService);
+  private _categoriasService = inject(CategoriasService);
+  private _produtosService = inject(ProdutosService);
+  private _toasterService = inject(ToasterService);
+  protected busca = '';
 
-  categorias$ = this.categoriasService.getAll()
+  ngOnInit() {
+    this.search({});
+  }
+
+  categorias$ = this._categoriasService.getAll()
     .pipe(map((res) => res.data));
 
   getUserName() {
-    return this.authenticationService.getUser()?.uniqueName || '';
+    return this._authenticationService.getUser()?.uniqueName || '';
   }
 
   logout() {
-    this.authenticationService.logout();
-    this.router.navigate(['/']);
+    this._authenticationService.logout();
+    this._router.navigate(['/']);
   }
 
   isLoggedIn(): boolean {
-    return this.authenticationService.isLoggedIn();
+    return this._authenticationService.isLoggedIn();
+  }
+
+  search({ categoriaId = '' }) {
+    this._produtosService.getAll({ categoriaId, busca: this.busca }).subscribe();
   }
 }
