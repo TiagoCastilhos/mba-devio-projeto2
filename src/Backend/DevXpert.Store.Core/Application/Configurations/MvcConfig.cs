@@ -25,6 +25,7 @@ namespace DevXpert.Store.Core.Application.Configurations
 
             builder.Services
                    .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                   .AddRoles<IdentityRole>()
                    .AddEntityFrameworkStores<AppDbContext>();
 
             builder.Services.AddControllersWithViews(options =>
