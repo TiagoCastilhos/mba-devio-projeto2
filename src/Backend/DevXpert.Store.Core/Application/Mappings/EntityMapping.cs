@@ -71,7 +71,35 @@ namespace DevXpert.Store.Core.Application.Mappings
         #endregion
 
         #region Vendedor
-        //TODO
+        public static IEnumerable<VendedorViewModel> MapToListVendedorViewModel(IEnumerable<Vendedor> vendedores)
+        {
+            List<VendedorViewModel> list = [];
+
+            foreach (var vendedor in vendedores)
+            {
+                list.Add(MapToVendedorViewModel(vendedor));
+            }
+
+            return list;
+        }
+
+        public static VendedorViewModel MapToVendedorViewModel(Vendedor vendedor)
+        {
+            return new VendedorViewModel
+            {
+                Id = vendedor.Id,
+                Nome = vendedor.Nome,
+                Email = vendedor.Email,
+                QuantidadeProdutos = (vendedor.Produto?.Any()).GetValueOrDefault() ? vendedor.Produto.Count() : 0,
+                Ativo = vendedor.Ativo,
+                Senha = vendedor.Senha
+            };
+        }
+
+        public static Vendedor MapToVendedor(VendedorViewModel vendedor)
+        {
+            return new(vendedor.Id, vendedor.Nome, vendedor.Email, vendedor.Senha, vendedor.Ativo);
+        }
         #endregion
 
         #region Cliente

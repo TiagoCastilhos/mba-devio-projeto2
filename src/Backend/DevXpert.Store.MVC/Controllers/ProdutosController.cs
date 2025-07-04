@@ -19,7 +19,7 @@ namespace DevXpert.Store.MVC.Controllers
         private readonly ICategoriaService _categoriaService = categoriaService;
 
 
-        //[Authorize(Roles = "Administrator,Vendedor")]
+        [Authorize(Roles = "Administrator,Vendedor")]
         public async Task<IActionResult> Index()
         {
             //Se usuario estiver autenticado, mostra apenas os produtos dele

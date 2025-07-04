@@ -70,5 +70,8 @@ namespace DevXpert.Store.Core.Application.ViewModels
 
         public static IEnumerable<ProdutoViewModel> MapToList(IEnumerable<Produto> produtos) =>
             EntityMapping.MapToListProdutoViewModel(produtos);
+
+        public void Ativar() => Ativo = true;
+        public void Inativar() => Ativo = false;
     }
 }

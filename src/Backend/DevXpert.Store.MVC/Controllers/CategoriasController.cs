@@ -27,7 +27,7 @@ namespace DevXpert.Store.MVC.Controllers
             return await GetById(id);
         }
 
-
+        [Authorize(Roles = "Administrator")]
         [Route("novo")]
         public IActionResult Create()
         {
@@ -57,6 +57,7 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator")]
         [Route("editar")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -89,6 +90,7 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator")]
         [Route("excluir/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

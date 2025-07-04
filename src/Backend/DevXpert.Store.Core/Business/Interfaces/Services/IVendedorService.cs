@@ -4,6 +4,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
 {
     public interface IVendedorService
     {
+        Task<IEnumerable<Vendedor>> BuscarTodos(string busca);
         Task<Vendedor> BuscarPorId(Guid id);
         Task<Vendedor> BuscarPorEmail(string email);
         Task<bool> Adicionar(Vendedor vendedor);
