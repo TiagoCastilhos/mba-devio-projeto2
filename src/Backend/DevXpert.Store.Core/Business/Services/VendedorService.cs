@@ -12,9 +12,9 @@ namespace DevXpert.Store.Core.Business.Services
                                   INotificador notificador) : BaseService(notificador), IVendedorService
     {
         #region READ
-        public async Task<IEnumerable<Vendedor>> BuscarTodos(string busca)
+        public async Task<IEnumerable<Vendedor>> BuscarTodos(string busca, bool? ativo = true)
         {
-            return await vendedorRepository.Pesquisar(MontarFiltro(busca));
+            return await vendedorRepository.Pesquisar(MontarFiltro(busca, ativo));
         }
         public async Task<Vendedor> BuscarPorId(Guid id)
         {
@@ -68,9 +68,12 @@ namespace DevXpert.Store.Core.Business.Services
             return true;
         }
 
-        private static Expression<Func<Vendedor, bool>> MontarFiltro(string buscar)
+        private static Expression<Func<Vendedor, bool>> MontarFiltro(string buscar, bool? ativo = true)
         {
             Expression<Func<Vendedor, bool>> expression = c => true;
+
+            if (ativo.HasValue)
+                expression = expression.And(p => p.Ativo == ativo);
 
             if (!string.IsNullOrEmpty(buscar))
                 expression = expression.And(c => c.Nome.Contains(buscar) || c.Email.Contains(buscar));

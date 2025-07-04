@@ -17,7 +17,7 @@ namespace DevXpert.Store.MVC.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index(string busca)
         {
-            var vendedores = VendedorViewModel.MapToList(await vendedorService.BuscarTodos(busca));
+            var vendedores = VendedorViewModel.MapToList(await vendedorService.BuscarTodos(busca, null));
             return View(vendedores);
         }
 
@@ -56,23 +56,23 @@ namespace DevXpert.Store.MVC.Controllers
 
             TempData["Sucesso"] = "Vendedor Editado.";
 
-            //var produtos = await produtoService.BuscarTodos(null, vendedorViewModel.Id, null);
-            //var produtosViewModel = ProdutoViewModel.MapToList(produtos);
-            //foreach(var produtoViewModel in produtosViewModel)
-            //{
-            //    if(vendedorViewModel.Ativo)
-            //    {
-            //        produtoViewModel.Ativar();
-            //    }
-            //    else
-            //    {
-            //        produtoViewModel.Inativar();
-            //    }
+            var produtos = await produtoService.BuscarTodos(null, vendedorViewModel.Id, null, null);
+            var produtosViewModel = ProdutoViewModel.MapToList(produtos);
+            foreach (var produtoViewModel in produtosViewModel)
+            {
+                if (vendedorViewModel.Ativo)
+                {
+                    produtoViewModel.Ativar();
+                }
+                else
+                {
+                    produtoViewModel.Inativar();
+                }
 
-            //    var produto = ProdutoViewModel.MapToEntity(produtoViewModel);
-            //    await produtoService.Atualizar(produto);
-            //    await produtoService.Salvar();
-            //}
+                var produto = ProdutoViewModel.MapToEntity(produtoViewModel);
+                await produtoService.Atualizar(produto);
+                await produtoService.Salvar();
+            }
 
             return RedirectToAction(nameof(Index));
         }
