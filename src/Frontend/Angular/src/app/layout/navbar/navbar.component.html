@@ -2,13 +2,13 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <div class="col-2 mr-5">
-        <a class="navbar-brand" routerLink="">XpertStore</a>
+        <a class="navbar-brand" (click)="search({ })" routerLink="">XpertStore</a>
       </div>
 
       <div class="col-6 d-flex gap-1">
         <div class="input-group">
-          <input placeholder="Pesquisar" class="form-control" />
-          <button class="btn btn-secondary col-0 text-center">
+          <input [(ngModel)]="busca" placeholder="Pesquisar" class="form-control" (keyup.enter)="search({ })" />
+          <button class="btn btn-secondary col-0 text-center" (click)="search({ busca: busca })">
             <fa-icon class="text-white" [icon]="faMagnifyingGlass"></fa-icon>
           </button>
         </div>
@@ -41,14 +41,14 @@
             <a class="nav-link dropdown-toggle cursor-pointer">Categoria</a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li *ngFor="let categoria of categorias$ | async">
-                <a class="dropdown-item" [routerLink]="['/produtos']" [queryParams]="{ categoriaId: categoria.id }">
+                <a class="dropdown-item" [routerLink]="['/produtos']" (click)="search({ categoriaId: categoria.id })">
                   {{ categoria.nome }}
                 </a>
               </li>
             </ul>
           </div>
         </li>
-        <!-- precisa validar role? -->
+
         @if(isLoggedIn()) {
         <li class="nav-item cursor-pointer">
           <a class="nav-link" [routerLink]="['/favoritos']"> Favoritos </a>
