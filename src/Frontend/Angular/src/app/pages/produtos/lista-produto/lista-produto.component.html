@@ -6,7 +6,7 @@
         style="cursor: pointer; transition: transform 0.2s;">
         <span class="position-absolute top-0 end-0 m-2 fs-4 favorite-star"
           (click)="alternarFavorito(produto); $event.stopPropagation()">
-          <fa-icon class="text-warning" [icon]="produto.favorito ? faStarSolid : faStarRegular"></fa-icon>
+          <fa-icon class="text-warning" [icon]="produto.favoritoId ? faStarSolid : faStarRegular"></fa-icon>
         </span>
         <img [src]="produto.imagem" class="card-img-top" alt="{{ produto.nome }}"
           style="object-fit: cover; height: 200px;">

@@ -32,7 +32,6 @@ export class ProdutosService extends BaseService {
         tap({
           next: (response) => {
             if (response.success) {
-              console.log('from getAll')
               response.data.forEach((produto) => {
                 produto.imagem = `${environment.imagesBaseUrl}/${produto.imagem}`;
               });

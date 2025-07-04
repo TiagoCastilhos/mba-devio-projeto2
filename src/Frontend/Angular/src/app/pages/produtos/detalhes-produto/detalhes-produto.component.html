@@ -27,9 +27,9 @@
             }}
           </h4>
 
-          @if (!favorito) {
+          @if (!favoritoId) {
           <app-base-button
-            (click)="adicionarFavorito(produto.id)"
+            (click)="adicionarFavorito(produto)"
             [class]="'btn btn-outline-warning w-100'"
           >
             Adicionar a Favoritos
@@ -38,7 +38,7 @@
 
           <a
             [routerLink]="['/produtos']"
-            [queryParams]="{ vendedorId: produto.vendedorId }"
+            (click)="produtosGetAll(produto.vendedorId)"
           >
             Acessar vendedor
           </a>
@@ -47,9 +47,19 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-5">
     <h3>Descrição</h3>
     <hr />
     <h5>{{ produto.descricao }}</h5>
+  </div>
+
+  <div class="row mt-5">
+    <h3>Produtos do mesmo vendedor</h3>
+    <hr />
+    @for (produtoVendedor of produtosVendedor; track produtoVendedor.id) {
+    <div class="col-4">
+      <app-produto-card [produto]="produtoVendedor"></app-produto-card>
+    </div>
+    }
   </div>
 </div>

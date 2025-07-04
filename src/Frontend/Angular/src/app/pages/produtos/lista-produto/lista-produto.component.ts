@@ -27,32 +27,32 @@ export class ListaProdutoComponent implements OnInit, OnDestroy {
     this.subscription = this._produtoService.produtos$.subscribe({
       next: (res) => {
         this.produtos = res;
-      }
+      },
     });
   }
 
   alternarFavorito(produto: Produto) {
-    !produto.favorito
+    !produto.favoritoId
       ? this._favoritoService.adicionar(produto.id).subscribe({
-        next: (res) => {
-          if (res.success) {
-            this._toasterService.success();
-            //verificar se o usuario esta logado, se nao estiver mandar ele pra tela de login
-            //chamar a api quando pronta
-            produto.favorito = !(produto.favorito ?? false);
+          next: (res) => {
+            if (res.success) {
+              this._toasterService.success(produto.nome + ' favoritado!');
+              produto.favoritoId = res.data.id;
+            }
+          },
+          error: (response) => {
+            this._toasterService.error(response.error.errors.toString());
           }
-        },
-        error: (err) => this._toasterService.error(),
-      })
-      : this._favoritoService.delete(produto.id).subscribe({
-        next: (res) => {
-          if (res.success) {
-            this._toasterService.success();
-            produto.favorito = !(produto.favorito ?? false);
+        })
+      : this._favoritoService.delete(produto.favoritoId).subscribe({
+          next: (res) => {
+            this._toasterService.success(produto.nome + ' desfavoritado!');
+            produto.favoritoId = null;
+          },
+          error: (response) => {
+            this._toasterService.error(response.error.errors.toString());
           }
-        },
-        error: (err) => this._toasterService.error(err?.error?.errors),
-      });
+        });
   }
 
   ngOnDestroy(): void {

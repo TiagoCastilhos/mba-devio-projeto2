@@ -8,5 +8,5 @@ export type Produto = {
   categoria: string;
   categoriaId: string;
   vendedorId: string;
-  favorito: boolean; //rever
+  favoritoId: string | null;
 };
