@@ -5,7 +5,6 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DevXpert.Store.MVC.Controllers
 {
@@ -34,9 +33,11 @@ namespace DevXpert.Store.MVC.Controllers
         [Route("novo")]
         public async Task<IActionResult> Create()
         {
-            await CarregarCategorias();
-
-            return View(new ProdutoViewModel());
+            var viewModel = new ProdutoViewModel
+            {
+                Categorias = await BuscarCategorias()
+            };
+            return View(viewModel);
         }
 
 
@@ -46,21 +47,20 @@ namespace DevXpert.Store.MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await CarregarCategorias();
+                produtoViewModel.Categorias = await BuscarCategorias(); //para recarregar as categorias
                 return View(produtoViewModel);
             }
 
             //definindo o vendedor
             produtoViewModel.SetVendedorId(UserId);
             //definindo o nome da imagem
-            produtoViewModel.SetImageProperties(produtoViewModel.Imagem);
+            produtoViewModel.SetImageProperties(null);
 
             if (!await _produtoService.Adicionar(ProdutoViewModel.MapToEntity(produtoViewModel)))
             {
                 //Se houver falhas, exibe o erro e retorna a view
                 GetErrorsFromNotificador();
-
-                await CarregarCategorias();
+                produtoViewModel.Categorias = await BuscarCategorias();
                 return View(produtoViewModel);
             }
 
@@ -93,7 +93,7 @@ namespace DevXpert.Store.MVC.Controllers
                 return NotFound();
 
             var viewModel = ProdutoViewModel.MapToViewModel(produto);
-            await CarregarCategorias();
+            viewModel.Categorias = await BuscarCategorias();
 
             return View(viewModel);
         }
@@ -108,20 +108,18 @@ namespace DevXpert.Store.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                await CarregarCategorias();
+                produtoViewModel.Categorias = await BuscarCategorias();
                 return View(produtoViewModel);
             }
 
             //Define novamente o vendedor e a imagem
             produtoViewModel.SetVendedorId(UserId);
-
-            produtoViewModel.SetImageProperties(produtoViewModel.Imagem);
+            produtoViewModel.SetImageProperties(null);
 
             if (!await _produtoService.Atualizar(ProdutoViewModel.MapToEntity(produtoViewModel)))
             {
                 GetErrorsFromNotificador();
-
-                await CarregarCategorias();
+                produtoViewModel.Categorias = await BuscarCategorias();
                 return View(produtoViewModel);
             }
 
@@ -134,7 +132,7 @@ namespace DevXpert.Store.MVC.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var produto = await _produtoService.BuscarPorId(id);
-            if (produto == null || produto.VendedorId != UserId)
+            if (produto != null || produto.VendedorId != UserId)
                 return NotFound();
 
             return View(ProdutoViewModel.MapToViewModel(produto));
@@ -155,7 +153,6 @@ namespace DevXpert.Store.MVC.Controllers
             }
 
             await _produtoService.Salvar();
-
             TempData["Sucesso"] = "Produto excluído com sucesso!";
             return RedirectToAction(nameof(Index));
         }
@@ -171,17 +168,6 @@ namespace DevXpert.Store.MVC.Controllers
             return categorias.Select(EntityMapping.MapToCategoriaViewModel);
         }
 
-        private async Task CarregarCategorias()
-        {
-            var categorias = await BuscarCategorias();
-
-            ViewBag.Categorias = categorias.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Nome
-            });
-
-        }
         #endregion
     }
 }
