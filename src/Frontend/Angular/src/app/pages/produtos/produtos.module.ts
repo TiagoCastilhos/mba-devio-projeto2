@@ -7,7 +7,6 @@ import { FavoritosService } from '@services/favoritos.service';
 import { DetalhesProdutoComponent } from './detalhes-produto/detalhes-produto.component';
 import { ListaProdutoComponent } from './lista-produto/lista-produto.component';
 import { produtosRoutes } from './produtos.routes';
-import { ProdutosService } from './services/produtos/produtos.service';
 
 @NgModule({
   declarations: [ListaProdutoComponent, DetalhesProdutoComponent],
@@ -17,6 +16,6 @@ import { ProdutosService } from './services/produtos/produtos.service';
     BaseButtonComponent,
     FontAwesomeModule
   ],
-  providers: [ProdutosService, FavoritosService],
+  providers: [FavoritosService],
 })
 export class ProdutosModule { }
