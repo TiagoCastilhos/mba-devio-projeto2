@@ -1,7 +1,9 @@
-﻿using DevXpert.Store.Core.Business.Interfaces.Repositories;
+﻿using System.Linq.Expressions;
+using DevXpert.Store.Core.Business.Interfaces.Repositories;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
+using DevXpert.Store.Core.Data.Repositories;
 using LinqKit;
 
 namespace DevXpert.Store.Core.Business.Services
@@ -10,6 +12,10 @@ namespace DevXpert.Store.Core.Business.Services
                                   INotificador notificador) : BaseService(notificador), IVendedorService
     {
         #region READ
+        public async Task<IEnumerable<Vendedor>> BuscarTodos(string busca, bool? ativo = true)
+        {
+            return await vendedorRepository.Pesquisar(MontarFiltro(busca, ativo));
+        }
         public async Task<Vendedor> BuscarPorId(Guid id)
         {
             return await vendedorRepository.BuscarPorId(id);
@@ -35,7 +41,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         public async Task<bool> Atualizar(Vendedor vendedor)
         {
-            if (!Validate(vendedor, true)) return false;
+            if (!Validate(vendedor)) return false;
 
             await vendedorRepository.Atualizar(vendedor);
 
@@ -60,7 +66,20 @@ namespace DevXpert.Store.Core.Business.Services
                 return NotificarError("Vendedor já cadastrado.");
 
             return true;
-        }      
+        }
+
+        private static Expression<Func<Vendedor, bool>> MontarFiltro(string buscar, bool? ativo = true)
+        {
+            Expression<Func<Vendedor, bool>> expression = c => true;
+
+            if (ativo.HasValue)
+                expression = expression.And(p => p.Ativo == ativo);
+
+            if (!string.IsNullOrEmpty(buscar))
+                expression = expression.And(c => c.Nome.Contains(buscar) || c.Email.Contains(buscar));
+
+            return expression;
+        }
         #endregion
     }
 }
