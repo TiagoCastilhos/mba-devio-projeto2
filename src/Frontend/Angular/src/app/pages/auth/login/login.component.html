@@ -3,7 +3,7 @@
     <div class="card-body">
       <h3>Login</h3>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="enviarFormulario()">
         <div class="mb-3">
           <app-base-input formControlName="email" label="E-mail" type="email"></app-base-input>
           <div class="text-danger small"
@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <app-base-button [disabled]="!canSubmit()" type="submit"> Login </app-base-button>
+        <app-base-button [disabled]="!estaValido()" type="submit"> Login </app-base-button>
       </form>
     </div>
   </div>

@@ -6,7 +6,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '@services/authentication.service';
 import { CategoriasService } from '@services/categorias.service';
-import { ToasterService } from '@services/toaster.service';
 import { map } from 'rxjs';
 import { ProdutosService } from '../../pages/produtos/services/produtos/produtos.service';
 
@@ -23,31 +22,30 @@ export class NavbarComponent {
   private _authenticationService = inject(AuthenticationService);
   private _categoriasService = inject(CategoriasService);
   private _produtosService = inject(ProdutosService);
-  private _toasterService = inject(ToasterService);
   protected busca = '';
 
   ngOnInit() {
-    this.search({});
+    this.buscar({});
   }
 
   categorias$ = this._categoriasService.getAll().pipe(map((res) => res.data));
 
-  getUserName() {
-    return this._authenticationService.getUser()?.uniqueName || '';
+  obterNomeUsuario() {
+    return this._authenticationService.obterUsuario()?.nome || '';
   }
 
-  logout() {
-    this._authenticationService.logout();
+  deslogar() {
+    this._authenticationService.deslogar();
     this._router.navigate(['/']);
   }
 
-  isLoggedIn(): boolean {
-    return this._authenticationService.isLoggedIn();
+  estaLogado(): boolean {
+    return this._authenticationService.estaLogado();
   }
 
-  search({ busca = '', categoriaId = '' }) {
+  buscar({ busca = '', categoriaId = '' }) {
     this._produtosService
-      .getAll({ categoriaId, busca })
-      .subscribe(() => this._toasterService.success());
+      .obterTodos({ categoriaId, busca })
+      .subscribe();
   }
 }

@@ -7,15 +7,15 @@ import { ToastrService } from 'ngx-toastr';
 export class ToasterService {
   private toastrService = inject(ToastrService);
 
-  success(message: string = '', title: string = 'Sucesso!') {
+  sucesso(message: string = '', title: string = 'Sucesso!') {
     this.toastrService.success(message, title);
   }
 
-  warning(message: string = '', title: string = 'Atenção!') {
+  aviso(message: string = '', title: string = 'Atenção!') {
     this.toastrService.warning(message, title);
   }
 
-  error(message: string = 'Ocorreu um erro!', title: string = 'Opa :(') {
+  erro(message: string = 'Ocorreu um erro!', title: string = 'Opa :(') {
     this.toastrService.error(message, title);
   }
 }

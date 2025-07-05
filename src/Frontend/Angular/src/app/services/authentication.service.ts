@@ -2,17 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AuthResponse } from '@models/auth-response.model';
 import { CustomResponse } from '@models/custom-response';
-import { User } from '@models/user.model';
+import { Usuario } from '@models/usuario.model';
 import { tap } from 'rxjs';
 import { BaseService } from './base.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService extends BaseService {
   private http = inject(HttpClient);
+  private router = inject(Router);
 
-  register(email: string, password: string) {
+  registrar(email: string, password: string) {
     return this.http.post<CustomResponse<string>>(
       `${this.apiUrl}/Auth/register`,
       {
@@ -22,12 +24,12 @@ export class AuthenticationService extends BaseService {
       }
     ).pipe(tap({
       next: (response: AuthResponse) => {
-        this.setAuthToken(response);
+        this.setarTokenUsuario(response);
       }
     }));
   }
 
-  login(email: string, password: string) {
+  logar(email: string, password: string) {
     return this.http.post<CustomResponse<string>>(
       `${this.apiUrl}/Auth/login`,
       {
@@ -36,51 +38,53 @@ export class AuthenticationService extends BaseService {
       }
     ).pipe(tap({
       next: (response: AuthResponse) => {
-        this.setAuthToken(response);
+        this.setarTokenUsuario(response);
+        this.router.navigate(['']);
       }
     }));
   }
 
-  getAuthToken() {
+  obterTokenUsuario() {
     const token = sessionStorage.getItem('access_token');
     return token;
   }
 
-  logout() {
+  deslogar() {
     sessionStorage.removeItem('access_token');
+    this.router.navigate(['']);
   }
 
-  isLoggedIn(): boolean {
-    const token = this.getAuthToken();
+  estaLogado(): boolean {
+    const token = this.obterTokenUsuario();
 
     if (!token) {
       return false;
     }
 
-    if (this.tokenExpired(token)) {
-      this.logout();
+    if (this.tokenExpirado(token)) {
+      this.deslogar();
       return false;
     }
 
     return true;
   }
 
-  getUser(): User | undefined {
-    const token = this.getAuthToken();
+  obterUsuario(): Usuario | undefined {
+    const token = this.obterTokenUsuario();
 
     if (!token) {
       return undefined;
     }
 
-    return this.readToken(token);
+    return this.obterUsuarioToken(token);
   }
 
-  private tokenExpired(token: string) {
-    const expiry = this.readToken(token).exp;
+  private tokenExpirado(token: string) {
+    const expiry = this.obterUsuarioToken(token).exp;
     return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
 
-  private setAuthToken(response: AuthResponse) {
+  private setarTokenUsuario(response: AuthResponse) {
     if (response.success) {
       sessionStorage.setItem('access_token', response.data);
     } else {
@@ -88,11 +92,11 @@ export class AuthenticationService extends BaseService {
     }
   }
 
-  private readToken(token: string): User {
+  private obterUsuarioToken(token: string): Usuario {
     const payload = JSON.parse(atob(token.split('.')[1]));
 
     return {
-      uniqueName: payload.unique_name,
+      nome: payload.unique_name,
       role: payload.role,
       exp: payload.exp,
     };

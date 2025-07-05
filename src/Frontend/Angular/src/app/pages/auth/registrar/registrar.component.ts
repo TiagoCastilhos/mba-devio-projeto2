@@ -6,12 +6,12 @@ import { ToasterService } from '@services/toaster.service';
 import { passwordMatchValidator, passwordRegex } from '../validators/password-match.validator';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css',
+  selector: 'app-registrar',
+  templateUrl: './registrar.component.html',
+  styleUrl: './registrar.component.css',
   standalone: false,
 })
-export class RegisterComponent {
+export class RegistrarComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private authenticationService = inject(AuthenticationService);
@@ -33,26 +33,26 @@ export class RegisterComponent {
     }
   );
 
-  onSubmit() {
-    if (!this.canSubmit()) {
+  enviarFormulario() {
+    if (!this.estaValido()) {
       return;
     }
 
     const register = this.registerForm.getRawValue();
-    this.authenticationService.register(register.email, register.password).subscribe({
+    this.authenticationService.registrar(register.email, register.password).subscribe({
       next: (res) => {
         if (res.success) {
-          this.toasterService.success('Usuário registrado com sucesso!');
+          this.toasterService.sucesso('Usuário registrado com sucesso!');
           this.router.navigate(['']);
         }
       },
       error: (err) => {
-        this.toasterService.error(err.error.errors);
+        this.toasterService.erro(err.error.errors);
       },
     });
   }
 
-  canSubmit(): boolean {
+  estaValido(): boolean {
     return this.registerForm.valid;
   }
 }

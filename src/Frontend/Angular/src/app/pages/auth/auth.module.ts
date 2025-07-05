@@ -6,10 +6,10 @@ import { BaseButtonComponent } from "@components/base-button/base-button.compone
 import { BaseInputComponent } from '@components/base-input/base-input.component';
 import { authRoutes } from './auth.routes';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { RegistrarComponent } from './registrar/registrar.component';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [LoginComponent, RegistrarComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -17,7 +17,7 @@ import { RegisterComponent } from './register/register.component';
     RouterModule.forChild(authRoutes),
     BaseInputComponent,
     BaseButtonComponent
-],
+  ],
   providers: [],
 })
-export class AuthModule {}
+export class AuthModule { }

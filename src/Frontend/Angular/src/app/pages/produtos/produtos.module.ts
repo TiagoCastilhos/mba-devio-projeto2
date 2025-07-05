@@ -20,4 +20,4 @@ import { produtosRoutes } from './produtos.routes';
   ],
   providers: [FavoritosService],
 })
-export class ProdutosModule {}
+export class ProdutosModule { }
