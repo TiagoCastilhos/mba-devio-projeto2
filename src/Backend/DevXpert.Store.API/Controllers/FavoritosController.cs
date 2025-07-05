@@ -4,6 +4,7 @@ using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
+using DevXpert.Store.Core.Business.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,22 @@ public class FavoritosController(IAppIdentityUser user,
         var viewModels = favoritos.Select(FavoritoViewModel.MapToViewModel);
 
         return CustomResponse(HttpStatusCode.OK, viewModels);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var favorito = await favoritoService.BuscarPorId(id);
+        var favoritoViewModel = FavoritoViewModel.MapToViewModel(favorito);
+
+        if (favoritoViewModel is not null)
+            return CustomResponse(HttpStatusCode.OK, favoritoViewModel);
+
+        NotificarErro("Favorito não encontrado.");
+        return CustomResponse(HttpStatusCode.NotFound);
     }
 
     #endregion

@@ -21,7 +21,7 @@ export class ProdutosService extends BaseService {
 
   private _http = inject(HttpClient);
 
-  getAll({ busca = '', categoriaId = '', vendedorId = '' }: ProdutosGetAllParams) {
+  obterTodos({ busca = '', categoriaId = '', vendedorId = '' }: ProdutosGetAllParams) {
     let httpParams = new HttpParams()
     if (busca) httpParams = httpParams.append('busca', busca)
     if (categoriaId) httpParams = httpParams.append('categoriaId', categoriaId);

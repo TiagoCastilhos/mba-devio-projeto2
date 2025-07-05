@@ -24,14 +24,14 @@ export class DetalhesProdutoComponent {
       tap({
         next: (response: Produto) => {
           this._produtoService
-            .getAll({ vendedorId: response.vendedorId })
+            .obterTodos({ vendedorId: response.vendedorId })
             .subscribe({
               next: (res) => {
                 this.produtosVendedor = res.data;
               },
             });
         },
-        error: (error) => this._toasterService.error(error?.error?.errors),
+        error: (error) => this._toasterService.erro(error?.error?.errors),
       })
     );
   favoritoId: string | null = null;
@@ -41,19 +41,19 @@ export class DetalhesProdutoComponent {
     this._favoritoService.adicionar(produto.id).subscribe({
       next: (res) => {
         if (res.success) {
-          this._toasterService.success(produto.nome + ' favoritado!');
+          this._toasterService.sucesso(produto.nome + ' favoritado!');
           this.favoritoId = res.data.id;
         }
       },
       error: (response) => {
-        this._toasterService.error(response.error.errors.toString());
+        this._toasterService.erro(response.error.errors.toString());
       },
     });
   }
 
   produtosGetAll(vendedorId: string) {
     this._produtoService
-      .getAll({ vendedorId })
-      .subscribe(() => this._toasterService.success());
+      .obterTodos({ vendedorId })
+      .subscribe(() => this._toasterService.sucesso());
   }
 }

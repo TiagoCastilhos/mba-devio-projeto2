@@ -2,13 +2,13 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <div class="col-2 mr-5">
-        <a class="navbar-brand" (click)="search({ })" routerLink="">XpertStore</a>
+        <a class="navbar-brand" (click)="buscar({ })" routerLink="">XpertStore</a>
       </div>
 
       <div class="col-6 d-flex gap-1">
         <div class="input-group">
-          <input [(ngModel)]="busca" placeholder="Pesquisar" class="form-control" (keyup.enter)="search({ })" />
-          <button class="btn btn-secondary col-0 text-center" (click)="search({ busca: busca })">
+          <input [(ngModel)]="busca" placeholder="Pesquisar" class="form-control" (keyup.enter)="buscar({ })" />
+          <button class="btn btn-secondary col-0 text-center" (click)="buscar({ busca: busca })">
             <fa-icon class="text-white" [icon]="faMagnifyingGlass"></fa-icon>
           </button>
         </div>
@@ -16,17 +16,17 @@
 
       <div class="col-2 d-flex justify-content-end">
         <ul class="navbar-nav ml-5">
-          @if(!isLoggedIn()) {
+          @if(!estaLogado()) {
           <li class="nav-item">
-            <a class="nav-link" routerLink="auth/register">Registrar</a>
+            <a class="nav-link" routerLink="auth/registrar">Registrar</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="auth/login">Login</a>
           </li>
           } @else {
           <li class="d-flex">
-            <a class="nav-link col-10 cursor-pointer">Olá, {{ getUserName() }}</a>
-            <a class="nav-link col-1 cursor-pointer" (click)="logout()">Logout</a>
+            <a class="nav-link col-10 cursor-pointer">Olá, {{ obterNomeUsuario() }}</a>
+            <a class="nav-link col-1 cursor-pointer" (click)="deslogar()">Logout</a>
           </li>
           }
         </ul>
@@ -41,7 +41,7 @@
             <a class="nav-link dropdown-toggle cursor-pointer">Categoria</a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li *ngFor="let categoria of categorias$ | async">
-                <a class="dropdown-item" [routerLink]="['/produtos']" (click)="search({ categoriaId: categoria.id })">
+                <a class="dropdown-item" [routerLink]="['/produtos']" (click)="buscar({ categoriaId: categoria.id })">
                   {{ categoria.nome }}
                 </a>
               </li>
@@ -49,7 +49,7 @@
           </div>
         </li>
 
-        @if(isLoggedIn()) {
+        @if(estaLogado()) {
         <li class="nav-item cursor-pointer">
           <a class="nav-link" [routerLink]="['/favoritos']"> Favoritos </a>
         </li>

@@ -17,7 +17,6 @@ import { ToasterService } from '@services/toaster.service';
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
-  private router = inject(Router);
   private authenticationService = inject(AuthenticationService);
   private toasterService = inject(ToasterService);
   protected loginForm: FormGroup<LoginForm> = this.fb.group<LoginForm>({
@@ -30,26 +29,25 @@ export class LoginComponent {
     ]),
   });
 
-  onSubmit() {
-    if (!this.canSubmit()) {
+  enviarFormulario() {
+    if (!this.estaValido()) {
       return;
     }
 
     const login = this.loginForm.getRawValue();
-    this.authenticationService.login(login.email, login.password).subscribe({
+    this.authenticationService.logar(login.email, login.password).subscribe({
       next: (res) => {
         if (res.success) {
-          this.toasterService.success('Login efetuado com sucesso!');
-          this.router.navigate(['']);
+          this.toasterService.sucesso('Login efetuado com sucesso!');
         }
       },
       error: (err) => {
-        this.toasterService.error(err.error.errors);
+        this.toasterService.erro(err.error.errors);
       },
     });
   }
 
-  canSubmit(): boolean {
+  estaValido(): boolean {
     return this.loginForm.valid;
   }
 }

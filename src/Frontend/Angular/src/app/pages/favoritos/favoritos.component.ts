@@ -25,7 +25,7 @@ export class FavoritosComponent implements OnInit {
   }
 
   private obterFavoritos() {
-    this._favoritosService.buscarPorClienteId().subscribe({
+    this._favoritosService.buscarTodos().subscribe({
       next: (res) => {
         this.favoritos = res.data;
       },
@@ -33,12 +33,12 @@ export class FavoritosComponent implements OnInit {
   }
 
   removerFavorito(favoritoId: string) {
-    this._favoritosService.delete(favoritoId).subscribe({
+    this._favoritosService.deletar(favoritoId).subscribe({
       next: () => {
         this.favoritos = this.favoritos.filter(
           (favorito) => favorito.id !== favoritoId
         );
-        this._toasterService.success('Produto removido de favoritos!');
+        this._toasterService.sucesso('Produto removido de favoritos!');
       }
     });
   }
