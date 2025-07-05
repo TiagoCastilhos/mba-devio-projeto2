@@ -46,7 +46,7 @@ public class FavoritosController(IAppIdentityUser user,
             return CustomResponse(HttpStatusCode.BadRequest);
 
         await Salvar(favorito.Id);
-        return CustomResponse(HttpStatusCode.OK, favorito);
+        return CustomResponse(HttpStatusCode.Created, favorito);
     }
 
     [HttpDelete("{id:guid}")]
