@@ -24,7 +24,7 @@ namespace DevXpert.Store.API.Controllers
         {
             var produtos = await produtoService.BuscarTodos(busca, vendedorId, categoriaId);
 
-            return CustomResponse(HttpStatusCode.OK, ProdutoViewModel.MapToList(produtos));
+            return CustomResponse(HttpStatusCode.Created, ProdutoViewModel.MapToList(produtos));
         }
 
         [AllowAnonymous]
