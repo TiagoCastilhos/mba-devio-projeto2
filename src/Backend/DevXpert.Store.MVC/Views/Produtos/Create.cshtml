@@ -47,7 +47,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="CategoriaId" class="control-label"></label>
-				<select class="form-control" asp-for="CategoriaId" asp-items="@(new SelectList(Model.Categorias, "Id", "Nome"))">
+                <select class="form-control" asp-for="CategoriaId" asp-items="ViewBag.Categorias">
                     <option value="null" selected disabled>Selecione uma Opção</option>
                 </select>
             </div>
