@@ -29,7 +29,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto, true)) return false;
 
-            if(await ManipularImagem(produto, true)) return false;
+            if(!await ManipularImagem(produto, true)) return false;
 
             await produtoRepository.Adicionar(produto);
 
@@ -40,7 +40,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto)) return false;
 
-            if(await ManipularImagem(produto, false)) return false;           
+            if(!await ManipularImagem(produto, false)) return false;           
 
             await produtoRepository.Atualizar(produto);
 
@@ -84,6 +84,9 @@ namespace DevXpert.Store.Core.Business.Services
 
         private async Task<bool> ManipularImagem(Produto produto, bool isInsert = true)
         {
+            if (produto.FileUpload == null || produto.FileUpload.Length == 0)
+                return true;
+
             if (!await arquivoService.Salvar(produto.Imagem, produto.FileUpload))
                 return NotificarError("Erro ao salvar arquivo.");
 
