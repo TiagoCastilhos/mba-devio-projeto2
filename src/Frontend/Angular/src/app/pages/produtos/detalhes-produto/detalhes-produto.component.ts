@@ -22,21 +22,38 @@ export class DetalhesProdutoComponent {
     .pipe(
       map((res: CustomResponse<Produto>) => res.data),
       tap({
-        next: (res: Produto) => this.favorito = res.favorito ?? false,
-        error: (error) => this._toasterService.error(error?.error?.errors)
-      }));
-  favorito = false;
+        next: (response: Produto) => {
+          this._produtoService
+            .getAll({ vendedorId: response.vendedorId })
+            .subscribe({
+              next: (res) => {
+                this.produtosVendedor = res.data;
+              },
+            });
+        },
+        error: (error) => this._toasterService.error(error?.error?.errors),
+      })
+    );
+  favoritoId: string | null = null;
+  produtosVendedor: Produto[] = [];
 
-  adicionarFavorito(produtoId: string) {
-    this._favoritoService.adicionar(produtoId).subscribe({
+  adicionarFavorito(produto: Produto) {
+    this._favoritoService.adicionar(produto.id).subscribe({
       next: (res) => {
-        if (!res.success) throw Error();
-        this._toasterService.success();
-        this.favorito = true;
+        if (res.success) {
+          this._toasterService.success(produto.nome + ' favoritado!');
+          this.favoritoId = res.data.id;
+        }
       },
-      error: (error) => {
-        this._toasterService.error(error?.error?.errors);
-      }
+      error: (response) => {
+        this._toasterService.error(response.error.errors.toString());
+      },
     });
+  }
+
+  produtosGetAll(vendedorId: string) {
+    this._produtoService
+      .getAll({ vendedorId })
+      .subscribe(() => this._toasterService.success());
   }
 }

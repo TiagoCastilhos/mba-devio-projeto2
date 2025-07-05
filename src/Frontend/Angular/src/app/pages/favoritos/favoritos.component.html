@@ -3,24 +3,40 @@
 <div class="card">
   @if(favoritos) {
   <ul class="list-group list-group-flush">
-    @for (favorito of favoritos; track favorito.produto.id) {
-    <li class="list-group-item cursor-pointer" [routerLink]="['/produtos', favorito.produto.id]">
+    @for (favorito of favoritos; track favorito.id) {
+    <li
+      class="list-group-item cursor-pointer"
+      [routerLink]="['/produtos', favorito.produto.id]"
+    >
       <div class="row">
         <div class="col-3">
-          <img class="img-fluid" [src]="favorito.produto.imagem" [alt]="favorito.produto.nome" />
+          <img
+            class="img-fluid"
+            [src]="favorito.produto.imagem"
+            [alt]="favorito.produto.nome"
+          />
         </div>
         <div class="col-9">
           <h3>
             {{ favorito.produto.nome }}
           </h3>
-          <p>{{ favorito.produto.vendedorId ? "por" + favorito.produto.vendedorId : "" }}</p>
+          <p>
+            {{
+              favorito.produto.vendedorId
+                ? "por" + favorito.produto.vendedorId
+                : ""
+            }}
+          </p>
           <p>{{ favorito.produto.descricao }}</p>
-          <p>{{ favorito.produto.preco | currency: 'BRL' }}</p>
+          <p>{{ favorito.produto.preco | currency : "BRL" }}</p>
 
           <div class="row">
             <div class="col-auto">
-              <button (click)="removerFavorito(favorito.produto.id); $event.stopPropagation()" type="button"
-                class="btn btn-sm">
+              <button
+                (click)="removerFavorito(favorito.id); $event.stopPropagation()"
+                type="button"
+                class="btn btn-sm"
+              >
                 <fa-icon class="text-danger" [icon]="faTrashCan"></fa-icon>
               </button>
             </div>

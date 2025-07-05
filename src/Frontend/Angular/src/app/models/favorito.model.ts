@@ -1,5 +1,8 @@
+import { Produto } from './produto.model';
+
 export type Favorito = {
-    id: string;
-    clienteId: string;
-    produtoId: string;
-}
+  id: string;
+  produto: Produto;
+  clienteId: string;
+  produtoId: string;
+};

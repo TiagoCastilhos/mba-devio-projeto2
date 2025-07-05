@@ -56,14 +56,14 @@ public class FavoritosController(IAppIdentityUser user,
     {
         if (!await favoritoService.Excluir(id))
             return CustomResponse(HttpStatusCode.BadRequest);
-        
+
         await Salvar(id);
         return CustomResponse(HttpStatusCode.NoContent);
     }
     #endregion
-    
+
     #region PRIVATE_METHODS
-        
+
     private async Task Salvar(Guid id)
     {
         try
@@ -74,7 +74,7 @@ public class FavoritosController(IAppIdentityUser user,
         {
             if (await favoritoService.BuscarPorId(id) is not null)
                 throw;
-        
+
             NotificarErro("Categoria não encontrada.");
         }
     }

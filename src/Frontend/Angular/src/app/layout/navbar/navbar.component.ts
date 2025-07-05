@@ -6,17 +6,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '@services/authentication.service';
 import { CategoriasService } from '@services/categorias.service';
+import { ToasterService } from '@services/toaster.service';
 import { map } from 'rxjs';
 import { ProdutosService } from '../../pages/produtos/services/produtos/produtos.service';
-import { ToasterService } from '@services/toaster.service';
 
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, FontAwesomeModule, CommonModule, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  providers: [
-  ]
 })
 export class NavbarComponent {
   faMagnifyingGlass = faMagnifyingGlass;
@@ -32,8 +30,7 @@ export class NavbarComponent {
     this.search({});
   }
 
-  categorias$ = this._categoriasService.getAll()
-    .pipe(map((res) => res.data));
+  categorias$ = this._categoriasService.getAll().pipe(map((res) => res.data));
 
   getUserName() {
     return this._authenticationService.getUser()?.uniqueName || '';
@@ -49,6 +46,8 @@ export class NavbarComponent {
   }
 
   search({ busca = '', categoriaId = '' }) {
-    this._produtosService.getAll({ categoriaId, busca }).subscribe();
+    this._produtosService
+      .getAll({ categoriaId, busca })
+      .subscribe(() => this._toasterService.success());
   }
 }
