@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevXpert.Store.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [Route("api/[controller]")]    
     public class AuthController(INotificador notificador,
                                 IAppIdentityUser user,
                                 IAuthService authService) : MainController(notificador, user)
     {
-        [AllowAnonymous]
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] UserRegisterViewModel usuarioRegistro)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -32,8 +32,8 @@ namespace DevXpert.Store.API.Controllers
             return CustomResponse(HttpStatusCode.BadRequest);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserLoginViewModel login)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);

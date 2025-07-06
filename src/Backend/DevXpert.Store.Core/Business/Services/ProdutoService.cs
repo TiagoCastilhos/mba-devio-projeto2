@@ -13,7 +13,7 @@ namespace DevXpert.Store.Core.Business.Services
                                 IArquivoService arquivoService) : BaseService(notificador), IProdutoService
     {
         #region READ
-        public async Task<IEnumerable<Produto>> BuscarTodos(string busca, Guid? vendedorId, Guid? categoriaId, bool? ativo = true)
+        public async Task<IEnumerable<Produto>> BuscarTodos(string busca = "", Guid? vendedorId = null, Guid? categoriaId = null, bool? ativo = true)
         {
             return await produtoRepository.Pesquisar(MontarFiltro(busca, vendedorId, categoriaId, ativo));
         }
