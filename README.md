@@ -112,9 +112,9 @@ Execute o projeto para que a configuração do Seed crie o banco e popule com os
 **:warning: As Migrations são aplicadas de forma automática através do método de extensão `MigrateDatabase() => src/Backend/DevXpert.Store.Core/Application/Configurations/DatabaseConfig.cs`;**<br>
 **:warning: Uma carga inicial é feita na base de dados através do método `OnModelCreating() => src/Backend/DevXpert.Store.Core/Data/Context/AppDbContext.cs`, com base no método `Seed(modelBuilder) => src/Backend/DevXpert.Store.Core/Data/Seed/SeedDatabase.cs`;**<br>
 **:warning: Credenciais default do banco:**
-  - usuário com perfil Admin &rarr; `admin@teste.com` | senha &rarr; `@Aa12345`**<br>
-  - usuário com perfil Vendedor &rarr; `vendedor@teste.com` | senha &rarr; `@Aa12345`**<br>
-  - usuário com perfil Cliente &rarr; `cliente@teste.com` | senha &rarr; `@Aa12345`**<br>
+  - **usuário com perfil Admin &rarr; `admin@teste.com` | senha &rarr; `@Aa12345`**<br>
+  - **usuário com perfil Vendedor &rarr; `vendedor@teste.com` | senha &rarr; `@Aa12345`**<br>
+  - **usuário com perfil Cliente &rarr; `cliente@teste.com` | senha &rarr; `@Aa12345`**<br>
 
 ### 3. **Executar o BackOffice (MVC):**
    - a partir da pasta clonada do projeto, abra o prompt de comando e digite:
