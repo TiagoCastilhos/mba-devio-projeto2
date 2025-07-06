@@ -1,9 +1,9 @@
 # **DevXpert.Store - Aplicação de Gestão de Mini Loja Virtual com Angular, MVC e API RESTful**
 
-## **1. Apresentação**
+## :trophy: **1. Apresentação**
 ---
-Bem-vindo ao repositório do projeto **DevXpert.Store**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao **módulo 2 - Desenvolvimento Full-Stack Avançado com ASP.NET Core**.
-O objetivo principal desenvolver uma aplicação de Gestão de Mini Loja Virtual que permite aos usuários com perfil vendedor criar, editar, visualizar e excluir produtos, tanto através de uma interface web utilizando MVC quanto através de uma API RESTful. Permite aos clientes se cadastrarem e favoritarem produtos, através da interface angular. Permite aos Admins criar, editar, visualizar e excluir categorias e também inativar um vendedor/cliente e/ou um produto.
+Bem-vindo ao repositório do projeto **DevXpert.Store**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET referente ao **módulo 2 - Desenvolvimento Full-Stack Avançado com ASP.NET Core**.
+O objetivo principal desenvolver uma aplicação de Gestão de Mini Loja Virtual que permite aos usuários com perfil vendedor se cadastrar e criar, editar, visualizar e excluir produtos, através de uma interface web utilizando MVC. Permite usuários com perfil cliente se cadastrar, consultar e favoritar produtos, através da interface angular e API RESTful. Permite ao usuário com perfil Admin criar, editar, visualizar e excluir categorias e também (in)ativar vendedor(es) e/ou produto(s).
 
 
 ### :notebook: **Autores**
@@ -15,35 +15,36 @@ O objetivo principal desenvolver uma aplicação de Gestão de Mini Loja Virtual
 - :white_check_mark: Tiago Henrique de Castilhos - @zsfnightmare
 - :white_check_mark: Victor Higaki - @victorhigaki
 
-## :notebook: **2. Proposta do Projeto**
+## :gear: **2. Proposta do Projeto**
 ---
 O projeto consiste em:
 
 - **Aplicação MVC:** Interface web para interação com a Gestão de Mini Loja Virtual (back office). Acesso exclusivo do(s) Admins e Vendedores.
 - **API RESTful:** Exposição dos recursos da Gestão de Mini Loja Virtual para integração com outras aplicações ou desenvolvimento de front-ends alternativos.
 - **Angular:** Exposição da vitrine de Mini Loja Virtual para acesso dos clientes.
-- **Autenticação e Autorização:** Implementação de controle de acesso, diferenciando administradores e usuários comuns.
-- **Acesso a Dados:** Implementação de acesso ao banco de dados através de ORM.
+- **Autenticação e Autorização:** Implementação de controle de acesso, diferenciando administradores, vendedores e clientes (JWT para API RESTful e Cookie para o MVC).
+- **Acesso a Dados:** Implementação de acesso ao banco de dados através de ORM Entity Framework Core.
 
-## :notebook: **3. Tecnologias Utilizadas**
+## :gear: **3. Tecnologias Utilizadas**
 ---
-- **Linguagem de Programação:** C#
+- **Linguagem de Programação:** C# 13
 - **Frameworks:**
   - ASP.NET Core MVC
   - ASP.NET Core Web API
-  - Angular 
+  - Angular 19 
   - Entity Framework Core
 - **Banco de Dados:** SQL Server / SQLite
 - **Autenticação e Autorização:**
   - ASP.NET Core Identity
   - JWT (JSON Web Token) para autenticação na API
+  - Cookie para autenticação no MVC
 - **Front-end:**
   - Razor Pages/Views
-  - HTML/CSS para estilização básica
-  - Angular
+  - HTML/CSS/bootstrap para estilização básica
+  - Angular 19
 - **Documentação da API:** Swagger
 
-## :notebook: **4. Estrutura do Projeto**
+## :gear: **4. Estrutura do Projeto**
 ---
 A estrutura do projeto é organizada da seguinte forma:
 
@@ -67,15 +68,23 @@ A estrutura do projeto é organizada da seguinte forma:
 |-- DevXpert.Store.sln               → solution do projeto
 |-- README.md                        → Arquivo de Documentação/Wiki do Projeto
 ```
-## :notebook: **5. Funcionalidades Implementadas**
+## :gear: **5. Funcionalidades Implementadas**
 ---
 
-- **CRUD para Categorias:** Permite ao Admin criar, editar, visualizar e excluir categorias.
-- **CRUD para Produtos:** Permite ao Vendedor criar, editar, visualizar e excluir Produtos. Permite ao Admin inativar um produto de um vendedor.
-- **CRUD para Vendedores e Clientes:** Permite ao Vendedor e Cliente se cadastrar. Permite ao Admin inativar demais usuários.
-- **Autenticação e Autorização:** Diferenciação entre Vendedores, clientes e administradores.
-- **API RESTful:** Exposição de endpoints para operações CRUD via API.
-- **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
+- API e Angular:
+  - **Autenticação via ASP.NET Core Identity.**
+  - **CRUD para Categorias:** Permite ao Admin autenticado criar, editar, visualizar e excluir categorias.
+  - **CRUD para Produtos:** Permite ao Vendedor autenticado criar, editar, visualizar e excluir Produtos. Permite ao Admin autenticado (in)ativar um produto de um vendedor.
+  - **CRUD para favoritos:** Permite ao cliente autenticado adicionar ou remover um produto à sua lista de favoritos.
+  - **API RESTful:** Exposição de endpoints para operações CRUD via API.
+  - **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
+
+- MVC:  
+  - **Autenticação via ASP.NET Core Identity** para usuários com perfil Admin e Vendedor.
+  - **CRUD para Categorias:** Permite ao Admin autenticado criar, editar, visualizar e excluir categorias.
+  - **CRUD para Produtos:** Permite ao Vendedor autenticado criar, editar, visualizar e excluir Produtos. Permite ao Admin autenticado (in)ativar um produto de um vendedor.
+  - **CRUD para Vendedores:** Permite ao Admin (in)ativar vendedores.
+  
 
 ## :gear: **6. Como Executar o Projeto**
 ---
@@ -85,12 +94,14 @@ A estrutura do projeto é organizada da seguinte forma:
 - SQL Server / SQLite
 - Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
 - Git
+- Node 22.0.0
+- Angular CLI 19
 
 ### **Passos para Execução**
 ---
 ### 1. **Clone o Repositório:**
    - `git clone https://github.com/TiagoCastilhos/mba-devio-projeto2`
-   - `cd XpertStore`
+   - `cd mba-devio-projeto2`
 
 ### 2. Configuração do Banco de Dados:
   
@@ -100,22 +111,34 @@ Execute o projeto para que a configuração do Seed crie o banco e popule com os
 
 **:warning: As Migrations são aplicadas de forma automática através do método de extensão `MigrateDatabase() => src/Backend/DevXpert.Store.Core/Application/Configurations/DatabaseConfig.cs`;**<br>
 **:warning: Uma carga inicial é feita na base de dados através do método `OnModelCreating() => src/Backend/DevXpert.Store.Core/Data/Context/AppDbContext.cs`, com base no método `Seed(modelBuilder) => src/Backend/DevXpert.Store.Core/Data/Seed/SeedDatabase.cs`;**<br>
-**:warning: Credenciais default do banco: usuário &rarr; `teste@teste.com` | senha &rarr; `@Aa12345`**<br>
+**:warning: Credenciais default do banco:**
+  - usuário com perfil Admin &rarr; `admin@teste.com` | senha &rarr; `@Aa12345`**<br>
+  - usuário com perfil Vendedor &rarr; `vendedor@teste.com` | senha &rarr; `@Aa12345`**<br>
+  - usuário com perfil Cliente &rarr; `cliente@teste.com` | senha &rarr; `@Aa12345`**<br>
 
-
-### 3. **Executar a Aplicação MVC:**
+### 3. **Executar o BackOffice (MVC):**
+   - a partir da pasta clonada do projeto, abra o prompt de comando e digite:
    - `cd src/Backend/DevXpert.Store.Mvc/`
    - `dotnet run --environment=Development`
-   - Acesse a aplicação em: http://localhost:7019
+   - Abra o browser e acesse a aplicação em: https://localhost:7019
 
-### 4. **Executar a API:**
-   - `cd src/Backend/DevXpert.Store.Mvc/`
+### 4. **Executar a Loja virtual API:**
+   - a partir da pasta clonada do projeto, abra o prompt de comando e digite:
+   - `cd src/Backend/DevXpert.Store.API/`
    - `dotnet run --environment=Development`
-   - Acesse a documentação da API em: http://localhost:7094/swagger
+   - Abra o browser e acesse a documentação da API em: https://localhost:7094/swagger
+
+### 5. **Executar a Loja virtual Angular:**
+   - a partir da pasta clonada do projeto, abra o prompt de comando e digite:
+   - `cd src/Frontend/angular`
+   - `npm i`
+   - `ng serve --configuration=development`
+   - Abra o browser e acesse a aplicação em: http://localhost:4200/
+   - **:warning: Obs.: Para execução da aplicação angular, a API deve estar em execução!**
 
 ## :gear: **7. Instruções de Configuração**
 
-**JWT para API:** As chaves de configuração do JWT estão no appsettings.json.
+**JWT para API:** As chaves de configuração do JWT estão no arquivo `appsettings.{environment}.json`.
 
 **Migrações do Banco de Dados:** As migrações são gerenciadas pelo Entity Framework Core (Não é necessário aplicar o comando update-database devido a configuração do projeto)
 
@@ -134,8 +157,6 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 ## :white_check_mark: **10. To Do List**
 ---
 
-- :white_check_mark: implementar entidade cliente (relacionamento com produtos/favoritos);
-- :white_check_mark: implementar identity na camada MVC;
-- :white_check_mark: implementar AuthController, VendedorController, ClienteController e ProdutoController;
-- :white_check_mark: implementar Migrations e rever seed;
-- :white_check_mark: implementar as Roles ou Claims;
+- :white_check_mark: implementar listagem de produtos na visão do Admin (MVC);
+- :white_check_mark: implementar (in)ativação de produtos pelo Admin (MVC);
+- :white_check_mark: implementar diferenciação de menu por usuário (não) logado (MVC);

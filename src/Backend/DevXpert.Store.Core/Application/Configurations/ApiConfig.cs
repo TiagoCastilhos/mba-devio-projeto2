@@ -86,7 +86,7 @@ namespace DevXpert.Store.Core.Application.Configurations
             app.UseGlobalizationConfig()
                .UseHttpsRedirection()
                .UseMiddleware<ExceptionMiddleware>()
-               //.UseMiddleware<SecurityMiddleware>(app.Environment)
+               .UseMiddleware<SecurityMiddleware>(app.Environment)
                .UseStaticFiles()
                .UseRouting()
                .UseAuthentication()

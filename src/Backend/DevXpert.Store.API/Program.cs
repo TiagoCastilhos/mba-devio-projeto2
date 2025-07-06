@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddApiBehaviorConfig()
        .AddDatabase()
+       .AddAppCredentialsConfiguration()
        .AddArquivoSettingsConfiguration()
        .AddJWTSettingsConfiguration()
        .AddJWTConfiguration()
