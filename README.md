@@ -1,13 +1,14 @@
 # **DevXpert.Store - Aplicação de Gestão de Mini Loja Virtual com Angular, MVC e API RESTful**
 
 ## :trophy: **1. Apresentação**
----
+
 Bem-vindo ao repositório do projeto **DevXpert.Store**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET referente ao **módulo 2 - Desenvolvimento Full-Stack Avançado com ASP.NET Core**.
 O objetivo principal desenvolver uma aplicação de Gestão de Mini Loja Virtual que permite aos usuários com perfil vendedor se cadastrar e criar, editar, visualizar e excluir produtos, através de uma interface web utilizando MVC. Permite usuários com perfil cliente se cadastrar, consultar e favoritar produtos, através da interface angular e API RESTful. Permite ao usuário com perfil Admin criar, editar, visualizar e excluir categorias e também (in)ativar vendedor(es) e/ou produto(s).
 
 
 ### :notebook: **Autores**
 ---
+
 - :white_check_mark: Chayene Freitas - @chaya3090
 - :white_check_mark: Cristian Kruger Silva - @mr.krug3r
 - :white_check_mark: Edson Junio Araújo dos Santos - @edsonsantos3976
@@ -16,7 +17,7 @@ O objetivo principal desenvolver uma aplicação de Gestão de Mini Loja Virtual
 - :white_check_mark: Victor Higaki - @victorhigaki
 
 ## :gear: **2. Proposta do Projeto**
----
+
 O projeto consiste em:
 
 - **Aplicação MVC:** Interface web para interação com a Gestão de Mini Loja Virtual (back office). Acesso exclusivo do(s) Admins e Vendedores.
@@ -26,7 +27,7 @@ O projeto consiste em:
 - **Acesso a Dados:** Implementação de acesso ao banco de dados através de ORM Entity Framework Core.
 
 ## :gear: **3. Tecnologias Utilizadas**
----
+
 - **Linguagem de Programação:** C# 13
 - **Frameworks:**
   - ASP.NET Core MVC
@@ -45,7 +46,7 @@ O projeto consiste em:
 - **Documentação da API:** Swagger
 
 ## :gear: **4. Estrutura do Projeto**
----
+
 A estrutura do projeto é organizada da seguinte forma:
 
 ```
@@ -69,7 +70,7 @@ A estrutura do projeto é organizada da seguinte forma:
 |-- README.md                        → Arquivo de Documentação/Wiki do Projeto
 ```
 ## :gear: **5. Funcionalidades Implementadas**
----
+
 
 - API e Angular:
   - **Autenticação via ASP.NET Core Identity.**
@@ -87,7 +88,7 @@ A estrutura do projeto é organizada da seguinte forma:
   
 
 ## :gear: **6. Como Executar o Projeto**
----
+
 ### **Pré-requisitos**
 
 - .NET SDK 9.0 ou superior
@@ -112,9 +113,9 @@ Execute o projeto para que a configuração do Seed crie o banco e popule com os
 **:warning: As Migrations são aplicadas de forma automática através do método de extensão `MigrateDatabase() => src/Backend/DevXpert.Store.Core/Application/Configurations/DatabaseConfig.cs`;**<br>
 **:warning: Uma carga inicial é feita na base de dados através do método `OnModelCreating() => src/Backend/DevXpert.Store.Core/Data/Context/AppDbContext.cs`, com base no método `Seed(modelBuilder) => src/Backend/DevXpert.Store.Core/Data/Seed/SeedDatabase.cs`;**<br>
 **:warning: Credenciais default do banco:**
-  - **usuário com perfil Admin &rarr; `admin@teste.com` | senha &rarr; `@Aa12345`**<br>
-  - **usuário com perfil Vendedor &rarr; `vendedor@teste.com` | senha &rarr; `@Aa12345`**<br>
-  - **usuário com perfil Cliente &rarr; `cliente@teste.com` | senha &rarr; `@Aa12345`**<br>
+  - Usuário com perfil Admin &rarr; `admin@teste.com` | senha &rarr; `@Aa12345`<br>
+  - Usuário com perfil Vendedor &rarr; `vendedor@teste.com` | senha &rarr; `@Aa12345`<br>
+  - Usuário com perfil Cliente &rarr; `cliente@teste.com` | senha &rarr; `@Aa12345`<br>
 
 ### 3. **Executar o BackOffice (MVC):**
    - a partir da pasta clonada do projeto, abra o prompt de comando e digite:
@@ -149,13 +150,12 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 **:warning: Obs.: Em ambientes não `development`, é necessário informar usuario e senha para expor a página do swagger, devido à implementação do securityMiddleware. Por default, essas credenciais são `admin` e `123` e podem ser alteradas através do nó `AppCredentials` no `appsettings.[ambiente].json`**
 
 ## :white_check_mark: **9. Avaliação**
----
+
 - Este projeto é parte de um curso acadêmico e não aceita contribuições externas. 
 - Para feedbacks ou dúvidas utilize o recurso de Issues
 - O arquivo `FEEDBACK.md` é um resumo das avaliações do instrutor e deverá ser modificado apenas por ele.
 
 ## :white_check_mark: **10. To Do List**
----
 
 - :white_check_mark: implementar listagem de produtos na visão do Admin (MVC);
 - :white_check_mark: implementar (in)ativação de produtos pelo Admin (MVC);
