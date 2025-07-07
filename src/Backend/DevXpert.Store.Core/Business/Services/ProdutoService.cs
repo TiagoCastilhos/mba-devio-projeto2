@@ -21,7 +21,7 @@ namespace DevXpert.Store.Core.Business.Services
         public async Task<Produto> BuscarPorId(Guid id)
         {
             return await produtoRepository.BuscarPorId(id);
-        }                              
+        }
         #endregion
 
         #region WRITE
@@ -29,7 +29,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto, true)) return false;
 
-            if(!await ManipularImagem(produto, true)) return false;
+            if (!await ManipularImagem(produto, true)) return false;
 
             await produtoRepository.Adicionar(produto);
 
@@ -40,7 +40,20 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!Validate(produto)) return false;
 
-            if(!await ManipularImagem(produto, false)) return false;           
+            if (!await ManipularImagem(produto, false)) return false;
+
+            await produtoRepository.Atualizar(produto);
+
+            return true;
+        }
+
+        public async Task<bool> AlternarStatus(Guid id)
+        {
+            var produto = await produtoRepository.BuscarPorId(id);
+
+            if (produto is null) return NotificarError("Produto não encontrado.");
+
+            produto.AlternarStatus();
 
             await produtoRepository.Atualizar(produto);
 
