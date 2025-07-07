@@ -4,8 +4,6 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
-using DevXpert.Store.Core.Application.Mappings;
-using DevXpert.Store.Core.Business.Models;
 
 namespace DevXpert.Store.MVC.Controllers
 {
@@ -131,12 +129,7 @@ namespace DevXpert.Store.MVC.Controllers
                 return NotFound();
 
             return View(categoriaViewModel);
-        }
-
-        private static CategoriaViewModel MapToViewModel(Categoria categoria) => EntityMapping.MapToCategoriaViewModel(categoria);
-
-        private static Categoria MapToEntity(CategoriaViewModel categoriaViewModel) => EntityMapping.MapToCategoria(categoriaViewModel);
-
+        }       
         #endregion
     }
 }

@@ -9,36 +9,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DevXpert.Store.MVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator,Vendedor")]
     [Route("produtos")]
     public class ProdutosController(IProdutoService produtoService,
                                     ICategoriaService categoriaService,
                                     INotificador notificador,
                                     IAppIdentityUser user) : MainController(notificador, user)
     {
-        private readonly IProdutoService _produtoService = produtoService;
-        private readonly ICategoriaService _categoriaService = categoriaService;
-
-
-        [Authorize(Roles = "Administrator,Vendedor")]
+        
         public async Task<IActionResult> Index()
         {
-            //Se usuario estiver autenticado, mostra apenas os produtos dele
-            var produtos = await _produtoService.BuscarTodos(null, UserId, null);
+            var produtos = await produtoService.BuscarTodos(null, UserId);
 
-            //Mapeia as entidades para a ViewModel e envia para a View
             return View(ProdutoViewModel.MapToList(produtos));
         }
 
-
         [Route("novo")]
+        [Authorize(Roles = "Vendedor")]
         public async Task<IActionResult> Create()
         {
             await CarregarCategorias();
 
             return View(new ProdutoViewModel());
         }
-
 
         [HttpPost("novo")]
         [ValidateAntiForgeryToken]
@@ -50,33 +43,28 @@ namespace DevXpert.Store.MVC.Controllers
                 return View(produtoViewModel);
             }
 
-            //definindo o vendedor
             produtoViewModel.SetVendedorId(UserId);
-            //definindo o nome da imagem
             produtoViewModel.SetImageProperties(produtoViewModel.Imagem);
 
-            if (!await _produtoService.Adicionar(ProdutoViewModel.MapToEntity(produtoViewModel)))
+            if (!await produtoService.Adicionar(ProdutoViewModel.MapToEntity(produtoViewModel)))
             {
-                //Se houver falhas, exibe o erro e retorna a view
                 GetErrorsFromNotificador();
 
                 await CarregarCategorias();
                 return View(produtoViewModel);
             }
 
-            //Persiste as alterações no banco
-            await _produtoService.Salvar();
-            TempData["Sucesso"] = "Produto cadastrado com sucesso!";
-            return RedirectToAction(nameof(Index));
+            await produtoService.Salvar();
 
+            TempData["Sucesso"] = "Produto cadastrado!";
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("detalhes/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
-            var produto = await _produtoService.BuscarPorId(id);
+            var produto = await produtoService.BuscarPorId(id);
 
-            //verifca existencia do produto e se pertence ao usuario logado
             if (produto == null || produto.VendedorId != UserId)
                 return NotFound();
 
@@ -84,11 +72,11 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [HttpGet("editar/{id:guid}")]
+        [Authorize(Roles = "Administrator,Vendedor")]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var produto = await _produtoService.BuscarPorId(id);
+            var produto = await produtoService.BuscarPorId(id);
 
-            //verifca existencia do produto e se pertence ao usuario logado
             if (produto == null || produto.VendedorId != UserId)
                 return NotFound();
 
@@ -97,7 +85,6 @@ namespace DevXpert.Store.MVC.Controllers
 
             return View(viewModel);
         }
-
 
         [HttpPost("editar/{id:guid}")]
         [ValidateAntiForgeryToken]
@@ -112,12 +99,11 @@ namespace DevXpert.Store.MVC.Controllers
                 return View(produtoViewModel);
             }
 
-            //Define novamente o vendedor e a imagem
             produtoViewModel.SetVendedorId(UserId);
 
             produtoViewModel.SetImageProperties(produtoViewModel.Imagem);
 
-            if (!await _produtoService.Atualizar(ProdutoViewModel.MapToEntity(produtoViewModel)))
+            if (!await produtoService.Atualizar(ProdutoViewModel.MapToEntity(produtoViewModel)))
             {
                 GetErrorsFromNotificador();
 
@@ -125,15 +111,18 @@ namespace DevXpert.Store.MVC.Controllers
                 return View(produtoViewModel);
             }
 
-            await _produtoService.Salvar();
-            TempData["Sucesso"] = "Produto atualizado com sucesso!";
+            await produtoService.Salvar();
+
+            TempData["Sucesso"] = "Produto atualizado!";
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("excluir/{id:guid}")]
+        [Authorize(Roles = "Vendedor")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var produto = await _produtoService.BuscarPorId(id);
+            var produto = await produtoService.BuscarPorId(id);
+
             if (produto == null || produto.VendedorId != UserId)
                 return NotFound();
 
@@ -144,30 +133,27 @@ namespace DevXpert.Store.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var produto = await _produtoService.BuscarPorId(id);
+            var produto = await produtoService.BuscarPorId(id);
+
             if (produto == null || produto.VendedorId != UserId)
                 return NotFound();
 
-            if (!await _produtoService.Excluir(id))
+            if (!await produtoService.Excluir(id))
             {
                 GetErrorsFromNotificador();
                 return View(ProdutoViewModel.MapToViewModel(produto));
             }
 
-            await _produtoService.Salvar();
+            await produtoService.Salvar();
 
-            TempData["Sucesso"] = "Produto excluído com sucesso!";
+            TempData["Sucesso"] = "Produto excluído!";
             return RedirectToAction(nameof(Index));
         }
 
-
-
         #region #region PRIVATE METHODS
-
-        //Retorna a lista de categorias já convertendo para ViewModel
         private async Task<IEnumerable<CategoriaViewModel>> BuscarCategorias()
         {
-            var categorias = await _categoriaService.BuscarTodos(string.Empty, true);
+            var categorias = await categoriaService.BuscarTodos(string.Empty, true);
             return categorias.Select(EntityMapping.MapToCategoriaViewModel);
         }
 

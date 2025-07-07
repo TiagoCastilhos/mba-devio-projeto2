@@ -10,7 +10,6 @@ namespace DevXpert.Store.MVC.Controllers
     [Authorize]
     [Route("vendedores")]
     public class VendedoresController(IVendedorService vendedorService,
-                                      IProdutoService produtoService,
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
@@ -54,26 +53,8 @@ namespace DevXpert.Store.MVC.Controllers
 
             await vendedorService.Salvar();
 
-            TempData["Sucesso"] = "Vendedor Editado.";
-
-            var produtos = await produtoService.BuscarTodos(null, vendedorViewModel.Id, null, null);
-            var produtosViewModel = ProdutoViewModel.MapToList(produtos);
-            foreach (var produtoViewModel in produtosViewModel)
-            {
-                if (vendedorViewModel.Ativo)
-                {
-                    produtoViewModel.Ativar();
-                }
-                else
-                {
-                    produtoViewModel.Inativar();
-                }
-
-                var produto = ProdutoViewModel.MapToEntity(produtoViewModel);
-                await produtoService.Atualizar(produto);
-                await produtoService.Salvar();
-            }
-
+            TempData["Sucesso"] = "Vendedor atualizado.";
+            
             return RedirectToAction(nameof(Index));
         }
 
@@ -81,14 +62,11 @@ namespace DevXpert.Store.MVC.Controllers
 
         private async Task<IActionResult> GetById(Guid id)
         {
-            if (id == Guid.Empty)
-                return NotFound();
+            if (id == Guid.Empty) return NotFound();
 
-            var vendedor = await vendedorService.BuscarPorId(id);
-            var vendedorViewModel = VendedorViewModel.MapToViewModel(vendedor);
+            var vendedorViewModel = VendedorViewModel.MapToViewModel(await vendedorService.BuscarPorId(id));
 
-            if (vendedorViewModel is null)
-                return NotFound();
+            if (vendedorViewModel is null) return NotFound();
 
             return View(vendedorViewModel);
         }

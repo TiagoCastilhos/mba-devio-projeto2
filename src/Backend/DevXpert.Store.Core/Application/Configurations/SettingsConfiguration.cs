@@ -25,5 +25,14 @@ namespace DevXpert.Store.Core.Application.Configurations
 
             return builder;
         }
+
+        public static WebApplicationBuilder AddAppCredentialsConfiguration(this WebApplicationBuilder builder)
+        {
+            builder.Services.Configure<AppCredentialsSettings>(
+               builder.Configuration.GetSection(AppCredentialsSettings.ConfigName)
+           );
+
+            return builder;
+        }
     }
 }

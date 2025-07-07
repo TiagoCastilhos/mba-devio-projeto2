@@ -4,7 +4,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
 {
     public interface IProdutoService
     {
-        Task<IEnumerable<Produto>> BuscarTodos(string busca, Guid? vendedorId, Guid? categoriaId, bool? ativo = true);
+        Task<IEnumerable<Produto>> BuscarTodos(string busca = "", Guid? vendedorId = null, Guid? categoriaId = null, bool? ativo = true);
         Task<Produto> BuscarPorId(Guid id);
         Task<bool> Adicionar(Produto produto);
         Task<bool> Atualizar(Produto produto);
