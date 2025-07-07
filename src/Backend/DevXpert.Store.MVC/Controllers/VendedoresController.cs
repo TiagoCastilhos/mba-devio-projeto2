@@ -83,7 +83,7 @@ namespace DevXpert.Store.MVC.Controllers
         [Route("/produtosvendedor/{id:guid}")]
         public async Task<IActionResult> ProdutosVendedor(Guid id)
         {
-            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id, null));
+            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id, null, null));
             return View(produtos);
         }
 
