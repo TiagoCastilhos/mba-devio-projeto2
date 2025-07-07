@@ -24,12 +24,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="FileUpload" class="control-label"></label>
-
-                <div class="input-group custom-file-button">
-                    <input type="file" class="form-control" id="ImagemUpload" asp-for="FileUpload" />
-                    <label class="input-group-text" for="ImagemUpload">Escolher</label>
-                </div>
-
+                <input type="file" class="form-control" id="ImagemUpload" asp-for="FileUpload" />
                 <span asp-validation-for="FileUpload" class="text-danger"></span>
             </div>
 

@@ -13,9 +13,9 @@ namespace DevXpert.Store.MVC.Controllers
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
-        public async Task<IActionResult> Index(string busca)
+        public async Task<IActionResult> Index(string busca, bool? ativo)
         {
-            var categorias = CategoriaViewModel.MapToList(await categoriaService.BuscarTodos(busca, true));
+            var categorias = CategoriaViewModel.MapToList(await categoriaService.BuscarTodos(busca, ativo));
             return View(categorias);
         }
 
