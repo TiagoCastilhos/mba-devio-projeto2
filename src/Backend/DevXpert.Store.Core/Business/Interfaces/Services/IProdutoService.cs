@@ -8,6 +8,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
         Task<Produto> BuscarPorId(Guid id);
         Task<bool> Adicionar(Produto produto);
         Task<bool> Atualizar(Produto produto);
+        Task<bool> AlternarStatus(Guid id);
         Task<bool> Excluir(Guid id);
         Task Salvar();
     }
