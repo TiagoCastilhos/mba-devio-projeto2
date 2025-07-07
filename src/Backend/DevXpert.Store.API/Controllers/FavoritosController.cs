@@ -4,7 +4,6 @@ using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
-using DevXpert.Store.Core.Business.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +20,7 @@ public class FavoritosController(IAppIdentityUser user,
     #region READ
 
     [HttpGet]
+    [Authorize(Roles = "Cliente")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAll()
@@ -32,8 +32,8 @@ public class FavoritosController(IAppIdentityUser user,
         return CustomResponse(HttpStatusCode.OK, viewModels);
     }
 
-    [AllowAnonymous]
     [HttpGet("{id:guid}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -53,6 +53,7 @@ public class FavoritosController(IAppIdentityUser user,
     #region WRITE
 
     [HttpPost("{produtoId:guid}")]
+    [Authorize(Roles = "Cliente")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Post(Guid produtoId)
@@ -67,6 +68,7 @@ public class FavoritosController(IAppIdentityUser user,
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Cliente")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)

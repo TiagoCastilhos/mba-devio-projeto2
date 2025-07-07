@@ -20,7 +20,6 @@ namespace DevXpert.Store.Core.Business.Models.Base
         }
 
         public void Ativar() => Ativo = true;
-
         public void Inativar() => Ativo = false;
 
         public void AlternarStatus() => Ativo = !Ativo;

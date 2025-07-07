@@ -3,19 +3,20 @@ using DevXpert.Store.Core.Business.Interfaces.Repositories;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Services.Notificador;
-using DevXpert.Store.Core.Data.Repositories;
 using LinqKit;
 
 namespace DevXpert.Store.Core.Business.Services
 {
     public class VendedorService(IVendedorRepository vendedorRepository,
-                                  INotificador notificador) : BaseService(notificador), IVendedorService
+                                 IProdutoService produtoService,
+                                 INotificador notificador) : BaseService(notificador), IVendedorService
     {
         #region READ
-        public async Task<IEnumerable<Vendedor>> BuscarTodos(string busca, bool? ativo = true)
+        public async Task<IEnumerable<Vendedor>> BuscarTodos(string busca = "", bool? ativo = true)
         {
             return await vendedorRepository.Pesquisar(MontarFiltro(busca, ativo));
         }
+
         public async Task<Vendedor> BuscarPorId(Guid id)
         {
             return await vendedorRepository.BuscarPorId(id);
@@ -44,6 +45,8 @@ namespace DevXpert.Store.Core.Business.Services
             if (!Validate(vendedor)) return false;
 
             await vendedorRepository.Atualizar(vendedor);
+
+            if(!await HandleProdutos(vendedor)) return false;
 
             return true;
         }
@@ -79,6 +82,23 @@ namespace DevXpert.Store.Core.Business.Services
                 expression = expression.And(c => c.Nome.Contains(buscar) || c.Email.Contains(buscar));
 
             return expression;
+        }
+
+        private async Task<bool> HandleProdutos(Vendedor vendedor)
+        {
+            var produtos = await produtoService.BuscarTodos(string.Empty, vendedor.Id);
+
+            foreach (var produto in produtos)
+            {
+                produto.Ativar();
+                if (!vendedor.Ativo) produto.Inativar();
+
+                await produtoService.Atualizar(produto);
+            }
+
+            await produtoService.Salvar();
+
+            return true;
         }
         #endregion
     }

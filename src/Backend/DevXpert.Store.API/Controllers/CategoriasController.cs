@@ -4,13 +4,12 @@ using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevXpert.Store.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [Route("api/[controller]")]
     public class CategoriasController(IAppIdentityUser user,
                                       INotificador notificador,
@@ -18,8 +17,8 @@ namespace DevXpert.Store.API.Controllers
     {
         #region READ
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll([FromQuery] string busca)
         {
             var lista = CategoriaViewModel.MapToList(await categoriaService.BuscarTodos(busca, true));
@@ -28,6 +27,7 @@ namespace DevXpert.Store.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)

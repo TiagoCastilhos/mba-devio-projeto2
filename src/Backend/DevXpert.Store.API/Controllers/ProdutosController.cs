@@ -2,7 +2,6 @@
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -10,15 +9,15 @@ using System.Net;
 
 namespace DevXpert.Store.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [Route("api/[controller]")]
     public class ProdutosController(IAppIdentityUser user,
                                     INotificador notificador,
                                     IProdutoService produtoService) : MainController(notificador, user)
     {
         #region READ
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll([FromQuery] string busca, Guid? vendedorId, Guid? categoriaId)
         {
@@ -27,8 +26,8 @@ namespace DevXpert.Store.API.Controllers
             return CustomResponse(HttpStatusCode.OK, ProdutoViewModel.MapToList(produtos));
         }
 
-        [AllowAnonymous]
         [HttpGet("{id:guid}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
@@ -42,17 +41,18 @@ namespace DevXpert.Store.API.Controllers
             NotificarErro("Produto não encontrado.");
             return CustomResponse(HttpStatusCode.NotFound);
         }
-
         #endregion
 
         #region WRITE
-
         [HttpPost]
+        [Authorize(Roles = "Vendedor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] ProdutoViewModel produtoViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            produtoViewModel.SetVendedorId(UserId);
 
             if (!await produtoService.Adicionar(ProdutoViewModel.MapToEntity(produtoViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);
@@ -63,6 +63,7 @@ namespace DevXpert.Store.API.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Administrator,Vendedor")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -76,6 +77,8 @@ namespace DevXpert.Store.API.Controllers
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
+            produtoViewModel.SetVendedorId(UserId);
+
             if (!await produtoService.Atualizar(ProdutoViewModel.MapToEntity(produtoViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);
 
@@ -84,6 +87,7 @@ namespace DevXpert.Store.API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Vendedor")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id)
@@ -94,11 +98,9 @@ namespace DevXpert.Store.API.Controllers
             await Salvar(id);
             return CustomResponse(HttpStatusCode.NoContent);
         }
-
         #endregion
 
         #region PRIVATE_METHODS
-
         private async Task Salvar(Guid id)
         {
             try
@@ -113,7 +115,6 @@ namespace DevXpert.Store.API.Controllers
                 NotificarErro("Produto não encontrada.");
             }
         }
-
         #endregion
     }
 }
