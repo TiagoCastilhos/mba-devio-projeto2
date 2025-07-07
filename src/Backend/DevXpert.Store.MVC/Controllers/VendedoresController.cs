@@ -4,6 +4,7 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DevXpert.Store.MVC.Controllers
 {
@@ -77,6 +78,20 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        [Authorize(Roles = "Administrator")]
+        [Route("/produtosvendedor/{id:guid}")]
+        public async Task<IActionResult> ProdutosVendedor(Guid id)
+        {
+            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id, null));
+            return View(produtos);
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Inativar(Guid id)
+        //{
+            
+        //}
         #region PRIVATE METHODS
 
         private async Task<IActionResult> GetById(Guid id)
