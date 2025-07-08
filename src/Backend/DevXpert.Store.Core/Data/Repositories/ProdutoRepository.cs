@@ -34,6 +34,16 @@ namespace DevXpert.Store.Core.Data.Repositories
                            .Include(p => p.Categoria)
                            .Include(p => p.Vendedor)
                            .FirstOrDefaultAsync(p => p.Id == id);
-        }                             
+        }          
+        
+        public async Task<bool> ProcessarStatusEmLote(Guid vendedorId, bool ativo)
+        {
+            var produtosAfetados = await Db.Produtos
+                .Where(p => p.VendedorId == vendedorId)
+                .ExecuteUpdateAsync(setters =>
+                    setters.SetProperty(p => p.Ativo, ativo));
+
+            return produtosAfetados != 0;
+        }
     }
 }
