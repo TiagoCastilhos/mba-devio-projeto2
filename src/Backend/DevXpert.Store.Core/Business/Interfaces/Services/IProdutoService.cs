@@ -10,6 +10,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
         Task<bool> Atualizar(Produto produto);
         Task<bool> AlternarStatus(Guid id);
         Task<bool> Excluir(Guid id);
+        Task<bool> ProcessarStatusEmLote(Guid vendedorId, bool ativo);
         Task Salvar();
     }
 }

@@ -74,6 +74,12 @@ namespace DevXpert.Store.Core.Business.Services
 
             return true;
         }
+
+        public async Task<bool> ProcessarStatusEmLote(Guid vendedorId, bool ativo)
+        {
+            return await produtoRepository.ProcessarStatusEmLote(vendedorId, ativo);
+        }
+        
         #endregion
 
         #region METHODS

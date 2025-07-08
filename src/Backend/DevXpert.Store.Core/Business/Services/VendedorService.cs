@@ -99,17 +99,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         private async Task<bool> HandleProdutos(Vendedor vendedor)
         {
-            var produtos = await produtoService.BuscarTodos(string.Empty, vendedor.Id);
-
-            //TODO: ATUALIZAR STATUS DOS PRODUTOS EM LOTE
-
-            foreach (var produto in produtos)
-            {
-                produto.Ativar();
-                if (!vendedor.Ativo) produto.Inativar();
-
-                await produtoService.Atualizar(produto);
-            }
+            await produtoService.ProcessarStatusEmLote(vendedor.Id, vendedor.Ativo);
 
             await produtoService.Salvar();
 
