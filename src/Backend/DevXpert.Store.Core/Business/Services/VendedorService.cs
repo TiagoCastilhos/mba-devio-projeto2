@@ -46,7 +46,20 @@ namespace DevXpert.Store.Core.Business.Services
 
             await vendedorRepository.Atualizar(vendedor);
 
-            if(!await HandleProdutos(vendedor)) return false;
+            return true;
+        }
+
+        public async Task<bool> AlternarStatus(Guid id)
+        {
+            var vendedor = await vendedorRepository.BuscarPorId(id);
+            
+            if (vendedor is null) return NotificarError("Vendedor não encontrado.");
+            
+            vendedor.AlternarStatus();
+
+            await vendedorRepository.Atualizar(vendedor);
+
+            if (!await HandleProdutos(vendedor)) return false;
 
             return true;
         }
@@ -87,6 +100,8 @@ namespace DevXpert.Store.Core.Business.Services
         private async Task<bool> HandleProdutos(Vendedor vendedor)
         {
             var produtos = await produtoService.BuscarTodos(string.Empty, vendedor.Id);
+
+            //TODO: ATUALIZAR STATUS DOS PRODUTOS EM LOTE
 
             foreach (var produto in produtos)
             {

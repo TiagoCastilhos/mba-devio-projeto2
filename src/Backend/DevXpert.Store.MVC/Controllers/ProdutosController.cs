@@ -17,9 +17,9 @@ namespace DevXpert.Store.MVC.Controllers
                                     IAppIdentityUser user) : MainController(notificador, user)
     {
         
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string busca = "")
         {
-            var produtos = await produtoService.BuscarTodos(null, UserId);
+            var produtos = await produtoService.BuscarTodos(busca, UserId);
 
             return View(ProdutoViewModel.MapToList(produtos));
         }

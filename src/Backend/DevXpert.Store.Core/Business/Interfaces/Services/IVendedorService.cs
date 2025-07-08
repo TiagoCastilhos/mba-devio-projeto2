@@ -9,6 +9,7 @@ namespace DevXpert.Store.Core.Business.Interfaces.Services
         Task<Vendedor> BuscarPorEmail(string email);
         Task<bool> Adicionar(Vendedor vendedor);
         Task<bool> Atualizar(Vendedor vendedor);
+        Task<bool> AlternarStatus(Guid id);
         Task Salvar();
     }
 }

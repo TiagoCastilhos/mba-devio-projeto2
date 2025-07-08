@@ -10,6 +10,7 @@ namespace DevXpert.Store.MVC.Controllers
         public readonly IAppIdentityUser _user;
         protected Guid UserId { get; set; }
         protected string UserName { get; set; }
+        protected string Role { get; set; }
 
         protected MainController(INotificador notificador, IAppIdentityUser user)
         {
@@ -20,6 +21,7 @@ namespace DevXpert.Store.MVC.Controllers
             {
                 UserId = user.GetUserId();
                 UserName = user.GetUsername();
+                Role = user.GetUserRole();
             }
         }
 

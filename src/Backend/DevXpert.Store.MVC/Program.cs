@@ -2,9 +2,9 @@ using DevXpert.Store.Core.Application.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.MvcBehaviorConfig()
+builder.AddArquivoSettingsConfiguration()
        .AddDatabase()
-       .AddArquivoSettingsConfiguration()
+       .MvcBehaviorConfig()
        .ResolveDependecies();
 
 var app = builder.Build();
