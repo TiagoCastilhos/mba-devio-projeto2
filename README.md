@@ -157,6 +157,29 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 
 ## :white_check_mark: **10. To Do List**
 
-- :white_check_mark: implementar listagem de produtos na visão do Admin (MVC);
-- :white_check_mark: implementar (in)ativação de produtos pelo Admin (MVC);
-- :white_check_mark: implementar diferenciação de menu por usuário (não) logado (MVC);
+MVC:
+
+- :white_check_mark: Padronização dos icones (font awesome) nos botões (adicionar, visualizar, editar, excluir e pesquisar/filtrar);
+- :white_check_mark: Na tela de listagem de Categorias, implementar filtro de pesquisa pelos campos (string busca, bool? ativo);
+- :white_check_mark: Na tela de listagem de vendedores, alterar o botão "atualizar" para "Ativar" ou "inativar" conforme status do vendedor; Este botão segue o padrão do excluir, porém, somente atualiza o status do vendedor - chamada do método vendedorService.AlternarStatus(vendedorId);
+- :white_check_mark: Ainda na tela de vendedor, implementar filtro de pesquisa pelos campos (string busca, bool? ativo);
+- :white_check_mark: Ainda na tela de vendedor, incluir a quantidade de produtos do vendedor na listagem;
+- :white_check_mark: Ainda na tela de vendedor, Alterar o checkbox para label (Ativo/Inativo);
+- :white_check_mark: Na tela de produtos do vendedor, adicionar o e-mail do vendedor concatenado ao título da página; 
+- :white_check_mark: Na tela de produtos do vendedor, renderizar a imagem do produto;
+- :white_check_mark: O botão Ativar/Inativar produto, deve seguir a mesma lógica de Ativar/Inativar Vendedor, chamando o serviço "AlternarStatus" passando o produtoId;
+- :white_check_mark: impedir o login de um vendedor inativado. Ao inativar um vendedor, o mesmo ainda consegue logar;
+- :white_check_mark: No cadastro de produtos (na visão do vendedor): ajustar o campo Preço para comportar o idioma pt-br.
+- :white_check_mark: Na tela de cadastro e atualização de produto, renderizar a imagem ao selecionar o arquivo;
+- :white_check_mark: na tela de listagem de produtos, renderizar a imagem;
+- :white_check_mark: na tela de listagem de produtos, implementar filtro de pesquisa pelos campos (string busca, bool? ativo)
+
+Core/API:
+- :white_check_mark: Padronizar o wwwroot do MVC e Angular para ler a imagem de um unico lugar 
+- :white_check_mark: Ativar e desativar em massa os produtos
+
+Angular
+- :white_check_mark: Tela do produto - Arrumar o botão para favoritar;
+- :white_check_mark: Tela do produto - produtos do mesmo vendedor não mostra os favoritados;
+- :white_check_mark:Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com);
+- :white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel;

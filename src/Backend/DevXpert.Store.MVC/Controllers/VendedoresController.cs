@@ -45,7 +45,7 @@ namespace DevXpert.Store.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(vendedorViewModel);
 
-            if (!await vendedorService.Atualizar(VendedorViewModel.MapToEntity(vendedorViewModel)))
+            if (!await vendedorService.AlternarStatus(vendedorViewModel.Id))
             {
                 GetErrorsFromNotificador();
 
