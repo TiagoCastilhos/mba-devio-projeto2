@@ -8,34 +8,63 @@
 
 <h1 class="mb-4">@ViewData["Title"]</h1>
 
+<partial name="_AlertPartial" />
+
 <table class="table table-striped table-responsive">
     <thead>
         <tr>
             <th>Nome</th>
             <th>Email</th>
             <th>Status</th>
+            <th>Produtos</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@item.Email</td>
+                    <td>@(item.Ativo ? "Ativo" : "Inativo")</td>
+                    <td>@item.QuantidadeProdutos</td>
+                    <td>
+                        @await Html.PartialAsync("_VendedorStatusForm", item)
+
+                        <a class="btn btn-success" asp-action="ProdutosVendedor" asp-route-id="@item.Id" title="Produtos">
+                            <i class="fas fa-box-open"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@item.Nome</td>
-                <td>@item.Email</td>
-                <td>
-                    <span class="badge @(item.Ativo ? "bg-success" : "bg-danger")">
-                        @(item.Ativo ? "Ativo" : "Inativo")
-                    </span>
-                </td>
-                <td>
-                    @Html.Partial("_VendedorStatusForm", item)
-
-                    <a class="btn btn-secondary" asp-action="ProdutosVendedor" asp-route-id="@item.Id" title="Produtos">
-                        <i class="fas fa-box-open"></i>
-                    </a>
-                </td>
+                <td colspan="3" class="text-center text-muted">Nenhum vendedor cadastrado.</td>
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <strong>Total: @Model.Count()</strong>
+            </td>
+            <td colspan="6"></td>
+        </tr>
+    </tfoot>
 </table>
+
+@section scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            setTimeout(function() {
+              $('#modalAlert').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+}

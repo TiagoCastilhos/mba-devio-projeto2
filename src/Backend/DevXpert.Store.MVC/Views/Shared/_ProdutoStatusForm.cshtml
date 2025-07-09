@@ -5,8 +5,10 @@
       asp-route-vendedorId="@Model.VendedorId"
       method="post"
       style="display:inline">
-    <button type="submit"
-            class="btn @(Model.Ativo ? "btn-warning" : "btn-success")">
+   @*  <button type="submit" class="btn @(Model.Ativo ? "btn-warning" : "btn-success")">
         @(Model.Ativo ? "Inativar" : "Ativar")
+    </button> *@
+    <button type="submit" class="btn btn-outline-info" title="@(Model.Ativo ? "Inativar" : "Ativar")">
+        <i class="fas fa-toggle-@(Model.Ativo?"off":"on")"></i>
     </button>
 </form>

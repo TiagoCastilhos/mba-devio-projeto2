@@ -4,6 +4,4 @@
     ViewData["Title"] = "Produtos do Vendedor";
 }
 
-
-
-@Html.Partial("_ListaProdutosPartial", Model)
+@await Html.PartialAsync("_ListaProdutosPartial", Model)

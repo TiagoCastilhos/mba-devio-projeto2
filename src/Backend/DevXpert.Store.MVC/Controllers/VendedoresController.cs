@@ -69,14 +69,16 @@ namespace DevXpert.Store.MVC.Controllers
             return View(produtos);
         }
 
-
         [HttpPost]
         [Route("ProdutosVendedor/{id:guid}")]
         public async Task<IActionResult> AlternarStatusProduto(Guid id, Guid vendedorId)
         {
-            if (await produtoService.AlternarStatus(id))
-                await produtoService.Salvar();
-            else GetErrorsFromNotificador();
+            if (!await produtoService.AlternarStatus(id))
+                GetErrorsFromNotificador();
+
+            await produtoService.Salvar();
+
+            TempData["Sucesso"] = "Status do produto atualizado.";
 
             return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
         }
@@ -85,9 +87,12 @@ namespace DevXpert.Store.MVC.Controllers
         [Route("Vendedor/{id:guid}")]
         public async Task<IActionResult> AlternarStatusVendedor(Guid id)
         {
-            if (await vendedorService.AlternarStatus(id))
-                await vendedorService.Salvar();
-            else GetErrorsFromNotificador();
+            if (!await vendedorService.AlternarStatus(id))
+                GetErrorsFromNotificador();
+
+            await vendedorService.Salvar();
+
+            TempData["Sucesso"] = "Status do vendedor atualizado.";
 
             return RedirectToAction(nameof(Index));
         }

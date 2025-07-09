@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel>
 
-<h2>Produtos do Vendedor </h2>
+<h2>Produtos do Vendedor <strong>@Model.First().Vendedor</strong></h2>
 
-<table class="table table-striped table-responsive">
+<partial name="_AlertPartial" />
+
+<table class="table table-striped table-hover table-responsive">
     <thead>
         <tr>
             <th>Nome</th>
@@ -15,33 +17,49 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var produto in Model)
+        @if (Model.Any())
+        {
+            @foreach (var produto in Model)
+            {
+                <tr>
+                    <td>@produto.Nome</td>
+                    <td>@produto.Descricao</td>
+                    <td>@produto.Preco.ToString("C")</td>
+                    <td>@produto.Estoque</td>
+                    <td>@produto.Categoria</td>
+                    <td>@(produto.Ativo ? "Ativo" : "Inativo")</td>
+                    <td>
+                        @await Html.PartialAsync("_ProdutoStatusForm", produto)
+                    </td>
+                </tr>
+            }
+
+        }
+        else
         {
             <tr>
-                <td>@produto.Nome</td>
-                <td>@produto.Descricao</td>
-                <td>@produto.Preco.ToString("C")</td>
-                <td>@produto.Estoque</td>
-                <td>@produto.Categoria</td>
-                <td>
-                    <span class="badge @(produto.Ativo ? "bg-success" : "bg-danger")">
-                        @(produto.Ativo ? "Ativo" : "Inativo")
-                    </span>
-                </td>
-                <td>
-                    @Html.Partial("_ProdutoStatusForm", produto)
-                </td>
+                <td colspan="3" class="text-center text-muted">Nenhum Produto cadastrado.</td>
             </tr>
         }
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="6"></td>
-            <td class="text-start">
-                <span class="badge bg-secondary fs-6" >
-                    Total: @Model.Count()
-                </span>
+            <td>
+                <strong>Total: @Model.Count()</strong>
             </td>
+            <td colspan="6"></td>
         </tr>
     </tfoot>
 </table>
+
+@section scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            setTimeout(function() {
+              $('#modalAlert').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+}

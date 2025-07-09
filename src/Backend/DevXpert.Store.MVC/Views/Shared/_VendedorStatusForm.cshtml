@@ -2,9 +2,7 @@
       asp-route-id="@Model.Id"
       method="post"
       style="display:inline">
-    <button type="submit"
-            class="btn @(Model.Ativo ? "btn-warning" : "btn-success") me-1"
-            title="@(Model.Ativo ? "Inativar vendedor" : "Ativar vendedor")">
-        @(Model.Ativo ? "Inativar" : "Ativar")
+    <button type="submit" class="btn btn-outline-info" title="@(Model.Ativo ? "Inativar" : "Ativar")">
+        <i class="fas fa-toggle-@(Model.Ativo?"off":"on")"></i>
     </button>
 </form>

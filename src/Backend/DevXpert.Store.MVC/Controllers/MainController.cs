@@ -1,6 +1,7 @@
 ﻿using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DevXpert.Store.MVC.Controllers
 {
@@ -38,6 +39,22 @@ namespace DevXpert.Store.MVC.Controllers
         protected void NotificarErro(string errorMessage)
         {
             _notificador.Handle(new Notificacao(errorMessage));
+        }
+
+        protected List<SelectListItem> GetAtivosFilter(bool? selected)
+        {
+            var listaStatus = new List<SelectListItem> {
+                new() { Value = "", Text = "Todos", Selected = false},
+                new() { Value = "True", Text = "Ativo", Selected = false},
+                new() { Value = "False", Text = "Inativo", Selected = false}
+            };
+
+            foreach (var item in listaStatus)
+                if (item.Value == selected.ToString())
+                    item.Selected = true;
+
+            return listaStatus;
+
         }
     }
 }
