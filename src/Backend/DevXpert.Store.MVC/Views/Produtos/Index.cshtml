@@ -1,54 +1,47 @@
 ﻿@model IEnumerable<DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel>
 
-<h1>@ViewData["Title"]</h1>
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create"><i class="fa fa-plus"></i> Adicionar</a>
+    <a class="btn btn-primary" asp-action="Create" title="Adicionar">
+        <i class="fas fa-plus"></i>
+    </a>
 </p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Preco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estoque)
-            </th>
-            <th>
-                Categoria
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Descricao)</th>
+            <th>@Html.DisplayNameFor(model => model.Preco)</th>
+            <th>@Html.DisplayNameFor(model => model.Estoque)</th>
+            <th>Categoria</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                <td>@Html.DisplayFor(modelItem => item.Preco)</td>
+                <td>@Html.DisplayFor(modelItem => item.Estoque)</td>
+                <td>@Html.DisplayFor(modelItem => item.Categoria)</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Preco)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estoque)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Categoria)
-                </td>
-                <td>
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-search"></i> Visualizar</a>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Atualizar</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i> Excluir</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" title="Visualizar">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" title="Editar">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </a>
                 </td>
             </tr>
         }

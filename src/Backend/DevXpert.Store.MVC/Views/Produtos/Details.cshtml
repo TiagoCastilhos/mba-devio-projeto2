@@ -1,27 +1,27 @@
 ﻿@model DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel
 
 @{
-    ViewData["Title"] = "Detalhes Produto";
+    ViewData["Title"] = "Detalhes do Produto";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="mb-4">@ViewData["Title"]</h1>
 <hr />
 
 <div class="container mt-4">
     <dl class="row">
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Nome)</dt>
+        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Nome)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Descricao)</dt>
+        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Descricao)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Descricao)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Preco)</dt>
+        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Preco)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Preco)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Estoque)</dt>
+        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Estoque)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Estoque)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Imagem)</dt>
+        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Imagem)</dt>
         <dd class="col-sm-10">
             @if (!string.IsNullOrEmpty(Model.Imagem))
             {
@@ -35,17 +35,14 @@
                 <span class="text-muted">Imagem não disponível</span>
             }
         </dd>
-
-        
     </dl>
 
-    <div class="mt-4">
-        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">
-            <i class="fa fa-edit"></i> Atualizar
+    <div class="mt-4 d-flex gap-2">
+        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id" title="Atualizar">
+            <i class="fas fa-pen"></i>
         </a>
-        <a class="btn btn-outline-secondary" asp-action="Index">
-            <i class="fa fa-arrow-left"></i> Voltar
+        <a class="btn btn-outline-secondary" asp-action="Index" title="Voltar">
+            <i class="fas fa-arrow-left"></i>
         </a>
     </div>
 </div>
-

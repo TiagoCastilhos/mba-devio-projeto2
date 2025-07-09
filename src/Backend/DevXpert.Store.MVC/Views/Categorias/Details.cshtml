@@ -3,23 +3,21 @@
 @model CategoriaViewModel
 
 @{
-    ViewBag.Title = $"Detalhes da Categoria {Model.Nome}";
+    ViewBag.Title = $"Detalhes da Categoria: {Model.Nome}";
 }
 
-<div>
-    <h1>@ViewBag.Title</h1>
-</div>
-
+<h1 class="mb-4">@ViewBag.Title</h1>
 <hr />
-<div>    
+
+<div class="mb-4">
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 text-muted">
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nome)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 text-muted">
             @Html.DisplayNameFor(model => model.Descricao)
         </dt>
         <dd class="col-sm-10">
@@ -27,7 +25,12 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar</a>
-    <a asp-action="Index" class="btn btn-warning">Voltar</a>
+
+<div class="d-flex gap-2">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning" title="Editar">
+        <i class="fas fa-pen"></i>
+    </a>
+    <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
+        <i class="fas fa-arrow-left"></i>
+    </a>
 </div>

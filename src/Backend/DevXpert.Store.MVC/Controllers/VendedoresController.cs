@@ -62,7 +62,7 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        [Route("/produtosvendedor/{id:guid}")]
+        [Route("/ProdutosVendedor/{id:guid}")]
         public async Task<IActionResult> ProdutosVendedor(Guid id)
         {
             var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id, ativo: null));
@@ -71,12 +71,25 @@ namespace DevXpert.Store.MVC.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AlternarStatus(Guid id, Guid vendedorId)
+        [Route("ProdutosVendedor/{id:guid}")]
+        public async Task<IActionResult> AlternarStatusProduto(Guid id, Guid vendedorId)
         {
             if (await produtoService.AlternarStatus(id))
                 await produtoService.Salvar();
+            else GetErrorsFromNotificador();
 
             return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
+        }
+
+        [HttpPost]
+        [Route("Vendedor/{id:guid}")]
+        public async Task<IActionResult> AlternarStatusVendedor(Guid id)
+        {
+            if (await vendedorService.AlternarStatus(id))
+                await vendedorService.Salvar();
+            else GetErrorsFromNotificador();
+
+            return RedirectToAction(nameof(Index));
         }
 
         #region PRIVATE METHODS
