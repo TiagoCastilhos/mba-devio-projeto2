@@ -4,6 +4,8 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Models;
+using DevXpert.Store.Core.Business.Services;
 
 namespace DevXpert.Store.MVC.Controllers
 {
@@ -55,7 +57,7 @@ namespace DevXpert.Store.MVC.Controllers
             await vendedorService.Salvar();
 
             TempData["Sucesso"] = "Vendedor atualizado.";
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -63,15 +65,20 @@ namespace DevXpert.Store.MVC.Controllers
         [Route("/produtosvendedor/{id:guid}")]
         public async Task<IActionResult> ProdutosVendedor(Guid id)
         {
-            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id));
+            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id, ativo: null));
             return View(produtos);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Inativar(Guid id)
-        //{
-            
-        //}
+
+        [HttpPost]
+        public async Task<IActionResult> AlternarStatus(Guid id, Guid vendedorId)
+        {
+            if (await produtoService.AlternarStatus(id))
+                await produtoService.Salvar();
+
+            return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
+        }
+
         #region PRIVATE METHODS
 
         private async Task<IActionResult> GetById(Guid id)

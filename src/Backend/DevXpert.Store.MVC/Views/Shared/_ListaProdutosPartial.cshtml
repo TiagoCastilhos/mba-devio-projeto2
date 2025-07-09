@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Categoria</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in Model)
+        {
+            <tr>
+                <td>@produto.Nome</td>
+                <td>@produto.Descricao</td>
+                <td>@produto.Preco.ToString("C")</td>
+                <td>@produto.Estoque</td>
+                <td>@produto.Categoria</td>
+                <td>
+                    <span class="@(produto.Ativo ? "text-success" : "text-danger")">
+                        @(produto.Ativo ? "Ativo" : "Inativo")
+                    </span>
+                </td>
+                <td>
+                    @Html.Partial("_ProdutoStatusForm", produto)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
