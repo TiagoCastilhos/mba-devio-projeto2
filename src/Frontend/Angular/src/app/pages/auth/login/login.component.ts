@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '@services/authentication.service';
+import { AutenticacaoService } from '@services/autenticacao.service';
 import { ToasterService } from '@services/toaster.service';
 
 @Component({
@@ -17,7 +17,7 @@ import { ToasterService } from '@services/toaster.service';
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
-  private authenticationService = inject(AuthenticationService);
+  private authenticationService = inject(AutenticacaoService);
   private toasterService = inject(ToasterService);
   protected loginForm: FormGroup<LoginForm> = this.fb.group<LoginForm>({
     email: this.fb.nonNullable.control<string>('', [

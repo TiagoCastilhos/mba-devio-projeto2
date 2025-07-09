@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/com
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
-import { AuthenticationService } from '@services/authentication.service';
+import { AutenticacaoService } from '@services/autenticacao.service';
 import { catchError, EMPTY, throwError } from 'rxjs';
 
 export const httpRequestInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
@@ -10,7 +10,7 @@ export const httpRequestInterceptorInterceptor: HttpInterceptorFn = (req, next) 
     return next(req);
   }
 
-  const authService = inject(AuthenticationService);
+  const authService = inject(AutenticacaoService);
   const router = inject(Router);
 
   const authToken = authService.obterTokenUsuario();

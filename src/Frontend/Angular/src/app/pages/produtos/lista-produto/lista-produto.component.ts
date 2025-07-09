@@ -5,7 +5,6 @@ import { Produto } from '@models/produto.model';
 import { FavoritosService } from '@services/favoritos.service';
 import { Subscription } from 'rxjs';
 import { ProdutosService } from '../services/produtos/produtos.service';
-import { AuthenticationService } from '@services/authentication.service';
 
 @Component({
   selector: 'app-lista-produto',
@@ -18,8 +17,6 @@ export class ListaProdutoComponent implements OnInit, OnDestroy {
   faStarRegular = regular.faStar;
 
   private _produtoService = inject(ProdutosService);
-  private _favoritosService = inject(FavoritosService);
-  private _authenticationService = inject(AuthenticationService);
   produtos: Produto[] = [];
   private subscription!: Subscription;
 
@@ -27,43 +24,12 @@ export class ListaProdutoComponent implements OnInit, OnDestroy {
     this.subscription = this._produtoService.produtos$.subscribe({
       next: (res) => {
         this.produtos = res;
-
-        if (!this._authenticationService.estaLogado()) {
-          return;
-        }
-
-        this._favoritosService.buscarTodos().subscribe({
-          next: (favoritos) => {
-            if (!favoritos.success || !this.produtos) {
-              return;
-            }
-
-            this.produtos.forEach(p => {
-              const favorito = favoritos.data.find(f => f.produto.id === p.id);
-              if (!favorito) {
-                return;
-              }
-
-              p.favoritoId = favorito.id;
-            });
-          }
-        });
       },
     });
   }
 
   alternarFavorito(produto: Produto) {
-    !produto.favoritoId
-      ? this._favoritosService.adicionar(produto.id).subscribe({
-        next: (res) => {
-          produto.favoritoId = res.id;
-        }
-      })
-      : this._favoritosService.deletar(produto.favoritoId).subscribe({
-        next: () => {
-          produto.favoritoId = null;
-        }
-      });
+    this._produtoService.alternarFavorito(produto);
   }
 
   ngOnDestroy(): void {
