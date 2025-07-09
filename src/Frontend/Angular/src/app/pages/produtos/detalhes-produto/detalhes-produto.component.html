@@ -21,25 +21,17 @@
 
           <h4>
             {{
-              produto.estoque
-                ? "Em estoque: " + produto.estoque
-                : "Indisponível"
+            produto.estoque
+            ? "Em estoque: " + produto.estoque
+            : "Indisponível"
             }}
           </h4>
 
-          @if (!favoritoId) {
-          <app-base-button
-            (click)="adicionarFavorito(produto)"
-            [class]="'btn btn-outline-warning w-100'"
-          >
-            Adicionar a Favoritos
+          <app-base-button (click)="alternarFavorito(produto)" [class]="'btn btn-outline-warning w-100'">
+            {{produto.favoritoId ? "Remover dos Favoritos" : "Adicionar aos Favoritos"}}
           </app-base-button>
-          }
 
-          <a
-            [routerLink]="['/produtos']"
-            (click)="produtosGetAll(produto.vendedorId)"
-          >
+          <a [routerLink]="['/produtos']" (click)="obterProdutosDoVendedor(produto.vendedorId)">
             Acessar vendedor
           </a>
         </div>
@@ -56,10 +48,8 @@
   <div class="row mt-5">
     <h3>Produtos do mesmo vendedor</h3>
     <hr />
-    @for (produtoVendedor of produtosVendedor; track produtoVendedor.id) {
-    <div class="col-4">
+    <div class="col-4" *ngFor="let produtoVendedor of produtosVendedor$ | async">
       <app-produto-card [produto]="produtoVendedor"></app-produto-card>
     </div>
-    }
   </div>
 </div>

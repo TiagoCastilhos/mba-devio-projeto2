@@ -6,7 +6,9 @@ import { Favorito } from '@models/favorito.model';
 import { Observable, tap } from 'rxjs';
 import { BaseService } from './base.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FavoritosService extends BaseService {
   private _http = inject(HttpClient);
   private _favoritosUrl = `${this.apiUrl}/Favoritos`;

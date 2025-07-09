@@ -16,7 +16,7 @@
 
       <div class="col-2 d-flex justify-content-end">
         <ul class="navbar-nav ml-5">
-          @if(!estaLogado()) {
+          @if(!usuarioLogado) {
           <li class="nav-item">
             <a class="nav-link" routerLink="auth/registrar">Registrar</a>
           </li>
@@ -49,7 +49,7 @@
           </div>
         </li>
 
-        @if(estaLogado()) {
+        @if(usuarioLogado) {
         <li class="nav-item cursor-pointer">
           <a class="nav-link" [routerLink]="['/favoritos']"> Favoritos </a>
         </li>

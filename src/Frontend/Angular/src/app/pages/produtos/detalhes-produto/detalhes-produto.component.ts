@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CustomResponse } from '@models/custom-response';
 import { Produto } from '@models/produto.model';
-import { FavoritosService } from '@services/favoritos.service';
 import { ToasterService } from '@services/toaster.service';
-import { map, Observable, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ProdutosService } from '../services/produtos/produtos.service';
 
 @Component({
@@ -13,45 +11,63 @@ import { ProdutosService } from '../services/produtos/produtos.service';
   templateUrl: './detalhes-produto.component.html',
 })
 export class DetalhesProdutoComponent {
-  _produtoService = inject(ProdutosService);
-  _favoritoService = inject(FavoritosService);
-  _toasterService = inject(ToasterService);
-  _route = inject(ActivatedRoute);
-  produto$: Observable<Produto> = this._produtoService
-    .obterPorId(this._route.snapshot.paramMap.get('id')!)
-    .pipe(
-      map((res: CustomResponse<Produto>) => res.data),
-      tap({
-        next: (response: Produto) => {
-          this._produtoService
-            .obterTodos({ vendedorId: response.vendedorId })
-            .subscribe({
-              next: (res) => {
-                this.produtosVendedor = res.data;
-              },
-            });
-        },
-        error: (error) => this._toasterService.erro(error?.error?.errors),
-      })
-    );
-  favoritoId: string | null = null;
-  produtosVendedor: Produto[] = [];
+  private _produtoService = inject(ProdutosService);
+  private _toasterService = inject(ToasterService);
+  private _route = inject(ActivatedRoute);
+  private _produto = new BehaviorSubject<Produto | undefined>(undefined);
+  private _produtosVendedor = new BehaviorSubject<Produto[]>([]);
 
-  adicionarFavorito(produto: Produto) {
-    this._favoritoService.adicionar(produto.id).subscribe({
+  favoritoId: string | null = null;
+  produto$ = this._produto.asObservable();
+  produtosVendedor$ = this._produtosVendedor.asObservable();
+
+  ngOnInit() {
+    this._route.paramMap.subscribe(p => {
+      const produtoId = p.get('id')!;
+
+      this._produtoService.obterPorId(produtoId)
+        .subscribe({
+          next: (res) => {
+            if (res.success) {
+              this._produto.next(res.data);
+              this._produtoService
+                .obterTodos({ vendedorId: res.data.vendedorId })
+                .subscribe({
+                  next: (res) => {
+                    this._produtosVendedor.next(res.data);
+                  },
+                });
+            }
+          },
+          error: (err) => {
+            this._toasterService.erro(err.error.errors);
+          },
+        });
+    });
+
+  }
+
+  alternarFavorito(produto: Produto) {
+    this._produtoService.alternarFavorito(produto).subscribe({
       next: (res) => {
-        if (res.success) {
-          this._toasterService.sucesso(produto.nome + ' favoritado!');
-          this.favoritoId = res.data.id;
+        const produtoSelecionado = this._produto.getValue()!
+
+        if (produtoSelecionado.id === res.id) {
+          this._produto.next(res);
         }
-      },
-      error: (response) => {
-        this._toasterService.erro(response.error.errors.toString());
-      },
+
+        const produtosVendedor = this._produtosVendedor.getValue()!;
+        const produtoVendedorIndex = produtosVendedor.findIndex(pv => pv.id === res.id);
+
+        if (produtoVendedorIndex !== -1) {
+          produtosVendedor[produtoVendedorIndex] = res;
+          this._produtosVendedor.next([...produtosVendedor]);
+        }
+      }
     });
   }
 
-  produtosGetAll(vendedorId: string) {
+  obterProdutosDoVendedor(vendedorId: string) {
     this._produtoService
       .obterTodos({ vendedorId })
       .subscribe(() => this._toasterService.sucesso());

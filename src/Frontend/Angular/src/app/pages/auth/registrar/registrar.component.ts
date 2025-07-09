@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '@services/authentication.service';
+import { AutenticacaoService } from '@services/autenticacao.service';
 import { ToasterService } from '@services/toaster.service';
 import { passwordMatchValidator, passwordRegex } from '../validators/password-match.validator';
 
@@ -14,7 +14,7 @@ import { passwordMatchValidator, passwordRegex } from '../validators/password-ma
 export class RegistrarComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private authenticationService = inject(AuthenticationService);
+  private authenticationService = inject(AutenticacaoService);
   private toasterService = inject(ToasterService);
   protected registerForm: FormGroup<RegisterForm> = this.fb.group<RegisterForm>(
     {

@@ -3,16 +3,34 @@ import { inject, Injectable } from '@angular/core';
 import { AuthResponse } from '@models/auth-response.model';
 import { CustomResponse } from '@models/custom-response';
 import { Usuario } from '@models/usuario.model';
-import { tap } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { BaseService } from './base.service';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService extends BaseService {
+export class AutenticacaoService extends BaseService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private _usuarioLogado = new BehaviorSubject<boolean>(false);
+
+  get usuarioLogado() {
+    return this._usuarioLogado.asObservable();
+  }
+
+  constructor() {
+    super();
+
+    const token = this.obterTokenUsuario();
+
+    if (token && !this.tokenExpirado(token)) {
+      this._usuarioLogado.next(true);
+    }
+    else {
+      this.deslogar();
+    }
+  }
 
   registrar(email: string, password: string) {
     return this.http.post<CustomResponse<string>>(
@@ -25,6 +43,8 @@ export class AuthenticationService extends BaseService {
     ).pipe(tap({
       next: (response: AuthResponse) => {
         this.setarTokenUsuario(response);
+        this._usuarioLogado.next(true);
+        this.router.navigate(['']);
       }
     }));
   }
@@ -39,6 +59,7 @@ export class AuthenticationService extends BaseService {
     ).pipe(tap({
       next: (response: AuthResponse) => {
         this.setarTokenUsuario(response);
+        this._usuarioLogado.next(true);
         this.router.navigate(['']);
       }
     }));
@@ -52,21 +73,7 @@ export class AuthenticationService extends BaseService {
   deslogar() {
     sessionStorage.removeItem('access_token');
     this.router.navigate(['']);
-  }
-
-  estaLogado(): boolean {
-    const token = this.obterTokenUsuario();
-
-    if (!token) {
-      return false;
-    }
-
-    if (this.tokenExpirado(token)) {
-      this.deslogar();
-      return false;
-    }
-
-    return true;
+    this._usuarioLogado.next(false);
   }
 
   obterUsuario(): Usuario | undefined {
