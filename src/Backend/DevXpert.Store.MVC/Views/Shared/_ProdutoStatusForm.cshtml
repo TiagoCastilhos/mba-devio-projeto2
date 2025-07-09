@@ -1,0 +1,12 @@
+﻿@model DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel
+
+<form asp-action="AlternarStatusProduto"
+      asp-route-id="@Model.Id"
+      asp-route-vendedorId="@Model.VendedorId"
+      method="post"
+      style="display:inline">
+    <button type="submit"
+            class="btn @(Model.Ativo ? "btn-warning" : "btn-success")">
+        @(Model.Ativo ? "Inativar" : "Ativar")
+    </button>
+</form>

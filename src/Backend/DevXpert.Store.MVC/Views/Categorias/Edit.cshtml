@@ -3,50 +3,57 @@
 @model CategoriaViewModel
 
 @{
-    ViewBag.Title = $"Editar Categoria {Model.Nome}";
+    ViewBag.Title = $"Editar Categoria: {Model.Nome}";
 }
 
-<div>
-    <h1>@ViewBag.Title</h1>
-</div>
+<h1 class="mb-4">@ViewBag.Title</h1>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit"
               data-ajax="true"
               data-ajax-method="POST"
               data-ajax-begin="onBegin"
               data-ajax-complete="onComplete">
 
-            <div asp-validation-summary="ModelOnly" class="clientside-validation-summary text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label"></label>
                 <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="clientside-validation-summary text-danger"></span>
+                <span asp-validation-for="Nome" class="text-danger small"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="Descricao" class="form-label"></label>
                 <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="clientside-validation-summary text-danger"></span>
+                <span asp-validation-for="Descricao" class="text-danger small"></span>
             </div>
 
             <input type="hidden" asp-for="Id" />
-                        
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-warning">Voltar</a>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-success" title="Salvar">
+                    <i class="fas fa-check"></i>
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
             </div>
 
-            <div class="alert-danger">
-                <div class="text-danger">@ViewBag.Errors</div>
-            </div>
-
+            @if (!string.IsNullOrEmpty(ViewBag.Errors as string))
+            {
+                <div class="alert alert-danger mt-3">
+                    <i class="fas fa-exclamation-triangle"></i> @ViewBag.Errors
+                </div>
+            }
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

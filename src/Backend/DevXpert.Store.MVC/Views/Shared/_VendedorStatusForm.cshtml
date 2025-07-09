@@ -1,0 +1,10 @@
+﻿<form asp-action="AlternarStatusVendedor"
+      asp-route-id="@Model.Id"
+      method="post"
+      style="display:inline">
+    <button type="submit"
+            class="btn @(Model.Ativo ? "btn-warning" : "btn-success") me-1"
+            title="@(Model.Ativo ? "Inativar vendedor" : "Ativar vendedor")">
+        @(Model.Ativo ? "Inativar" : "Ativar")
+    </button>
+</form>

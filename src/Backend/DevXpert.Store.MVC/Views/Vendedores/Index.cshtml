@@ -6,40 +6,34 @@
     ViewData["Title"] = "Vendedores";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="mb-4">@ViewData["Title"]</h1>
 
-
-<table class="table">
+<table class="table table-striped table-responsive">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ativo)
-            </th>
-            <th></th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>@item.Nome</td>
+                <td>@item.Email</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
+                    <span class="badge @(item.Ativo ? "bg-success" : "bg-danger")">
+                        @(item.Ativo ? "Ativo" : "Inativo")
+                    </span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ativo)
-                </td>
-                <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Atualizar</a>
-                    <a class="btn btn-success" asp-action="ProdutosVendedor" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Produtos</a>
+                    @Html.Partial("_VendedorStatusForm", item)
+
+                    <a class="btn btn-secondary" asp-action="ProdutosVendedor" asp-route-id="@item.Id" title="Produtos">
+                        <i class="fas fa-box-open"></i>
+                    </a>
                 </td>
             </tr>
         }

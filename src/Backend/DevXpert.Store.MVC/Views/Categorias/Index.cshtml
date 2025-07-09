@@ -6,37 +6,48 @@
     ViewData["Title"] = "Categorias";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="mb-4">@ViewData["Title"]</h1>
 
-<p>
-    <a class="btn btn-primary" asp-action="Create"><i class="fa-plus"></i> Adicionar</a>
-</p>
-<table class="table">
-    <thead>
+<div class="mb-3">
+    <a class="btn btn-success" asp-action="Create" title="Adicionar nova categoria">
+        <i class="fas fa-plus"></i>
+    </a>
+</div>
+
+<table class="table table-hover align-middle">
+    <thead class="table-light">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Descricao)</th>
+            <th class="text-center" style="width: 150px;">Ações</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                    <td class="text-center">
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" title="Visualizar">
+                            <i class="fas fa-search"></i>
+                        </a>
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" title="Editar">
+                            <i class="fas fa-pen"></i>
+                        </a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" title="Excluir">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-pencil"></i> Atualizar</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-trash"></i> Excluir</a>
-                </td>
+                <td colspan="3" class="text-center text-muted">Nenhuma categoria cadastrada.</td>
             </tr>
         }
     </tbody>

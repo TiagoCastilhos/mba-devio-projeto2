@@ -6,10 +6,9 @@
     ViewBag.Title = $"Editar Vendedor {Model.Nome}";
 }
 
-<div>
-    <h1>@ViewBag.Title</h1>
-</div>
+<h1 class="mb-4">@ViewBag.Title</h1>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit"
@@ -18,28 +17,35 @@
               data-ajax-begin="onBegin"
               data-ajax-complete="onComplete">
 
-            <div asp-validation-summary="ModelOnly" class="clientside-validation-summary text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="Ativo" class="control-label"></label>
-                <input type="checkbox" asp-for="Ativo" />
-                <span asp-validation-for="Ativo" class="clientside-validation-summary text-danger"></span>
+            <div class="form-check mb-3">
+                <input type="checkbox" asp-for="Ativo" class="form-check-input" id="Ativo" />
+                <label asp-for="Ativo" class="form-check-label"></label>
+                <span asp-validation-for="Ativo" class="text-danger small"></span>
             </div>
 
+            @* Hidden fields *@
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Email" />
             <input type="hidden" asp-for="Nome" />
             <input type="hidden" asp-for="Senha" />
-                        
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-warning">Voltar</a>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary" title="Salvar">
+                    <i class="fas fa-check"></i>
+                </button>
+                <a asp-action="Index" class="btn btn-warning" title="Voltar">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
             </div>
 
-            <div class="alert-danger">
-                <div class="text-danger">@ViewBag.Errors</div>
-            </div>
-
+            @if (!string.IsNullOrEmpty(ViewBag.Errors))
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    @ViewBag.Errors
+                </div>
+            }
         </form>
     </div>
 </div>
