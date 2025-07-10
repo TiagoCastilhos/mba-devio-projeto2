@@ -13,8 +13,7 @@
 @{
     Guid vendedorId = ViewBag.VendedorId != null ? (Guid)ViewBag.VendedorId : Guid.Empty;
 }
-@using (Html.BeginForm("ProdutosVendedor", "Vendedores", FormMethod.Get, new { name = "frmsearch", id = "frmsearch" }))
-{
+<form asp-action="ProdutosVendedor" asp-controller="Vendedores" method="get" name="frmsearch" id="frmsearch">
     @Html.Hidden("id", vendedorId)
     <div class="row">
         <div class="col-lg-4 col-md-4">
@@ -38,61 +37,70 @@
                 </span>
             </div>
         </div>
-        <table class="table table-striped table-hover table-responsive">
-            <thead class="table-light">
-                <tr>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Preço</th>
-                    <th>Estoque</th>
-                    <th>Categoria</th>
-                    <th>Status</th>
-                    <th class="text-center" style="width: 150px;">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Any())
-                {
-                    @foreach (var produto in Model)
-                    {
-                        <tr>
-                            <td>@produto.Nome</td>
-                            <td>@produto.Descricao</td>
-                            <td>@produto.Preco.ToString("C")</td>
-                            <td>@produto.Estoque</td>
-                            <td>@produto.Categoria</td>
-                            <td>@(produto.Ativo ? "Ativo" : "Inativo")</td>
-                            <td>
-                                @await Html.PartialAsync("_ProdutoStatusForm", produto)
-                            </td>
-                        </tr>
-                    }
-
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="3" class="text-center text-muted">Nenhum Produto cadastrado.</td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td>
-                        <strong>Total: @Model.Count()</strong>
-                    </td>
-                    <td colspan="6"></td>
-                </tr>
-            </tfoot>
-
-        </table>
-        <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary" asp-action="Index" title="Voltar">
-                <i class="fas fa-arrow-left"></i>
-            </a>
-        </div>
     </div>
-}
+</form>
+
+<table class="table table-striped table-hover table-responsive">
+    <thead class="table-light">
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Categoria</th>
+            <th>Status</th>
+            <th class="text-center" style="width: 150px;">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var produto in Model)
+            {
+                <tr>
+                    <td>@produto.Nome</td>
+                    <td>@produto.Descricao</td>
+                    <td>@produto.Preco.ToString("C")</td>
+                    <td>@produto.Estoque</td>
+                    <td>@produto.Categoria</td>
+                    <td>@(produto.Ativo ? "Ativo" : "Inativo")</td>
+                    <td class="text-center" style="width: 150px;">
+                        <form asp-action="AlternarStatusProduto"
+                              asp-route-id="@produto.Id"
+                              asp-route-vendedorId="@produto.VendedorId"
+                              method="post"
+                              style="display:inline">
+                            <button type="submit" class="btn btn-outline-info" title="@(produto.Ativo ? "Inativar" : "Ativar")">
+                                <i class="fas fa-toggle-@(produto.Ativo?"off":"on")"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center text-muted">Nenhum Produto cadastrado.</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <strong>Total: @Model.Count()</strong>
+            </td>
+            <td colspan="6"></td>
+        </tr>
+    </tfoot>
+
+</table>
+<div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" asp-action="Index" title="Voltar">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+</div>
 
 @section scripts {
     <script>

@@ -1,8 +1,0 @@
-﻿<form asp-action="AlternarStatusVendedor"
-      asp-route-id="@Model.Id"
-      method="post"
-      style="display:inline">
-    <button type="submit" class="btn btn-outline-info" title="@(Model.Ativo ? "Inativar" : "Ativar")">
-        <i class="fas fa-toggle-@(Model.Ativo?"off":"on")"></i>
-    </button>
-</form>

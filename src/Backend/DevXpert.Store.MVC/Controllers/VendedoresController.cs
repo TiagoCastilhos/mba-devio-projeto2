@@ -94,7 +94,7 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [HttpPost]
-        [Route("Vendedor/{id:guid}")]
+        [Route("Vendedores/{id:guid}")]
         public async Task<IActionResult> AlternarStatusVendedor(Guid id)
         {
             if (!await vendedorService.AlternarStatus(id))
