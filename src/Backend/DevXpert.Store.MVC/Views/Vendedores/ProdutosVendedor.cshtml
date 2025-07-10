@@ -1,7 +1,107 @@
-﻿@model IEnumerable<DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel>
+﻿@using DevXpert.Store.Core.Application.ViewModels
+
+@model IEnumerable<ProdutoViewModel>
 
 @{
     ViewData["Title"] = "Produtos do Vendedor";
 }
 
-@await Html.PartialAsync("_ListaProdutosPartial", Model)
+<h2>Produtos do Vendedor <strong>@ViewBag.VendedorEmail</strong></h2>
+
+<partial name="_AlertPartial" />
+
+@{
+    Guid vendedorId = ViewBag.VendedorId != null ? (Guid)ViewBag.VendedorId : Guid.Empty;
+}
+@using (Html.BeginForm("ProdutosVendedor", "Vendedores", FormMethod.Get, new { name = "frmsearch", id = "frmsearch" }))
+{
+    @Html.Hidden("id", vendedorId)
+    <div class="row">
+        <div class="col-lg-4 col-md-4">
+            <div class="input-group">
+                <select id="Ativo" name="Ativo" class="form-select" onchange="this.form.submit();">
+                    @foreach (var item in ViewBag.FiltroStatus)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-8">
+            <div class="input-group">
+                @Html.TextBox("busca", null, new { @class = "form-control input", @placeholder = "Pesquisar", autofocus = "", id = "busca" })
+                <span class="input-group-btn">
+                    <button outofocus="off" class="btn btn-outline-info" type="submit" data-toggle="tooltip" data-placement="right" title="Buscar">
+                        <small><i class="fa fa-search"></i></small>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <table class="table table-striped table-hover table-responsive">
+            <thead class="table-light">
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Estoque</th>
+                    <th>Categoria</th>
+                    <th>Status</th>
+                    <th class="text-center" style="width: 150px;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var produto in Model)
+                    {
+                        <tr>
+                            <td>@produto.Nome</td>
+                            <td>@produto.Descricao</td>
+                            <td>@produto.Preco.ToString("C")</td>
+                            <td>@produto.Estoque</td>
+                            <td>@produto.Categoria</td>
+                            <td>@(produto.Ativo ? "Ativo" : "Inativo")</td>
+                            <td>
+                                @await Html.PartialAsync("_ProdutoStatusForm", produto)
+                            </td>
+                        </tr>
+                    }
+
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">Nenhum Produto cadastrado.</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <strong>Total: @Model.Count()</strong>
+                    </td>
+                    <td colspan="6"></td>
+                </tr>
+            </tfoot>
+
+        </table>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-secondary" asp-action="Index" title="Voltar">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            setTimeout(function() {
+              $('#modalAlert').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+}

@@ -3,60 +3,89 @@
 @model IEnumerable<VendedorViewModel>
 
 @{
-    ViewData["Title"] = "Vendedores";
+    string controllerName = "Vendedores";
+    ViewData["Title"] = controllerName;
+
 }
 
 <h1 class="mb-4">@ViewData["Title"]</h1>
 
 <partial name="_AlertPartial" />
 
-<table class="table table-striped table-responsive">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Produtos</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Any())
-        {
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Nome</td>
-                    <td>@item.Email</td>
-                    <td>@(item.Ativo ? "Ativo" : "Inativo")</td>
-                    <td>@item.QuantidadeProdutos</td>
-                    <td>
-                        @await Html.PartialAsync("_VendedorStatusForm", item)
+@using (Html.BeginForm("Index", controllerName, FormMethod.Get, new { name = "frmsearch", id = "frmsearch" }))
+{
+    <div class="row">
+        <div class="col-lg-4 col-md-4">
+            <div class="input-group">
+                <select id="Ativo" name="Ativo" class="form-select" onchange="this.form.submit();">
+                    @foreach (var item in ViewBag.FiltroStatus)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
 
-                        <a class="btn btn-success" asp-action="ProdutosVendedor" asp-route-id="@item.Id" title="Produtos">
-                            <i class="fas fa-box-open"></i>
-                        </a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="3" class="text-center text-muted">Nenhum vendedor cadastrado.</td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td>
-                <strong>Total: @Model.Count()</strong>
-            </td>
-            <td colspan="6"></td>
-        </tr>
-    </tfoot>
-</table>
+        <div class="col-lg-8 col-md-8">
+            <div class="input-group">
+                @Html.TextBox("busca", null, new { @class = "form-control input", @placeholder = "Pesquisar", autofocus = "", id = "busca" })
+                <span class="input-group-btn">
+                    <button outofocus="off" class="btn btn-outline-info" type="submit" data-toggle="tooltip" data-placement="right" title="Buscar">
+                        <small><i class="fa fa-search"></i></small>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class=" panel panel-default">
+            <table class="table table-striped table-responsive">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Produtos</th>
+                        <th class="text-center" style="width: 150px;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Nome</td>
+                                <td>@item.Email</td>
+                                <td>@(item.Ativo ? "Ativo" : "Inativo")</td>
+                                <td>@item.QuantidadeProdutos</td>
+                                <td>
+                                    @await Html.PartialAsync("_VendedorStatusForm", item)
 
+                                    <a class="btn btn-success" asp-action="ProdutosVendedor" asp-route-id="@item.Id" title="Produtos">
+                                        <i class="fas fa-box-open"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">Nenhum vendedor cadastrado.</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <strong>Total: @Model.Count()</strong>
+                        </td>
+                        <td colspan="6"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+}
 @section scripts {
     <script>
         $(function () {

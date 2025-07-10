@@ -17,9 +17,10 @@ namespace DevXpert.Store.MVC.Controllers
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Index(string busca)
+        public async Task<IActionResult> Index(string busca, bool? ativo)
         {
-            var vendedores = VendedorViewModel.MapToList(await vendedorService.BuscarTodos(busca, null));
+            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+            var vendedores = VendedorViewModel.MapToList(await vendedorService.BuscarTodos(busca, ativo));
             return View(vendedores);
         }
 
@@ -61,11 +62,20 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("/ProdutosVendedor/{id:guid}")]
-        public async Task<IActionResult> ProdutosVendedor(Guid id)
+        public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo)
         {
-            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id, ativo: null));
+            //recarregar vendedor
+            var vendedorViewModel = VendedorViewModel.MapToViewModel(await vendedorService.BuscarPorId(id));
+            ViewBag.VendedorId = vendedorViewModel.Id;
+            ViewBag.VendedorEmail = vendedorViewModel.Email;
+
+
+            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+
+            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(busca, id, null, ativo));
             return View(produtos);
         }
 

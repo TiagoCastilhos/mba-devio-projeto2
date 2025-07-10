@@ -112,7 +112,7 @@ namespace DevXpert.Store.MVC.Controllers
 
             await categoriaService.Salvar();
 
-            TempData["Sucesso"] = "Categoria Excluída.";
+            TempData["Sucesso"] = "Categoria Excluída!";
 
             return RedirectToAction(nameof(Index));
         }
