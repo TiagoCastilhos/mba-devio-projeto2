@@ -7,11 +7,14 @@
 <h1 class="mb-4">@ViewData["Title"]</h1>
 <hr />
 
-<div class="row">
-    <div class="col-md-6">
+<div class="row align-items-center">
+ 
+
+    <div class="col-md-4">
         <form enctype="multipart/form-data" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Imagem" />
 
             <div class="mb-3">
                 <label asp-for="Nome" class="form-label"></label>
@@ -24,22 +27,6 @@
                 <input asp-for="Descricao" class="form-control" />
                 <span asp-validation-for="Descricao" class="text-danger small"></span>
             </div>
-
-            <div class="mb-3">
-                <label>Imagem Atual</label><br />
-                @if (!string.IsNullOrEmpty(Model.Imagem))
-                {
-                    <img src="@Url.Content($"~/imagens/development/{Model.Imagem}")"
-                         alt="Imagem do Produto"
-                         style="width: 70px; height: 100px; object-fit: cover; border-radius: 4px;" />
-                }
-                else
-                {
-                    <span class="text-muted">Nenhuma imagem disponível</span>
-                }
-            </div>
-
-            <input type="hidden" asp-for="Imagem" />
 
             <div class="mb-3">
                 <label asp-for="FileUpload" class="form-label"></label>
@@ -65,6 +52,7 @@
                     <option value="" selected disabled>Selecione uma Opção</option>
                 </select>
             </div>
+
             <div class="form-check mb-3">
                 <input type="checkbox" asp-for="Ativo" class="form-check-input" id="Ativo" />
                 <label asp-for="Ativo" class="form-check-label"></label>
@@ -81,10 +69,21 @@
             </div>
         </form>
     </div>
+    <div class="col-md-8 text-center d-flex justify-content-center">
+        @if (!string.IsNullOrEmpty(Model.Imagem))
+        {
+            <img src="@Url.Content($"~/imagens/development/{Model.Imagem}")"
+                 alt="Imagem do Produto"
+                 class="img-thumbnail"
+                 style="max-height: 300px; width: auto;" />
+        }
+        else
+        {
+            <span class="text-muted">Nenhuma imagem disponível</span>
+        }
+    </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

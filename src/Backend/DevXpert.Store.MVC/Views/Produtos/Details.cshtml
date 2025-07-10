@@ -8,34 +8,39 @@
 <hr />
 
 <div class="container mt-4">
-    <dl class="row">
-        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nome)</dd>
+    <div class="row">
+        
 
-        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Descricao)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Descricao)</dd>
+        <div class="col-md-4">
+            <dl class="row">
+                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Nome)</dd>
 
-        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Preco)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Preco)</dd>
+                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Descricao)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Descricao)</dd>
 
-        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Estoque)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Estoque)</dd>
+                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Preco)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Preco)</dd>
 
-        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Imagem)</dt>
-        <dd class="col-sm-10">
+                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Estoque)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Estoque)</dd>
+            </dl>
+        </div>
+
+        <div class="col-md-7 text-center">
             @if (!string.IsNullOrEmpty(Model.Imagem))
             {
                 <img src="@Url.Content($"~/imagens/development/{Model.Imagem}")"
                      alt="Imagem do Produto"
-                     class="img-thumbnail"
-                     style="max-width: 300px;" />
+                     class="img-fluid img-thumbnail mb-3"
+                     style="max-height: 300px;" />
             }
             else
             {
-                <span class="text-muted">Imagem não disponível</span>
+                <div class="text-muted">Imagem não disponível</div>
             }
-        </dd>
-    </dl>
+        </div>
+    </div>
 
     <div class="mt-4 d-flex gap-2">
         <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id" title="Atualizar">
