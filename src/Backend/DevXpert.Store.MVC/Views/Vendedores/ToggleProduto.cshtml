@@ -20,7 +20,7 @@
                 data-toggle="modal" data-target="#modalalternarstatus" onclick="$('#modalalternarstatus').modal('show');">
             <i class="fas fa-toggle-@(icon)"></i> @acao
         </button>
-        <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
+        <a asp-action="ProdutosVendedor" asp-route-id="@Model.VendedorId" class="btn btn-outline-secondary" title="Voltar">
             <i class="fas fa-arrow-left"></i> Voltar
         </a>
     </div>
