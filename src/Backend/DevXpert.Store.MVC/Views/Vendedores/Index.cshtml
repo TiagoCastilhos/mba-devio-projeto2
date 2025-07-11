@@ -59,7 +59,7 @@
                         <td>@(item.Ativo ? "Ativo" : "Inativo")</td>
                         <td>@item.QuantidadeProdutos</td>
                         <td class="text-center">
-                            <form asp-action="AlternarStatusVendedor" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <form asp-action="AlternarStatusVendedor" asp-route-id="@item.Id" method="get" class="d-inline">
                                 <button type="submit" class="btn btn-outline-info" title="@(item.Ativo ? "Inativar" : "Ativar")">
                                     <i class="fas fa-toggle-@(item.Ativo ? "off" : "on")"></i>
                                 </button>

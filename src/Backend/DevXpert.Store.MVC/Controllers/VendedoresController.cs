@@ -7,14 +7,13 @@ using DevXpert.Store.Core.Application.ViewModels;
 
 namespace DevXpert.Store.MVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     [Route("vendedores")]
     public class VendedoresController(IVendedorService vendedorService,
                                       IProdutoService produtoService,
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index(string busca, bool? ativo)
         {
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
@@ -22,15 +21,13 @@ namespace DevXpert.Store.MVC.Controllers
             return View(vendedores);
         }
 
-        [Authorize(Roles = "Administrator")]
-        [Route("detalhes/{id:Guid}")]
+        [HttpGet("detalhes/{id:Guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
             return await GetById(id);
         }
 
-        [Authorize(Roles = "Administrator")]
-        [Route("editar")]
+        [HttpGet("editar")]
         public async Task<IActionResult> Edit(Guid id)
         {
             return await GetById(id);
@@ -60,9 +57,15 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        [Route("Vendedores/{id:guid}")]
+        [HttpGet("alterar-status/{id:guid}")]
         public async Task<IActionResult> AlternarStatusVendedor(Guid id)
+        {
+            return await GetById(id, "Toggle");
+        }
+
+        [HttpPost("alterar-status/{id:guid}"), ActionName("AlternarStatusVendedor")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AlternarStatusVendedorConfirmed(Guid id)
         {
             if (!await vendedorService.AlternarStatus(id))
                 GetErrorsFromNotificador();
@@ -74,9 +77,7 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Administrator")]
-        [Route("/ProdutosVendedor/{id:guid}")]
+        [HttpGet("/ProdutosVendedor/{id:guid}")]
         public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo)
         {
             //recarregar vendedor
@@ -91,8 +92,7 @@ namespace DevXpert.Store.MVC.Controllers
             return View(produtos);
         }
 
-        [HttpPost]
-        [Route("ProdutosVendedor/{id:guid}")]
+        [HttpPost("ProdutosVendedor/{id:guid}")]
         public async Task<IActionResult> AlternarStatusProduto(Guid id, Guid vendedorId)
         {
             if (!await produtoService.AlternarStatus(id))
@@ -105,10 +105,9 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
         }
 
-      
         #region PRIVATE METHODS
 
-        private async Task<IActionResult> GetById(Guid id)
+        private async Task<IActionResult> GetById(Guid id, string view = "")
         {
             if (id == Guid.Empty) return NotFound();
 
@@ -116,7 +115,7 @@ namespace DevXpert.Store.MVC.Controllers
 
             if (vendedorViewModel is null) return NotFound();
 
-            return View(vendedorViewModel);
+            return string.IsNullOrEmpty(view) ? View(vendedorViewModel) : View(view, vendedorViewModel);
         }
 
         #endregion

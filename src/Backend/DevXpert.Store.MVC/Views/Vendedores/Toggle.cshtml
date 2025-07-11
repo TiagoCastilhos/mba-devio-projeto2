@@ -1,0 +1,70 @@
+﻿@using DevXpert.Store.Core.Application.ViewModels
+@model VendedorViewModel
+
+@{
+    ViewBag.Title = $"Alterar Status do Vendedor:";
+    string acao = Model.Ativo ? "Inativar" : "Ativar";
+    string acaoConfirm = Model.Ativo ? "Inativação" : "Ativação";
+}
+
+<h1 class="mb-4">@ViewBag.Title <strong>@Model.Nome</strong></h1>
+
+<div class="container mt-4">
+
+    <div class="col-md-4">
+        <dl class="row">
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Nome)</dd>
+
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+            <dt class="col-sm-4 text-muted">Status</dt>
+            <dd class="col-sm-8">@(Model.Ativo ? "Ativo" : "Inativo")</dd>
+        </dl>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-info" title="@acao"
+                data-toggle="modal" data-target="#modalalternarstatus" onclick="$('#modalalternarstatus').modal('show');">
+            <i class="fas fa-toggle-@(Model.Ativo ? "off" : "on")"></i> @acao
+        </button>
+        <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+</div>
+
+
+<div class="modal modal-lg fade" id="modalalternarstatus" tabindex="-1" role="dialog" aria-labelledby="modalalternarstatus" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalalternarstatustitle">@acao Vendedor</h5>
+                <button type="button" class="btn-close" aria-label="close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-4">Tem certeza que deseja @acao o vendedor <strong>@Model.Nome</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="AlternarStatusVendedor" >
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-primary">
+                        Confirmar @acaoConfirm
+                    </button>
+                </form>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(function () {
+            setTimeout(function() {
+              $('#modalAlert').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+}

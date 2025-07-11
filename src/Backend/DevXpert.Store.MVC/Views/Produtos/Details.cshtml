@@ -9,7 +9,7 @@
 
 <div class="container mt-4">
 
-    @await Html.PartialAsync("_ProdutoDetailPartial", Model)
+    @await Html.PartialAsync("_ProdutoDetailsPartial", Model)
 
     <div class="mt-4 d-flex gap-2">
         <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id" title="Editar">

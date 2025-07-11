@@ -10,40 +10,45 @@
 
 <partial name="_AlertPartial" />
 
-<h4 class="text-warning mb-4">Tem certeza que deseja excluir a categoria <strong>@Model.Nome</strong>?</h4>
 
-<dl class="row mb-4">
-    <dt class="col-sm-2 text-muted">
-        @Html.DisplayNameFor(model => model.Nome)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Nome)
-    </dd>
-    <dt class="col-sm-2 text-muted">
-        @Html.DisplayNameFor(model => model.Descricao)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Descricao)
-    </dd>
-    <dt class="col-sm-2 text-muted">
-        @Html.DisplayNameFor(model => model.Ativo)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Ativo)
-    </dd>
-</dl>
+<div class="container mt-4">
 
-<form asp-action="Delete">
-    <input type="hidden" asp-for="Id" />
+    @await Html.PartialAsync("_CategoriaDetailsPartial", Model)
+
     <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-danger" title="Excluir">
+        <button type="button" class="btn btn-danger" title="Excluir" data-toggle="modal" data-target="#modalexcluircategoria" onclick="$('#modalexcluircategoria').modal('show');">
             <i class="fas fa-trash"></i> Excluir
         </button>
         <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
             <i class="fas fa-arrow-left"></i> Voltar
         </a>
     </div>
-</form>
+</div>
+
+
+<div class="modal fade" id="modalexcluircategoria" tabindex="-1" role="dialog" aria-labelledby="modalexcluircategoria" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="modalexcluircategoriatitle">Exclusão de Categoria</h5>
+                <button type="button" class="btn-close" aria-label="close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-4">Esta ação não pode ser desfeita!</p>
+                <p class="mb-4">Tem certeza que deseja excluir a categoria <strong>@Model.Nome</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" asp-route-id="@Model?.Id">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        Confirmar Exclusão
+                    </button>
+                </form>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts {
     <script>
