@@ -167,7 +167,7 @@ MVC:
 - <s>:white_check_mark: Ainda na tela de vendedor, Alterar o checkbox para label (Ativo/Inativo);</s>
 - <s>:white_check_mark: Na tela de produtos do vendedor, adicionar o e-mail do vendedor concatenado ao título da página;</s>
 - :white_check_mark: Na tela de produtos do vendedor, renderizar a imagem do produto;
-- :white_check_mark: O botão Ativar/Inativar produto, deve seguir a mesma lógica de Ativar/Inativar Vendedor, chamando o serviço "AlternarStatus" passando o produtoId;
+- <s>:white_check_mark: O botão Ativar/Inativar produto, deve seguir a mesma lógica de Ativar/Inativar Vendedor, chamando o serviço "AlternarStatus" passando o produtoId;</s>
 - [ ] : impedir o login de um vendedor inativado. Ao inativar um vendedor, o mesmo ainda consegue logar;
 - [ ] No cadastro de produtos (na visão do vendedor): ajustar o campo Preço para comportar o idioma pt-br.
 - :white_check_mark: Na tela de cadastro e atualização de produto, renderizar a imagem ao selecionar o arquivo;
