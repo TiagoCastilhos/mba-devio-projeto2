@@ -65,13 +65,19 @@
                     <td>@produto.Categoria</td>
                     <td>@(produto.Ativo ? "Ativo" : "Inativo")</td>
                     <td class="text-center" style="width: 150px;">
-                        <form asp-action="AlternarStatusProduto"
+                        @* <form asp-action="AlternarStatusProduto"
                               asp-route-id="@produto.Id"
                               asp-route-vendedorId="@produto.VendedorId"
                               method="post"
                               style="display:inline">
                             <button type="submit" class="btn btn-outline-info" title="@(produto.Ativo ? "Inativar" : "Ativar")">
                                 <i class="fas fa-toggle-@(produto.Ativo?"off":"on")"></i>
+                            </button>
+                        </form> *@
+
+                        <form asp-action="AlternarStatusProduto" asp-route-id="@produto.Id" method="get" class="d-inline">
+                            <button type="submit" class="btn btn-outline-info" title="@(produto.Ativo ? "Inativar" : "Ativar")">
+                                <i class="fas fa-toggle-@(produto.Ativo ? "off" : "on")"></i>
                             </button>
                         </form>
                     </td>
@@ -82,7 +88,7 @@
         else
         {
             <tr>
-                <td colspan="3" class="text-center text-muted">Nenhum Produto cadastrado.</td>
+                <td colspan="7" class="text-center text-muted">Nenhum Produto cadastrado.</td>
             </tr>
         }
     </tbody>
@@ -98,7 +104,7 @@
 </table>
 <div class="d-flex gap-2">
     <a class="btn btn-outline-secondary" asp-action="Index" title="Voltar">
-        <i class="fas fa-arrow-left"></i>
+        <i class="fas fa-arrow-left"></i> Voltar
     </a>
 </div>
 

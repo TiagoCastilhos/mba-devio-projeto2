@@ -1,0 +1,44 @@
+﻿@model DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel
+
+
+<div class="row">
+
+    <div class="col-md-4">
+        <dl class="row">
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Nome)</dd>
+
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Descricao)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Descricao)</dd>
+
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Categoria)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria)</dd>
+
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Preco)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Preco)</dd>
+
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Estoque)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Estoque)</dd>
+
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Imagem)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.ImagemDisplay)</dd>
+
+            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Ativo)</dt>
+            <dd class="col-sm-8">@(Model.Ativo ? "Ativo" : "Inativo")</dd>
+        </dl>
+    </div>
+
+    <div class="col-md-7 text-center">
+        @if (!string.IsNullOrEmpty(Model.Imagem))
+        {
+            <img src="@Url.Content($"~/imagens/development/{Model.Imagem}")"
+                 alt="Imagem do Produto"
+                 class="img-fluid img-thumbnail mb-3"
+                 style="max-height: 300px;" />
+        }
+        else
+        {
+            <div class="text-muted">Imagem não disponível</div>
+        }
+    </div>
+</div>

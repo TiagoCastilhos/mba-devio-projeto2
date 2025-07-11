@@ -52,7 +52,7 @@
                         <th>@Html.DisplayNameFor(model => model.Estoque)</th>
                         <th>Categoria</th>
                         <th>Status</th>
-                        <th class="text-center" style="width: 150px;">Ações</th>
+                        <th class="text-center" style="width: 160px;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,8 +70,8 @@
                                     @(item.Ativo ? "Ativo" : "Inativo")
                                 </td>
                                 <td class="text-center">
-                                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" title="Visualizar">
-                                        <i class="fas fa-search"></i>
+                                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" title="Detalhes">
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                     <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" title="Editar">
                                         <i class="fas fa-pen"></i>
@@ -86,7 +86,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="3" class="text-center text-muted">Nenhum Produto cadastrado.</td>
+                            <td colspan="7" class="text-center text-muted">Nenhum Produto cadastrado.</td>
                         </tr>
                     }
                 </tbody>

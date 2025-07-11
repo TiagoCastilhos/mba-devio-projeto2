@@ -4,11 +4,11 @@ using DevXpert.Store.Core.Business.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace XpertStore.Mvc.Controllers;
+namespace DevXpert.Store.MVC.Controllers;
 
 public class AuthController(UserManager<IdentityUser> userManager,
-                      SignInManager<IdentityUser> signInManager,
-                      IVendedorService vendedorService) : Controller
+                            SignInManager<IdentityUser> signInManager,
+                            IVendedorService vendedorService) : Controller
 {
     private readonly UserManager<IdentityUser> _userManager = userManager;
     private readonly SignInManager<IdentityUser> _signInManager = signInManager;

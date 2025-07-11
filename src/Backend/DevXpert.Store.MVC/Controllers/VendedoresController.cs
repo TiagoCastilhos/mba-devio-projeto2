@@ -4,19 +4,16 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
-using DevXpert.Store.Core.Business.Models;
-using DevXpert.Store.Core.Business.Services;
 
 namespace DevXpert.Store.MVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     [Route("vendedores")]
     public class VendedoresController(IVendedorService vendedorService,
                                       IProdutoService produtoService,
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index(string busca, bool? ativo)
         {
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
@@ -24,15 +21,13 @@ namespace DevXpert.Store.MVC.Controllers
             return View(vendedores);
         }
 
-        [Authorize(Roles = "Administrator")]
-        [Route("detalhes/{id:Guid}")]
+        [HttpGet("detalhes/{id:Guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
             return await GetById(id);
         }
 
-        [Authorize(Roles = "Administrator")]
-        [Route("editar")]
+        [HttpGet("editar")]
         public async Task<IActionResult> Edit(Guid id)
         {
             return await GetById(id);
@@ -62,40 +57,15 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Administrator")]
-        [Route("/ProdutosVendedor/{id:guid}")]
-        public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo)
-        {
-            //recarregar vendedor
-            var vendedorViewModel = VendedorViewModel.MapToViewModel(await vendedorService.BuscarPorId(id));
-            ViewBag.VendedorId = vendedorViewModel.Id;
-            ViewBag.VendedorEmail = vendedorViewModel.Email;
-
-
-            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
-
-            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(busca, id, null, ativo));
-            return View(produtos);
-        }
-
-        [HttpPost]
-        [Route("ProdutosVendedor/{id:guid}")]
-        public async Task<IActionResult> AlternarStatusProduto(Guid id, Guid vendedorId)
-        {
-            if (!await produtoService.AlternarStatus(id))
-                GetErrorsFromNotificador();
-
-            await produtoService.Salvar();
-
-            TempData["Sucesso"] = "Status do produto atualizado.";
-
-            return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
-        }
-
-        [HttpPost]
-        [Route("Vendedores/{id:guid}")]
+        [HttpGet("alterar-status/{id:guid}")]
         public async Task<IActionResult> AlternarStatusVendedor(Guid id)
+        {
+            return await GetById(id, "Toggle");
+        }
+
+        [HttpPost("alterar-status/{id:guid}"), ActionName("AlternarStatusVendedor")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AlternarStatusVendedorConfirmed(Guid id)
         {
             if (!await vendedorService.AlternarStatus(id))
                 GetErrorsFromNotificador();
@@ -107,9 +77,44 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet("produtos-vendedor/{id:guid}")]
+        public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo)
+        {
+            var vendedorViewModel = VendedorViewModel.MapToViewModel(await vendedorService.BuscarPorId(id));
+            ViewBag.VendedorId = vendedorViewModel.Id;
+            ViewBag.VendedorEmail = vendedorViewModel.Email;
+
+            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+
+            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(busca, id, null, ativo));
+            return View(produtos);
+        }
+
+        [HttpGet("alterar-status-produto/{id:guid}")]
+        public async Task<IActionResult> AlternarStatusProduto(Guid id)
+        {
+            var produto = await produtoService.BuscarPorId(id);
+            
+            return View("ToggleProduto", ProdutoViewModel.MapToViewModel(produto));
+        }
+
+        [HttpPost("alterar-status-produto/{id:guid}"), ActionName("AlternarStatusProduto")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AlternarStatusProdutoConfirmed(Guid id, Guid vendedorId)
+        {
+            if (!await produtoService.AlternarStatus(id))
+                GetErrorsFromNotificador();
+
+            await produtoService.Salvar();
+
+            TempData["Sucesso"] = "Status do produto atualizado.";
+
+            return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
+        }      
+
         #region PRIVATE METHODS
 
-        private async Task<IActionResult> GetById(Guid id)
+        private async Task<IActionResult> GetById(Guid id, string viewToRedirect = "")
         {
             if (id == Guid.Empty) return NotFound();
 
@@ -117,7 +122,7 @@ namespace DevXpert.Store.MVC.Controllers
 
             if (vendedorViewModel is null) return NotFound();
 
-            return View(vendedorViewModel);
+            return View(viewToRedirect, vendedorViewModel);
         }
 
         #endregion
