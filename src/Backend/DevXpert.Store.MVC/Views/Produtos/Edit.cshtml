@@ -1,4 +1,8 @@
-﻿@model DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel
+﻿@using DevXpert.Store.Core.Application.ViewModels
+@using DevXpert.Store.Core.Business.Models.Settings
+@using Microsoft.Extensions.Options
+@inject IOptions<ArquivoSettings> arquivoSettings
+@model ProdutoViewModel
 
 @{
     ViewData["Title"] = "Atualizar Produto";
@@ -9,7 +13,6 @@
 
 <div class="row align-items-center">
 
-
     <div class="col-md-4">
         <form asp-action="Edit"
               enctype="multipart/form-data"
@@ -17,8 +20,8 @@
               data-ajax-method="POST"
               data-ajax-begin="onBegin"
               data-ajax-complete="onComplete">
-              
-             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Imagem" />
@@ -76,21 +79,37 @@
             </div>
         </form>
     </div>
-    <div class="col-md-8 text-center d-flex justify-content-center">
-        @if (!string.IsNullOrEmpty(Model.Imagem))
-        {
-            <img src="@Url.Content($"~/imagens/development/{Model.Imagem}")"
-                 alt="Imagem do Produto"
-                 class="img-thumbnail"
-                 style="max-height: 300px; width: auto;" />
-        }
-        else
-        {
-            <span class="text-muted">Nenhuma imagem disponível</span>
-        }
-    </div>
+
+    <div class="col-md-8 text-center d-flex justify-content-center" id="imagePreview">
+        <img src="@Url.Content($"{arquivoSettings.Value.BasePath}{Model.Imagem}")"
+             style="max-width: 500px; max-height:500px; padding: 10px" alt="@Model.Imagem[37..]">
+    </div>   
 </div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $("#ImagemUpload").change(function () {
+            if (typeof (FileReader) == "undefined") {
+                    alert("este browser não tem suport para leitor de arquivo HTML5.");
+                    return;
+            }
+
+            var imgPreview = $("#imagePreview");
+            imgPreview.html("");
+
+            $($(this)[0].files).each(function () {
+                var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "max-width: 500px; max-height:500px; padding: 10px");
+                        img.attr("src", e.target.result);
+                        imgPreview.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+            });
+        });
+    </script>
 }
