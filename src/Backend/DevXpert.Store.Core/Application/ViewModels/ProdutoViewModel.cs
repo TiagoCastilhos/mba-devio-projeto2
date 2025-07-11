@@ -49,6 +49,7 @@ namespace DevXpert.Store.Core.Application.ViewModels
         public bool Ativo { get; set; } = true;
 
         public string Categoria { get; set; }
+        public string Vendedor{ get; set; }
 
         public IEnumerable<CategoriaViewModel> Categorias { get; set; }
 

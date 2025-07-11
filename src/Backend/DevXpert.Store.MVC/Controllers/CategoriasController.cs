@@ -15,6 +15,8 @@ namespace DevXpert.Store.MVC.Controllers
     {
         public async Task<IActionResult> Index(string busca, bool? ativo)
         {
+            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+
             var categorias = CategoriaViewModel.MapToList(await categoriaService.BuscarTodos(busca, ativo));
             return View(categorias);
         }
@@ -110,7 +112,7 @@ namespace DevXpert.Store.MVC.Controllers
 
             await categoriaService.Salvar();
 
-            TempData["Sucesso"] = "Categoria Excluída.";
+            TempData["Sucesso"] = "Categoria Excluída!";
 
             return RedirectToAction(nameof(Index));
         }

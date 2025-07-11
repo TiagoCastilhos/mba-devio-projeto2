@@ -40,9 +40,7 @@ namespace DevXpert.Store.Core.Application.Mappings
             List<ProdutoViewModel> list = [];
 
             foreach (var produto in produtos)
-            {
                 list.Add(MapToProdutoViewModel(produto));
-            }
 
             return list;
         }
@@ -60,7 +58,8 @@ namespace DevXpert.Store.Core.Application.Mappings
                 CategoriaId = produto.CategoriaId,
                 VendedorId = produto.VendedorId,
                 Ativo = produto.Ativo,
-                Categoria = produto.Categoria.Nome
+                Categoria = produto.Categoria.Nome,
+                Vendedor = produto.Vendedor.Nome
             };
         }
 

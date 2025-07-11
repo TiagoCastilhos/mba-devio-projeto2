@@ -31,6 +31,12 @@
                 <span asp-validation-for="Descricao" class="text-danger small"></span>
             </div>
 
+            <div class="form-check mb-3">
+                <input type="checkbox" asp-for="Ativo" class="form-check-input" id="Ativo" />
+                <label asp-for="Ativo" class="form-check-label"></label>
+                <span asp-validation-for="Ativo" class="text-danger small"></span>
+            </div>
+
             <input type="hidden" asp-for="Id" />
 
             <div class="d-flex gap-2 mt-4">

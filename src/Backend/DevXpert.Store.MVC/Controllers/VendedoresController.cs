@@ -17,9 +17,10 @@ namespace DevXpert.Store.MVC.Controllers
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Index(string busca)
+        public async Task<IActionResult> Index(string busca, bool? ativo)
         {
-            var vendedores = VendedorViewModel.MapToList(await vendedorService.BuscarTodos(busca, null));
+            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+            var vendedores = VendedorViewModel.MapToList(await vendedorService.BuscarTodos(busca, ativo));
             return View(vendedores);
         }
 
@@ -61,33 +62,47 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("/ProdutosVendedor/{id:guid}")]
-        public async Task<IActionResult> ProdutosVendedor(Guid id)
+        public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo)
         {
-            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(string.Empty, id, ativo: null));
+            //recarregar vendedor
+            var vendedorViewModel = VendedorViewModel.MapToViewModel(await vendedorService.BuscarPorId(id));
+            ViewBag.VendedorId = vendedorViewModel.Id;
+            ViewBag.VendedorEmail = vendedorViewModel.Email;
+
+
+            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+
+            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(busca, id, null, ativo));
             return View(produtos);
         }
-
 
         [HttpPost]
         [Route("ProdutosVendedor/{id:guid}")]
         public async Task<IActionResult> AlternarStatusProduto(Guid id, Guid vendedorId)
         {
-            if (await produtoService.AlternarStatus(id))
-                await produtoService.Salvar();
-            else GetErrorsFromNotificador();
+            if (!await produtoService.AlternarStatus(id))
+                GetErrorsFromNotificador();
+
+            await produtoService.Salvar();
+
+            TempData["Sucesso"] = "Status do produto atualizado.";
 
             return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
         }
 
         [HttpPost]
-        [Route("Vendedor/{id:guid}")]
+        [Route("Vendedores/{id:guid}")]
         public async Task<IActionResult> AlternarStatusVendedor(Guid id)
         {
-            if (await vendedorService.AlternarStatus(id))
-                await vendedorService.Salvar();
-            else GetErrorsFromNotificador();
+            if (!await vendedorService.AlternarStatus(id))
+                GetErrorsFromNotificador();
+
+            await vendedorService.Salvar();
+
+            TempData["Sucesso"] = "Status do vendedor atualizado.";
 
             return RedirectToAction(nameof(Index));
         }

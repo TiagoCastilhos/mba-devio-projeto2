@@ -31,7 +31,7 @@ namespace DevXpert.Store.Core.Data.Repositories
             return await Db.Categorias
                            .Include(c => c.Produto)
                            .AsNoTracking()
-                           .FirstOrDefaultAsync(c => c.Id == id && c.Ativo);
+                           .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

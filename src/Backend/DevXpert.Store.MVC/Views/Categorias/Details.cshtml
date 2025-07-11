@@ -1,5 +1,4 @@
 ﻿@using DevXpert.Store.Core.Application.ViewModels
-
 @model CategoriaViewModel
 
 @{
@@ -9,19 +8,19 @@
 <h1 class="mb-4">@ViewBag.Title</h1>
 <hr />
 
-<div class="mb-4">
+<div class="container mt-4">
     <dl class="row">
+        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nome)</dd>
+
+        <dt class="col-sm-2 text-muted">@Html.DisplayNameFor(model => model.Descricao)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Descricao)</dd>
+
         <dt class="col-sm-2 text-muted">
-            @Html.DisplayNameFor(model => model.Nome)
+            Status
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class="col-sm-2 text-muted">
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Descricao)
+        <dd class="col-sm-9">
+            @(Model.Ativo ? "Ativo" : "Inativo")
         </dd>
     </dl>
 </div>
