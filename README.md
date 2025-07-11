@@ -176,7 +176,6 @@ MVC:
 
 Core/API:
 - :white_check_mark: Padronizar o wwwroot do MVC e Angular para ler a imagem de um unico lugar 
-- :white_check_mark: Ativar e desativar em massa os produtos
 
 Angular
 - :white_check_mark: Tela do produto - Arrumar o botão para favoritar;
