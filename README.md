@@ -161,7 +161,7 @@ MVC:
 
 - <s>:white_check_mark: Padronização dos icones (font awesome) nos botões (adicionar, visualizar, editar, excluir e pesquisar/filtrar);</s>
 - <s>:white_check_mark: Na tela de listagem de Categorias, implementar filtro de pesquisa pelos campos (string busca, bool? ativo);</s>
-- :white_check_mark: Na tela de listagem de vendedores, alterar o botão "atualizar" para "Ativar" ou "inativar" conforme status do vendedor; Este botão segue o padrão do excluir, porém, somente atualiza o status do vendedor - chamada do método vendedorService.AlternarStatus(vendedorId) - sugestão de levar para uma tela de confirmação de (in)ativação ao invés de simplesmente chamar a ação de (in)ativar;
+- <s>:white_check_mark: Na tela de listagem de vendedores, alterar o botão "atualizar" para "Ativar" ou "inativar" conforme status do vendedor; Este botão segue o padrão do excluir, porém, somente atualiza o status do vendedor - chamada do método vendedorService.AlternarStatus(vendedorId) - sugestão de levar para uma tela de confirmação de (in)ativação ao invés de simplesmente chamar a ação de (in)ativar;</s>
 - <s>:white_check_mark: Ainda na tela de vendedor, implementar filtro de pesquisa pelos campos (string busca, bool? ativo);</s>
 - <s>:white_check_mark: Ainda na tela de vendedor, incluir a quantidade de produtos do vendedor na listagem;</s>
 - <s>:white_check_mark: Ainda na tela de vendedor, Alterar o checkbox para label (Ativo/Inativo);</s>
@@ -170,7 +170,7 @@ MVC:
 - <s>:white_check_mark: O botão Ativar/Inativar produto, deve seguir a mesma lógica de Ativar/Inativar Vendedor, chamando o serviço "AlternarStatus" passando o produtoId;</s>
 - [ ] : impedir o login de um vendedor inativado. Ao inativar um vendedor, o mesmo ainda consegue logar;
 - [ ] No cadastro de produtos (na visão do vendedor): ajustar o campo Preço para comportar o idioma pt-br.
-- :white_check_mark: Na tela de cadastro e atualização de produto, renderizar a imagem ao selecionar o arquivo;
+- <s>:white_check_mark: Na tela de cadastro e atualização de produto, renderizar a imagem ao selecionar o arquivo;</s>
 - [ ] na tela de listagem de produtos, renderizar a imagem;
 - <s>:white_check_mark: na tela de listagem de produtos, implementar filtro de pesquisa pelos campos (string busca, bool? ativo)</s>
 
