@@ -3,10 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>disable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>5f0af6bf-6ddf-46e6-aeb7-46bcec4982d0</UserSecretsId>
+    <ImplicitUsings>enable</ImplicitUsings>    
   </PropertyGroup>
-
+ 
   <ItemGroup>
     <Folder Include="wwwroot\imagens\development\" />
   </ItemGroup>

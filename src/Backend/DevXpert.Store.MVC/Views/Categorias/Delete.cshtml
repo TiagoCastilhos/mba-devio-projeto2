@@ -37,10 +37,20 @@
     <input type="hidden" asp-for="Id" />
     <div class="d-flex gap-2">
         <button type="submit" class="btn btn-danger" title="Excluir">
-            <i class="fas fa-trash"></i>
+            <i class="fas fa-trash"></i> Excluir
         </button>
         <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-left"></i> Voltar
         </a>
     </div>
 </form>
+
+@section scripts {
+    <script>
+        $(function () {
+            setTimeout(function() {
+              $('#modalAlert').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+}

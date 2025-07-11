@@ -55,6 +55,7 @@ namespace DevXpert.Store.Core.Application.Mappings
                 Nome = produto.Nome,
                 Descricao = produto.Descricao,
                 Imagem = produto.Imagem,
+                ImagemDisplay = produto.Imagem[37..],                
                 CategoriaId = produto.CategoriaId,
                 VendedorId = produto.VendedorId,
                 Ativo = produto.Ativo,

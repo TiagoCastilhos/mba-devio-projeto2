@@ -4,50 +4,19 @@
     ViewData["Title"] = "Detalhes do Produto";
 }
 
-<h1 class="mb-4">@ViewData["Title"]</h1>
+<h1 class="mb-4">@ViewData["Title"]: @Model.Nome</h1>
 <hr />
 
 <div class="container mt-4">
-    <div class="row">
-        
 
-        <div class="col-md-4">
-            <dl class="row">
-                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Nome)</dd>
-
-                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Descricao)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Descricao)</dd>
-
-                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Preco)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Preco)</dd>
-
-                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Estoque)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Estoque)</dd>
-            </dl>
-        </div>
-
-        <div class="col-md-7 text-center">
-            @if (!string.IsNullOrEmpty(Model.Imagem))
-            {
-                <img src="@Url.Content($"~/imagens/development/{Model.Imagem}")"
-                     alt="Imagem do Produto"
-                     class="img-fluid img-thumbnail mb-3"
-                     style="max-height: 300px;" />
-            }
-            else
-            {
-                <div class="text-muted">Imagem não disponível</div>
-            }
-        </div>
-    </div>
+    @await Html.PartialAsync("_ProdutoDetailPartial", Model)
 
     <div class="mt-4 d-flex gap-2">
-        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id" title="Atualizar">
-            <i class="fas fa-pen"></i>
+        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id" title="Editar">
+            <i class="fas fa-pen"></i> Editar
         </a>
         <a class="btn btn-outline-secondary" asp-action="Index" title="Voltar">
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-left"></i> Voltar
         </a>
     </div>
 </div>

@@ -4,8 +4,6 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
-using DevXpert.Store.Core.Business.Models;
-using DevXpert.Store.Core.Business.Services;
 
 namespace DevXpert.Store.MVC.Controllers
 {
@@ -62,6 +60,20 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [Route("Vendedores/{id:guid}")]
+        public async Task<IActionResult> AlternarStatusVendedor(Guid id)
+        {
+            if (!await vendedorService.AlternarStatus(id))
+                GetErrorsFromNotificador();
+
+            await vendedorService.Salvar();
+
+            TempData["Sucesso"] = "Status do vendedor atualizado.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("/ProdutosVendedor/{id:guid}")]
@@ -93,20 +105,7 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
         }
 
-        [HttpPost]
-        [Route("Vendedores/{id:guid}")]
-        public async Task<IActionResult> AlternarStatusVendedor(Guid id)
-        {
-            if (!await vendedorService.AlternarStatus(id))
-                GetErrorsFromNotificador();
-
-            await vendedorService.Salvar();
-
-            TempData["Sucesso"] = "Status do vendedor atualizado.";
-
-            return RedirectToAction(nameof(Index));
-        }
-
+      
         #region PRIVATE METHODS
 
         private async Task<IActionResult> GetById(Guid id)
