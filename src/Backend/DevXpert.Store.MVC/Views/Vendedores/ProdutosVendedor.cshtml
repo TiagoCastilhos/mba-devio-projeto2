@@ -65,13 +65,19 @@
                     <td>@produto.Categoria</td>
                     <td>@(produto.Ativo ? "Ativo" : "Inativo")</td>
                     <td class="text-center" style="width: 150px;">
-                        <form asp-action="AlternarStatusProduto"
+                        @* <form asp-action="AlternarStatusProduto"
                               asp-route-id="@produto.Id"
                               asp-route-vendedorId="@produto.VendedorId"
                               method="post"
                               style="display:inline">
                             <button type="submit" class="btn btn-outline-info" title="@(produto.Ativo ? "Inativar" : "Ativar")">
                                 <i class="fas fa-toggle-@(produto.Ativo?"off":"on")"></i>
+                            </button>
+                        </form> *@
+
+                        <form asp-action="AlternarStatusProduto" asp-route-id="@produto.Id" method="get" class="d-inline">
+                            <button type="submit" class="btn btn-outline-info" title="@(produto.Ativo ? "Inativar" : "Ativar")">
+                                <i class="fas fa-toggle-@(produto.Ativo ? "off" : "on")"></i>
                             </button>
                         </form>
                     </td>

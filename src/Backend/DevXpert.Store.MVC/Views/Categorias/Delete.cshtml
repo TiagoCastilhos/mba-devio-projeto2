@@ -6,7 +6,7 @@
     ViewBag.Title = $"Excluir a Categoria: {Model.Nome}";
 }
 
-<h1 class="mb-4 text-danger">@ViewBag.Title</h1>
+<h1 class="mb-4">@ViewBag.Title</h1>
 
 <partial name="_AlertPartial" />
 
@@ -16,7 +16,7 @@
     @await Html.PartialAsync("_CategoriaDetailsPartial", Model)
 
     <div class="d-flex gap-2">
-        <button type="button" class="btn btn-danger" title="Excluir" data-toggle="modal" data-target="#modalexcluircategoria" onclick="$('#modalexcluircategoria').modal('show');">
+        <button type="button" class="btn btn-danger" title="Excluir" data-toggle="modal" data-target="#modalexcluir" onclick="$('#modalexcluir').modal('show');">
             <i class="fas fa-trash"></i> Excluir
         </button>
         <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
@@ -26,11 +26,11 @@
 </div>
 
 
-<div class="modal fade" id="modalexcluircategoria" tabindex="-1" role="dialog" aria-labelledby="modalexcluircategoria" aria-hidden="true">
+<div class="modal fade" id="modalexcluir" tabindex="-1" role="dialog" aria-labelledby="modalexcluir" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-danger" id="modalexcluircategoriatitle">Exclusão de Categoria</h5>
+                <h5 class="modal-title" id="modalexcluirtitle">Exclusão de Categoria</h5>
                 <button type="button" class="btn-close" aria-label="close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">

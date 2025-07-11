@@ -77,14 +77,12 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("/ProdutosVendedor/{id:guid}")]
+        [HttpGet("produtos-vendedor/{id:guid}")]
         public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo)
         {
-            //recarregar vendedor
             var vendedorViewModel = VendedorViewModel.MapToViewModel(await vendedorService.BuscarPorId(id));
             ViewBag.VendedorId = vendedorViewModel.Id;
             ViewBag.VendedorEmail = vendedorViewModel.Email;
-
 
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
 
@@ -92,8 +90,17 @@ namespace DevXpert.Store.MVC.Controllers
             return View(produtos);
         }
 
-        [HttpPost("ProdutosVendedor/{id:guid}")]
-        public async Task<IActionResult> AlternarStatusProduto(Guid id, Guid vendedorId)
+        [HttpGet("alterar-status-produto/{id:guid}")]
+        public async Task<IActionResult> AlternarStatusProduto(Guid id)
+        {
+            var produto = await produtoService.BuscarPorId(id);
+            
+            return View("ToggleProduto", ProdutoViewModel.MapToViewModel(produto));
+        }
+
+        [HttpPost("alterar-status-produto/{id:guid}"), ActionName("AlternarStatusProduto")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AlternarStatusProdutoConfirmed(Guid id, Guid vendedorId)
         {
             if (!await produtoService.AlternarStatus(id))
                 GetErrorsFromNotificador();
@@ -103,11 +110,11 @@ namespace DevXpert.Store.MVC.Controllers
             TempData["Sucesso"] = "Status do produto atualizado.";
 
             return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
-        }
+        }      
 
         #region PRIVATE METHODS
 
-        private async Task<IActionResult> GetById(Guid id, string view = "")
+        private async Task<IActionResult> GetById(Guid id, string viewToRedirect = "")
         {
             if (id == Guid.Empty) return NotFound();
 
@@ -115,7 +122,7 @@ namespace DevXpert.Store.MVC.Controllers
 
             if (vendedorViewModel is null) return NotFound();
 
-            return string.IsNullOrEmpty(view) ? View(vendedorViewModel) : View(view, vendedorViewModel);
+            return View(viewToRedirect, vendedorViewModel);
         }
 
         #endregion

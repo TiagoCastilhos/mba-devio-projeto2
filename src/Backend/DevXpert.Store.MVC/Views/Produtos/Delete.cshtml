@@ -1,26 +1,46 @@
 ﻿@model DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel
 
 @{
-    ViewData["Title"] = "Excluir Produto";
+    ViewData["Title"] = $"Excluir Produto: {Model.Nome}";
 }
 
-<h1 class="mb-4 text-danger">@ViewData["Title"]</h1>
+<h1 class="mb-4">@ViewData["Title"]</h1>
 <hr />
-
-<h4 class="text-warning mb-4">Tem certeza que deseja excluir <strong>@Model.Nome</strong>?</h4>
 
 @await Html.PartialAsync("_ProdutoDetailsPartial", Model)
 
 <div class="container mt-4">
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
+   
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-danger" title="Excluir">
-                <i class="fas fa-trash"></i> Excluir
-            </button>
+        <button type="button" class="btn btn-danger" title="Excluir" data-toggle="modal" data-target="#modalexcluir" onclick="$('#modalexcluir').modal('show');">
+            <i class="fas fa-trash"></i> Excluir
+        </button>
             <a asp-action="Index" class="btn btn-outline-secondary" title="Voltar">
                 <i class="fas fa-arrow-left"></i> Voltar
             </a>
+        </div>   
+</div>
+
+<div class="modal fade" id="modalexcluir" tabindex="-1" role="dialog" aria-labelledby="modalexcluir" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalexcluirtitle">Exclusão de Produto</h5>
+                <button type="button" class="btn-close" aria-label="close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-4">Esta ação não pode ser desfeita!</p>
+                <p class="mb-4">Tem certeza que deseja excluir o produto <strong>@Model.Nome</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" asp-route-id="@Model?.Id">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        Confirmar Exclusão
+                    </button>
+                </form>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">Fechar</button>
+            </div>
         </div>
-    </form>
+    </div>
 </div>

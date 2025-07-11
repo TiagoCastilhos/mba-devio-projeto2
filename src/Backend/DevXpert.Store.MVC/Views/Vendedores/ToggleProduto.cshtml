@@ -1,8 +1,8 @@
 ﻿@using DevXpert.Store.Core.Application.ViewModels
-@model VendedorViewModel
+@model ProdutoViewModel
 
 @{
-    ViewBag.Title = $"Alterar Status do Vendedor:";
+    ViewBag.Title = $"Alterar Status do Produto:";
     string acao = Model.Ativo ? "Inativar" : "Ativar";
     string acaoConfirm = Model.Ativo ? "Inativação" : "Ativação";
     string prefixo = Model.Ativo ? "in" : "";
@@ -13,21 +13,7 @@
 
 <div class="container mt-4">
 
-    <div class="col-md-4">
-        <dl class="row">
-            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Nome)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.Nome)</dd>
-
-            <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Email)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
-
-            <dt class="col-sm-4 text-muted">Status</dt>
-            <dd class="col-sm-8">@(Model.Ativo ? "Ativo" : "Inativo")</dd>
-
-            <dt class="col-sm-4 text-muted">Produtos</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.QuantidadeProdutos)</dd>
-        </dl>
-    </div>
+    @await Html.PartialAsync("_ProdutoDetailsPartial", Model)
 
     <div class="d-flex gap-2">
         <button type="button" class="btn btn-outline-info" title="@acao"
@@ -45,20 +31,19 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalalternarstatustitle">@acao Vendedor</h5>
+                <h5 class="modal-title" id="modalalternarstatustitle">@acao Produto</h5>
                 <button type="button" class="btn-close" aria-label="close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p class="mb-4">Tem certeza que deseja @acao o vendedor <strong>@Model.Nome</strong>?</p>
-                @if (Model.QuantidadeProdutos > 0)
-                {
-                    <p>Os produtos do vendedor também serão @(prefixo + "ativados").</p>
-                }
+                <p class="mb-4">Tem certeza que deseja @acao o produto <strong>@Model.Nome</strong>?</p>
             </div>
-            <div class="modal-footer">
-                <form asp-action="AlternarStatusVendedor">
-                    <input type="hidden" asp-for="Id" />
-                    <button type="submit" class="btn btn-primary">
+            <div class="modal-footer">             
+                <form asp-action="AlternarStatusProduto"
+                      asp-route-id="@Model.Id"
+                      asp-route-vendedorId="@Model.VendedorId"
+                      method="post"
+                      style="display:inline">
+                    <button type="submit" class="btn btn-outline-info" title="@acao">
                         Confirmar @acaoConfirm
                     </button>
                 </form>
