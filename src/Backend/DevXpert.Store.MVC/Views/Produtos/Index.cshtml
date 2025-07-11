@@ -63,7 +63,7 @@
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Nome)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Preco)</td>
+                                <td>@item.Preco.ToString("C2")</td>
                                 <td>@Html.DisplayFor(modelItem => item.Estoque)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Categoria)</td>
                                 <td>
