@@ -6,21 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace XpertStore.Mvc.Controllers;
 
-public class AuthController : Controller
+public class AuthController(UserManager<IdentityUser> userManager,
+                      SignInManager<IdentityUser> signInManager,
+                      IVendedorService vendedorService) : Controller
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly IVendedorService _vendedorService;
-
-    public AuthController(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager,
-        IVendedorService vendedorService)
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _vendedorService = vendedorService;
-    }
+    private readonly UserManager<IdentityUser> _userManager = userManager;
+    private readonly SignInManager<IdentityUser> _signInManager = signInManager;
+    private readonly IVendedorService _vendedorService = vendedorService;
 
     public IActionResult Registrar()
     {

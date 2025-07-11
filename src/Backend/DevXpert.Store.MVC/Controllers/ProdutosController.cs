@@ -17,9 +17,11 @@ namespace DevXpert.Store.MVC.Controllers
                                     IAppIdentityUser user) : MainController(notificador, user)
     {
         
-        public async Task<IActionResult> Index(string busca = "")
+        public async Task<IActionResult> Index(string busca, bool? ativo)
         {
-            var produtos = await produtoService.BuscarTodos(busca, UserId);
+            ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+
+            var produtos = await produtoService.BuscarTodos(busca, UserId, null, ativo);
 
             return View(ProdutoViewModel.MapToList(produtos));
         }
@@ -146,7 +148,7 @@ namespace DevXpert.Store.MVC.Controllers
 
             await produtoService.Salvar();
 
-            TempData["Sucesso"] = "Produto excluído!";
+            TempData["Sucesso"] = "Produto Excluído!";
             return RedirectToAction(nameof(Index));
         }
 
