@@ -1,5 +1,8 @@
-﻿@model DevXpert.Store.Core.Application.ViewModels.ProdutoViewModel
-
+﻿@using DevXpert.Store.Core.Application.ViewModels
+@using DevXpert.Store.Core.Business.Models.Settings
+@using Microsoft.Extensions.Options
+@inject IOptions<ArquivoSettings> arquivoSettings
+@model ProdutoViewModel
 
 <div class="row">
 
@@ -15,7 +18,7 @@
             <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria)</dd>
 
             <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Preco)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.Preco)</dd>
+            <dd class="col-sm-8">@Model.Preco.ToString("C2")</dd>
 
             <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.Estoque)</dt>
             <dd class="col-sm-8">@Html.DisplayFor(model => model.Estoque)</dd>
@@ -31,7 +34,7 @@
     <div class="col-md-7 text-center">
         @if (!string.IsNullOrEmpty(Model.Imagem))
         {
-            <img src="@Url.Content($"~/imagens/development/{Model.Imagem}")"
+            <img src="@Url.Content($"{arquivoSettings.Value.BasePath}{Model.Imagem}")"
                  alt="Imagem do Produto"
                  class="img-fluid img-thumbnail mb-3"
                  style="max-height: 300px;" />

@@ -9,7 +9,13 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form enctype="multipart/form-data" asp-action="Create">
+        <form asp-action="Create"
+              enctype="multipart/form-data"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-begin="onBegin"
+              data-ajax-complete="onComplete">
+
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
             <div class="mb-3">

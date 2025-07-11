@@ -8,11 +8,18 @@
 <hr />
 
 <div class="row align-items-center">
- 
+
 
     <div class="col-md-4">
-        <form enctype="multipart/form-data" asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <form asp-action="Edit"
+              enctype="multipart/form-data"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-begin="onBegin"
+              data-ajax-complete="onComplete">
+              
+             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Imagem" />
 
