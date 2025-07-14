@@ -1,6 +1,8 @@
 ﻿using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Extensions;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
+using DevXpert.Store.Core.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,10 +58,10 @@ public class AuthController(UserManager<IdentityUser> userManager,
         if (ModelState.IsValid)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if(user != null)
+            if (user != null)
             {
                 var userClaims = await _authService.GetUserClaims(model.Email);
-                if (userClaims != null && userClaims[2].Value == "Vendedor")
+                if (userClaims.PossuiRole(Roles.Vendedor))
                 {
                     var vendedor = await _vendedorService.BuscarPorEmail(model.Email);
                     if (vendedor != null && vendedor.Ativo)
@@ -73,7 +75,7 @@ public class AuthController(UserManager<IdentityUser> userManager,
                         return View();
                     }
                 }
-                else if(userClaims != null && userClaims[2].Value == "Administrator")
+                else if (userClaims.PossuiRole(Roles.Administrator))
                 {
                     await signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
                     return RedirectToAction("Index", "Home");
@@ -91,7 +93,7 @@ public class AuthController(UserManager<IdentityUser> userManager,
     private async Task AddVendedor(IdentityUser user, UserRegisterViewModel registrarUsuario)
     {
         var userId = await _userManager.GetUserIdAsync(user);
-        await _vendedorService.Adicionar(new Vendedor { Id = new Guid(userId), Email =  registrarUsuario.Email, Nome = registrarUsuario.Email, Senha = registrarUsuario.Password});
+        await _vendedorService.Adicionar(new Vendedor { Id = new Guid(userId), Email = registrarUsuario.Email, Nome = registrarUsuario.Email, Senha = registrarUsuario.Password });
         await _vendedorService.Salvar();
     }
 }

@@ -3,13 +3,14 @@ using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
+using DevXpert.Store.Core.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DevXpert.Store.MVC.Controllers
 {
-    [Authorize(Roles = "Administrator,Vendedor")]
+    [Authorize(Roles = $"{Roles.Administrator},{Roles.Vendedor}")]
     [Route("produtos")]
     public class ProdutosController(IProdutoService produtoService,
                                     ICategoriaService categoriaService,
@@ -27,7 +28,7 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [Route("novo")]
-        [Authorize(Roles = "Vendedor")]
+        [Authorize(Roles = Roles.Vendedor)]
         public async Task<IActionResult> Create()
         {
             await CarregarCategorias();
@@ -74,7 +75,7 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [HttpGet("editar/{id:guid}")]
-        [Authorize(Roles = "Administrator,Vendedor")]
+        [Authorize(Roles = $"{Roles.Administrator},{Roles.Vendedor}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var produto = await produtoService.BuscarPorId(id);
@@ -120,7 +121,7 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [HttpGet("excluir/{id:guid}")]
-        [Authorize(Roles = "Vendedor")]
+        [Authorize(Roles = Roles.Vendedor)]
         public async Task<IActionResult> Delete(Guid id)
         {
             var produto = await produtoService.BuscarPorId(id);

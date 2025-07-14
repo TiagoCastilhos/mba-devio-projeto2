@@ -1,11 +1,12 @@
-﻿using DevXpert.Store.Core.Application.App;
+﻿using System.Data;
+using System.Net;
+using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
+using DevXpert.Store.Core.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Net;
 
 namespace DevXpert.Store.API.Controllers
 {
@@ -45,7 +46,7 @@ namespace DevXpert.Store.API.Controllers
 
         #region WRITE
         [HttpPost]
-        [Authorize(Roles = "Vendedor")]
+        [Authorize(Roles = Roles.Vendedor)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] ProdutoViewModel produtoViewModel)
@@ -63,7 +64,7 @@ namespace DevXpert.Store.API.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        [Authorize(Roles = "Administrator,Vendedor")]
+        [Authorize(Roles = $"{Roles.Administrator},{Roles.Vendedor}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -87,7 +88,7 @@ namespace DevXpert.Store.API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        [Authorize(Roles = "Vendedor")]
+        [Authorize(Roles = Roles.Vendedor)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id)
