@@ -2,9 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Extensions;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Models.Settings;
+using DevXpert.Store.Core.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -98,7 +100,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         private async Task<bool> HandleVendedor(IdentityUser user, string password)
         {
-            await userManager.AddToRoleAsync(user, "Vendedor");
+            await userManager.AddToRoleAsync(user, Roles.Vendedor);
 
             var vendedor = new Vendedor(Guid.Parse(user.Id), user.UserName, user.Email, password);
 
@@ -114,7 +116,7 @@ namespace DevXpert.Store.Core.Business.Services
 
         private async Task<bool> HandleCliente(IdentityUser user, string password)
         {
-            await userManager.AddToRoleAsync(user, "Cliente");
+            await userManager.AddToRoleAsync(user, Roles.Cliente);
 
             var cliente = new Cliente(Guid.Parse(user.Id), user.UserName, user.Email, password);
 
@@ -123,15 +125,18 @@ namespace DevXpert.Store.Core.Business.Services
 
         private async Task<bool> UsuarioExists(string email)
         {
-
             var claims = await GetUserClaims(email);
-            return claims[2].Value switch
-            {
-                "Cliente" => await clienteService.BuscarPorEmail(email) is not null,
-                "Vendedor" => await vendedorService.BuscarPorEmail(email) is not null,
-                "Administrator" => true,
-                _ => false,
-            };
+
+            if (claims.PossuiRole(Roles.Administrator))
+                return true;
+
+            if (claims.PossuiRole(Roles.Cliente))
+                return (await clienteService.BuscarPorEmail(email)) is not null;
+
+            if (claims.PossuiRole(Roles.Vendedor))
+                return (await vendedorService.BuscarPorEmail(email)) is not null;
+
+            return false;
         }
 
         private static AuthResultViewModel AuthViewModel(bool success, List<string> errors, string token = "")

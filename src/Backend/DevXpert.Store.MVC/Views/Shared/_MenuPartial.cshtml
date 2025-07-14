@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using DevXpert.Store.Core.Constants
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
@@ -15,7 +16,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"> Home </a>
                     </li>
-                    @if (SignInManager.IsSignedIn(User) &&  User.IsInRole("Administrator"))
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole(Roles.Administrator))
                     { 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index"> Categorias </a>
@@ -26,7 +27,7 @@
                         </li>                        
                     }
 
-                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Vendedor"))
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole(Roles.Vendedor))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Produtos" asp-action="Index"> Meus Produtos </a>
