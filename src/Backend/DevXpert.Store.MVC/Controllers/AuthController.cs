@@ -64,8 +64,16 @@ public class AuthController(UserManager<IdentityUser> userManager,
                     var vendedor = await _vendedorService.BuscarPorEmail(model.Email);
                     if (vendedor != null && vendedor.Ativo)
                     {
-                        await signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
-                        return RedirectToAction("Index", "Home");
+                        var login = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
+                        if (login != null && login.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Senha", "Email ou senha incorreta");
+                            return View();
+                        }
                     }
                     else
                     {
@@ -75,8 +83,16 @@ public class AuthController(UserManager<IdentityUser> userManager,
                 }
                 else if(userClaims != null && userClaims[2].Value == "Administrator")
                 {
-                    await signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
-                    return RedirectToAction("Index", "Home");
+                    var login = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
+                    if (login != null && login.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Senha", "Email ou senha incorreta");
+                        return View();
+                    }
                 }
             }
             else
