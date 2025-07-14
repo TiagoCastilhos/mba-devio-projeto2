@@ -79,7 +79,7 @@ namespace DevXpert.Store.Core.Business.Services
             return AuthViewModel(true, [], tokenHandler.WriteToken(token));
         }
 
-        private async Task<List<Claim>> GetUserClaims(string email)
+        public async Task<List<Claim>> GetUserClaims(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
             var roles = await userManager.GetRolesAsync(user);

@@ -1,0 +1,44 @@
+﻿@using DevXpert.Store.Core.Application.ViewModels
+@model UserLoginViewModel;
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+
+<partial name="_AlertPartial"/>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="account-box">
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-3">
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="Password" class="form-control" placeholder="Password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <input type="submit" value="Login" class="form-control" />
+                <p>
+                    <a asp-controller="Auth" asp-action="Registrar">Criar nova conta</a>
+                </p>
+                <div class="text-center">
+                    <a asp-controller="Home" asp-action="Index">Home</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+}
