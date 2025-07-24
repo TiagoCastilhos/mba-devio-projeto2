@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace DevXpert.Store.Core.Application.Configurations
+namespace DevXpert.Store.API.Configurations
 {
     public class IdentityErrorsConfig : IdentityErrorDescriber
     {

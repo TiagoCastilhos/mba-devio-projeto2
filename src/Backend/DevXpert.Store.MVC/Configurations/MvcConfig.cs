@@ -1,13 +1,10 @@
-﻿using DevXpert.Store.Core.Data.Context;
-using Microsoft.AspNetCore.Builder;
+﻿using DevXpert.Store.Core.Application.Configurations;
+using DevXpert.Store.Core.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DevXpert.Store.Core.Application.Configurations
+namespace DevXpert.Store.MVC.Configurations
 {
     [ExcludeFromCodeCoverage]
     public static class MvcConfig

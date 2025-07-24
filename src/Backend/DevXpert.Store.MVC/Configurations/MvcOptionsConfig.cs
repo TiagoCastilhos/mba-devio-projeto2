@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
-namespace DevXpert.Store.Core.Application.Configurations
+namespace DevXpert.Store.MVC.Configurations
 {
     public class MvcOptionsConfig
     {

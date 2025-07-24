@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DevXpert.Store.Core.Application.Configurations
+namespace DevXpert.Store.API.Configurations
 {
     [ExcludeFromCodeCoverage]
     public static class SwaggerConfig

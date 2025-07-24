@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
-namespace DevXpert.Store.Core.Application.Configurations
+namespace DevXpert.Store.API.Configurations
 {
 
     [ExcludeFromCodeCoverage]
