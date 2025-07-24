@@ -171,3 +171,4 @@ Angular
 - :white_check_mark:Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com); (Tiago)
 - :white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel; (Tiago)
 - :white_check_mark: confirmar viabilidade de guarda de rota
+
