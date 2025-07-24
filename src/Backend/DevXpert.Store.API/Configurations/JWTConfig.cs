@@ -1,13 +1,10 @@
 ﻿using DevXpert.Store.Core.Business.Models.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace DevXpert.Store.Core.Application.Configurations
+namespace DevXpert.Store.API.Configurations
 {
     [ExcludeFromCodeCoverage]
     public static class JWTConfig

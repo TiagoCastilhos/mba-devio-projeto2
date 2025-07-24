@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
 
-namespace DevXpert.Store.Core.Application.Configurations
+namespace DevXpert.Store.API.Configurations
 {
     [ExcludeFromCodeCoverage]
     public class SecurityMiddleware

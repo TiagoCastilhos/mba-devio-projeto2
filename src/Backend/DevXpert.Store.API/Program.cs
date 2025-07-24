@@ -1,3 +1,4 @@
+using DevXpert.Store.API.Configurations;
 using DevXpert.Store.Core.Application.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
