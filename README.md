@@ -163,7 +163,7 @@ MVC:
 
 Core/API:
 - :white_check_mark: ao cadastrar um vendedor ou cliente, a Role não está sendo gravada na tabela; (Cristian)
-- :white_check_mark: Padronizar o wwwroot do MVC e Angular para ler a imagem de um unico lugar (Tiago)
+- :white_check_mark: Padronizar o wwwroot do MVC e Angular para ler a imagem de um unico lugar (Edson)
 
 Angular
 - <s>:white_check_mark: Tela do produto - Arrumar o botão para favoritar;</s>
