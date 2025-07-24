@@ -158,8 +158,8 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 ## :white_check_mark: **10. To Do List**
 
 MVC:
-- :white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do admin);
-- :white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do vendedor);
+- :white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do admin); (Chayene)
+- :white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do vendedor); (Gilberto)
 
 Core/API:
 - :white_check_mark: ao cadastrar um vendedor ou cliente, a Role não está sendo gravada na tabela; (Cristian)
@@ -168,5 +168,6 @@ Core/API:
 Angular
 - <s>:white_check_mark: Tela do produto - Arrumar o botão para favoritar;</s>
 - <s>:white_check_mark: Tela do produto - produtos do mesmo vendedor não mostra os favoritados;</s>
-- :white_check_mark:Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com);
-- :white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel;
+- :white_check_mark:Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com); (Tiago)
+- :white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel; (Tiago)
+- :white_check_mark: confirmar viabilidade de guarda de rota

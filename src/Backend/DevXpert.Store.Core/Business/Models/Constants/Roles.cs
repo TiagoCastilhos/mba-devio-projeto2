@@ -1,4 +1,4 @@
-﻿namespace DevXpert.Store.Core.Constants;
+﻿namespace DevXpert.Store.Core.Business.Models.Constants;
 
 public sealed class Roles
 {

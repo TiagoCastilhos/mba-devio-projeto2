@@ -2,7 +2,7 @@
 using DevXpert.Store.Core.Business.Extensions;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models;
-using DevXpert.Store.Core.Constants;
+using DevXpert.Store.Core.Business.Models.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
