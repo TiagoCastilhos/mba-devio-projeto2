@@ -37,7 +37,10 @@ namespace DevXpert.Store.API.Controllers
             var produtoViewModel = ProdutoViewModel.MapToViewModel(produto);
 
             if (produtoViewModel is not null)
+            {
+                produtoViewModel.ProdutosVendedor = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(vendedorId: produto.VendedorId));
                 return CustomResponse(HttpStatusCode.OK, produtoViewModel);
+            }
 
             NotificarErro("Produto não encontrado.");
             return CustomResponse(HttpStatusCode.NotFound);

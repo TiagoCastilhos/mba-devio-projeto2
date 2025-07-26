@@ -53,6 +53,7 @@ namespace DevXpert.Store.Core.Application.ViewModels
         public string Vendedor{ get; set; }
 
         public IEnumerable<CategoriaViewModel> Categorias { get; set; }
+        public IEnumerable<ProdutoViewModel> ProdutosVendedor { get; set; } = [];
 
         public void SetVendedorId(Guid id)
         {

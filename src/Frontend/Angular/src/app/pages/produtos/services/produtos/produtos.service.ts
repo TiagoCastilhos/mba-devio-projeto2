@@ -83,6 +83,9 @@ export class ProdutosService extends BaseService {
         tap((response) => {
           if (response.success) {
             response.data.imagem = `${environment.imagesBaseUrl}/${response.data.imagem}`;
+            response.data.produtosVendedor.forEach((produto) => {
+              produto.imagem = `${environment.imagesBaseUrl}/${produto.imagem}`;
+            });
             this.carregarFavoritos([response.data]);
           }
         })
