@@ -1,16 +1,17 @@
-﻿using System.Data;
-using System.Net;
-using DevXpert.Store.Core.Application.App;
+﻿using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Constants;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Net;
 
 namespace DevXpert.Store.API.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class ProdutosController(IAppIdentityUser user,
                                     INotificador notificador,
@@ -23,8 +24,18 @@ namespace DevXpert.Store.API.Controllers
         public async Task<IActionResult> GetAll([FromQuery] string busca, Guid? vendedorId, Guid? categoriaId)
         {
             var produtos = await produtoService.BuscarTodos(busca, vendedorId, categoriaId);
+            var produtosViewModel = ProdutoViewModel.MapToList(produtos);
 
-            return CustomResponse(HttpStatusCode.OK, ProdutoViewModel.MapToList(produtos));
+            if (UserId != Guid.Empty)
+            {
+                foreach (var produtoViewModel in produtosViewModel)
+                {
+                    var favoritos = produtos.First(p => p.Id == produtoViewModel.Id).Favoritos;
+                    produtoViewModel.FavoritoId = favoritos.FirstOrDefault(f => f.ClienteId == UserId)?.Id;
+                }
+            }
+
+            return CustomResponse(HttpStatusCode.OK, produtosViewModel);
         }
 
         [HttpGet("{id:guid}")]

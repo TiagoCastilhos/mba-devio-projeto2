@@ -35,21 +35,6 @@ export class ProdutosService extends BaseService {
 
     this._autenticacaoService.usuarioLogado.subscribe(v => {
       this.usuarioLogado = v;
-
-      if (v) {
-        const produtos = this._produtosSubject.getValue();
-        this.carregarFavoritos(produtos);
-        this._produtosSubject.next([...produtos]);
-      }
-      else {
-        const produtos = this._produtosSubject.getValue();
-
-        produtos.forEach(p => {
-          p.favoritoId = null;
-        });
-
-        this._produtosSubject.next([...produtos]);
-      }
     });
   }
 
@@ -67,8 +52,6 @@ export class ProdutosService extends BaseService {
               response.data.forEach((produto) => {
                 produto.imagem = `${environment.imagesBaseUrl}/${produto.imagem}`;
               });
-
-              this.carregarFavoritos(response.data);
               this._produtosSubject.next(response.data);
             }
           }
@@ -86,7 +69,6 @@ export class ProdutosService extends BaseService {
             response.data.produtosVendedor.forEach((produto) => {
               produto.imagem = `${environment.imagesBaseUrl}/${produto.imagem}`;
             });
-            this.carregarFavoritos([response.data]);
           }
         })
       );
@@ -108,25 +90,5 @@ export class ProdutosService extends BaseService {
 
       sub.next(produto);
     })
-  }
-
-  private carregarFavoritos(produtos: Produto[]) {
-    if (!this.usuarioLogado) {
-      return;
-    }
-
-    this._favoritosService.buscarTodos().subscribe({
-      next: (favoritos) => {
-        produtos.forEach(p => {
-          const favorito = favoritos.data.find(f => f.produto.id === p.id);
-
-          if (!favorito) {
-            return;
-          }
-
-          p.favoritoId = favorito.id;
-        });
-      }
-    });
   }
 }
