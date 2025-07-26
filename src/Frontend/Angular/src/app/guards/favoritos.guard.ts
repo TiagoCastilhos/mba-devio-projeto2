@@ -16,10 +16,9 @@ export class FavoritosGuard implements CanActivate {
 
   protected validarClaims(routeAc: ActivatedRouteSnapshot): boolean {
     if (!this.authService.obterTokenUsuario()) {
-      this.router.navigate(['/auth/login/'], { queryParams: { returnUrl: this.router.url } });
+      this.router.navigate(['/auth/login/']);
       return false;
     }
-
     return true;
   }
 }

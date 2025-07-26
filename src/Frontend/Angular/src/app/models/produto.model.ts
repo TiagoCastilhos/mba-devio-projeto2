@@ -9,4 +9,5 @@ export type Produto = {
   categoriaId: string;
   vendedorId: string;
   favoritoId: string | null;
+  produtosVendedor: Produto[];
 };
