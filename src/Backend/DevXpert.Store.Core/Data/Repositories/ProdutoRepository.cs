@@ -23,6 +23,7 @@ namespace DevXpert.Store.Core.Data.Repositories
             return await Db.Produtos
                            .Include(p => p.Categoria)
                            .Include(p => p.Vendedor)
+                           .Include(p => p.Favoritos)
                            .AsNoTracking()
                            .Where(filtro)
                            .ToListAsync();
