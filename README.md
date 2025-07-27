@@ -159,7 +159,7 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 
 MVC:
 - :white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do admin); (Chayene)
-- :white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do vendedor); (Gilberto)
+- <s>:white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do vendedor); (Gilberto)</s>
 
 Core/API:
 - <s>:white_check_mark: ao cadastrar um vendedor ou cliente, a Role não está sendo gravada na tabela; (Cristian)</s>
