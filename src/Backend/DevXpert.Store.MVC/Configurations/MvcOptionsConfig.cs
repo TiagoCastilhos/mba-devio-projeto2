@@ -16,7 +16,7 @@ namespace DevXpert.Store.MVC.Configurations
             messageProvider.SetUnknownValueIsInvalidAccessor(x => "O valor preenchido é inválido para este campo.");
             messageProvider.SetValueIsInvalidAccessor(x => "O valor preenchido é inválido para este campo.");
             messageProvider.SetValueMustBeANumberAccessor(x => "O campo deve ser numérico.");
-            messageProvider.SetValueMustNotBeNullAccessor(x => "Este campo precisa ser preenchido.");            
+            messageProvider.SetValueMustNotBeNullAccessor(x => "Este campo precisa ser preenchido.");
         }
     }
 }

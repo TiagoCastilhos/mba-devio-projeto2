@@ -48,7 +48,7 @@
   <div class="row mt-5">
     <h3>Produtos do mesmo vendedor</h3>
     <hr />
-    <div class="col-4" *ngFor="let produtoVendedor of produtosVendedor$ | async">
+    <div class="col-4" *ngFor="let produtoVendedor of produto.produtosVendedor">
       <app-produto-card [produto]="produtoVendedor"></app-produto-card>
     </div>
   </div>

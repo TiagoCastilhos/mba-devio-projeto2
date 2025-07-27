@@ -2,6 +2,8 @@
 using DevXpert.Store.Core.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using System.Diagnostics.CodeAnalysis;
+using DevXpert.Store.Core.Business.Models.Settings;
+using Microsoft.Extensions.FileProviders;
 
 namespace DevXpert.Store.API.Configurations
 {
@@ -78,12 +80,28 @@ namespace DevXpert.Store.API.Configurations
                 app.UseCors("Default");
                 app.UseDeveloperExceptionPage();
             }
+            
+            var mvcWwwRootPath = Path.Combine(
+                Directory.GetParent(app.Environment.ContentRootPath)!.FullName,
+                "DevXpert.Store.MVC", 
+                "wwwroot", 
+                "imagens"
+            );
+            
+            if (!Directory.Exists(mvcWwwRootPath))
+                Directory.CreateDirectory(mvcWwwRootPath);
+            
+            var staticFileOptions = new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(mvcWwwRootPath),
+                RequestPath = "/imagens"
+            };
 
             app.UseGlobalizationConfig()
                .UseHttpsRedirection()
                .UseMiddleware<ExceptionMiddleware>()
                .UseMiddleware<SecurityMiddleware>(app.Environment)
-               .UseStaticFiles()
+               .UseStaticFiles(staticFileOptions)
                .UseRouting()
                .UseAuthentication()
                .UseAuthorization();

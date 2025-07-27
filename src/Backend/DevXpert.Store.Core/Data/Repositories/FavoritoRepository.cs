@@ -13,6 +13,8 @@ public class FavoritoRepository(AppDbContext context) : Repository<Favorito>(con
         return await Db.Favoritos
                        .Include(f => f.Produto)
                            .ThenInclude(f=> f.Categoria)
+                       .Include(f => f.Produto)
+                           .ThenInclude(p => p.Vendedor)
                        .AsNoTracking()
                        .Where(predicate)
                        .ToListAsync();

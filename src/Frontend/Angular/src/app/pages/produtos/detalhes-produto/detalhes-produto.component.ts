@@ -30,13 +30,6 @@ export class DetalhesProdutoComponent {
           next: (res) => {
             if (res.success) {
               this._produto.next(res.data);
-              this._produtoService
-                .obterTodos({ vendedorId: res.data.vendedorId })
-                .subscribe({
-                  next: (res) => {
-                    this._produtosVendedor.next(res.data);
-                  },
-                });
             }
           },
           error: (err) => {

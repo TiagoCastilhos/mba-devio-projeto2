@@ -23,8 +23,18 @@ namespace DevXpert.Store.API.Controllers
         public async Task<IActionResult> GetAll([FromQuery] string busca, Guid? vendedorId, Guid? categoriaId)
         {
             var produtos = await produtoService.BuscarTodos(busca, vendedorId, categoriaId);
+            var produtosViewModel = ProdutoViewModel.MapToList(produtos);
 
-            return CustomResponse(HttpStatusCode.OK, ProdutoViewModel.MapToList(produtos));
+            if (UserId != Guid.Empty)
+            {
+                foreach (var produtoViewModel in produtosViewModel)
+                {
+                    var favoritos = produtos.First(p => p.Id == produtoViewModel.Id).Favoritos;
+                    produtoViewModel.FavoritoId = favoritos.FirstOrDefault(f => f.ClienteId == UserId)?.Id;
+                }
+            }
+
+            return CustomResponse(HttpStatusCode.OK, produtosViewModel);
         }
 
         [HttpGet("{id:guid}")]
@@ -37,7 +47,10 @@ namespace DevXpert.Store.API.Controllers
             var produtoViewModel = ProdutoViewModel.MapToViewModel(produto);
 
             if (produtoViewModel is not null)
+            {
+                produtoViewModel.ProdutosVendedor = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(vendedorId: produto.VendedorId));
                 return CustomResponse(HttpStatusCode.OK, produtoViewModel);
+            }
 
             NotificarErro("Produto não encontrado.");
             return CustomResponse(HttpStatusCode.NotFound);
