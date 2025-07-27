@@ -9,27 +9,25 @@
 
 <hr />
 
-<partial name="_AlertPartial"/>
+<partial name="_AlertPartial" />
 
 <div class="row">
     <div class="col-md-4">
         <div class="account-box">
-            <form asp-action="Login" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form asp-action="Login" method="post">                              
+               
                 <div class="form-group mb-3">
                     <input asp-for="Email" class="form-control" placeholder="Email" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
+                
                 <div class="form-group mb-3">
                     <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <input type="submit" value="Login" class="form-control" />
-                <p>
-                    <a asp-controller="Auth" asp-action="Registrar">Criar nova conta</a>
-                </p>
-                <div class="text-center">
-                    <a asp-controller="Home" asp-action="Index">Home</a>
+
+                <div class="d-grid gap-2 col-12 mx-auto">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Login</button>
                 </div>
             </form>
         </div>
@@ -37,8 +35,18 @@
 </div>
 
 
-@section Scripts{
+@section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
     }
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            setTimeout(function() {
+              $('#modalAlert').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
 }
