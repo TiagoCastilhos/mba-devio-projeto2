@@ -180,5 +180,5 @@ Core/API:
 Angular
 - :white_check_mark: Tela do produto - Arrumar o botão para favoritar;
 - :white_check_mark: Tela do produto - produtos do mesmo vendedor não mostra os favoritados;
-- :white_check_mark:Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com);
+- :white_check_mark: Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com);
 - :white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel;

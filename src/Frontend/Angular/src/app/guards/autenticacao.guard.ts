@@ -5,7 +5,7 @@ import { AutenticacaoService } from '@services/autenticacao.service';
 @Injectable({
   providedIn: 'root'
 })
-export class FavoritosGuard implements CanActivate {
+export class AutenticacaoGuard implements CanActivate {
 
   authService = inject(AutenticacaoService);
   router = inject(Router);
@@ -19,6 +19,7 @@ export class FavoritosGuard implements CanActivate {
       this.router.navigate(['/auth/login/']);
       return false;
     }
+    
     return true;
   }
 }
