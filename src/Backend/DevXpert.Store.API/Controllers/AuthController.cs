@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DevXpert.Store.API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]    
+    [Route("api/[controller]")]
     public class AuthController(INotificador notificador,
                                 IAppIdentityUser user,
                                 IAuthService authService) : MainController(notificador, user)
@@ -21,11 +21,11 @@ namespace DevXpert.Store.API.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await authService.RegisterAsync(usuarioRegistro);
+            var result = await authService.RegisterAsync(usuarioRegistro, true);
 
-            if (result.Success) 
+            if (result.Success)
                 return CustomResponse(HttpStatusCode.OK, result.Token);
-            
+
             foreach (var error in result.Errors)
                 NotificarErro(error);
 
@@ -38,11 +38,11 @@ namespace DevXpert.Store.API.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await authService.LoginAsync(login);
+            var result = await authService.LoginAsync(login, true);
 
             if (result.Success)
                 return CustomResponse(HttpStatusCode.OK, result.Token);
-            
+
             foreach (var error in result.Errors)
                 NotificarErro(error);
 

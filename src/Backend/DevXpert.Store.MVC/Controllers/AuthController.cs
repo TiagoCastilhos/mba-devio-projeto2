@@ -1,23 +1,22 @@
-﻿using DevXpert.Store.Core.Application.ViewModels;
+﻿using DevXpert.Store.Core.Application.App;
+using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Extensions;
 using DevXpert.Store.Core.Business.Interfaces.Services;
-using DevXpert.Store.Core.Business.Models;
 using DevXpert.Store.Core.Business.Models.Constants;
+using DevXpert.Store.Core.Business.Services.Notificador;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DevXpert.Store.MVC.Controllers;
 
 public class AuthController(UserManager<IdentityUser> userManager,
                             SignInManager<IdentityUser> signInManager,
                             IVendedorService vendedorService,
-                            IAuthService authService) : Controller
+                            IAuthService authService,
+                            INotificador notificador,
+                            IAppIdentityUser user) : MainController(notificador, user)
 {
-    private readonly UserManager<IdentityUser> _userManager = userManager;
-    private readonly SignInManager<IdentityUser> _signInManager = signInManager;
-    private readonly IVendedorService _vendedorService = vendedorService;
-    private readonly IAuthService _authService = authService;
-
     public IActionResult Registrar()
     {
         return View();
@@ -28,22 +27,16 @@ public class AuthController(UserManager<IdentityUser> userManager,
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-        var user = new IdentityUser
-        {
-            UserName = registrarUsuario.Email,
-            Email = registrarUsuario.Email,
-            EmailConfirmed = true
-        };
+        registrarUsuario.SetIsCliente(false);
 
-        var result = await _userManager.CreateAsync(user, registrarUsuario.Password);
+        var result = await authService.RegisterAsync(registrarUsuario);
 
-        if (result.Succeeded)
-        {
-            await AddVendedor(user, registrarUsuario);
-            await _signInManager.SignInAsync(user, isPersistent: false);
+        if (result.Success)
             return LocalRedirect(Url.Content("~/"));
-        }
 
+        foreach (var error in result.Errors)
+            ModelState.AddModelError("", error);
+        
         return View(registrarUsuario);
     }
 
@@ -55,61 +48,19 @@ public class AuthController(UserManager<IdentityUser> userManager,
     [HttpPost]
     public async Task<IActionResult> Login(UserLoginViewModel model)
     {
-        if (ModelState.IsValid)
-        {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
-            {
-                var userClaims = await _authService.GetUserClaims(model.Email);
-                if (userClaims.PossuiRole(Roles.Vendedor))
-                {
-                    var vendedor = await _vendedorService.BuscarPorEmail(model.Email);
-                    if (vendedor != null && vendedor.Ativo)
-                    {
-                        var login = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
-                        if (login != null && login.Succeeded)
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("Senha", "Email ou senha incorreta");
-                            return View();
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Ativo", "Conta Inativa ou inexistente");
-                        return View();
-                    }
-                }
-                else if (userClaims.PossuiRole(Roles.Administrator))
-                {
-                    var login = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
-                    if (login != null && login.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Senha", "Email ou senha incorreta");
-                        return View();
-                    }
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("Ativo", "Conta inativa ou inexistente");
-                return View();
-            }
-        }
-        return RedirectToAction("Index", "Home");
-    }
+        if (!ModelState.IsValid)
+            return RedirectToAction("Index", "Home");
 
-    private async Task AddVendedor(IdentityUser user, UserRegisterViewModel registrarUsuario)
-    {
-        var userId = await _userManager.GetUserIdAsync(user);
-        await _vendedorService.Adicionar(new Vendedor { Id = new Guid(userId), Email = registrarUsuario.Email, Nome = registrarUsuario.Email, Senha = registrarUsuario.Password });
-        await _vendedorService.Salvar();
-    }
+        model.SetIsCliente(false);
+
+        var result = await authService.LoginAsync(model);
+
+        if(result.Success)
+            return RedirectToAction("Index", "Home");
+
+        foreach (var error in result.Errors)
+            ModelState.AddModelError("", error);
+
+        return View(model);
+    }    
 }

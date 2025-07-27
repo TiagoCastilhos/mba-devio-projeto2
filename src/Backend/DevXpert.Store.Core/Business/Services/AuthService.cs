@@ -19,7 +19,7 @@ namespace DevXpert.Store.Core.Business.Services
                              IVendedorService vendedorService,
                              IOptions<JWTSettings> jwtSettings) : IAuthService
     {
-        public async Task<AuthResultViewModel> RegisterAsync(UserRegisterViewModel usuarioRegistro)
+        public async Task<AuthResultViewModel> RegisterAsync(UserRegisterViewModel usuarioRegistro, bool gerarToken = false)
         {
             var user = new IdentityUser
             {
@@ -41,10 +41,10 @@ namespace DevXpert.Store.Core.Business.Services
 
             await signInManager.SignInAsync(user, false);
 
-            return await GerarJwt(user.Email);
+            return gerarToken ? await GerarJwt(user.Email) : AuthViewModel(true, [], string.Empty);
         }
 
-        public async Task<AuthResultViewModel> LoginAsync(UserLoginViewModel login)
+        public async Task<AuthResultViewModel> LoginAsync(UserLoginViewModel login, bool gerarToken = false)
         {
             var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, false, true);
 
@@ -54,10 +54,10 @@ namespace DevXpert.Store.Core.Business.Services
             if (!await UsuarioExists(login.Email))
                 return AuthViewModel(false, [$"Este usuário não é um {(login.IsCliente ? "cliente" : "vendedor")}."]);
 
-            return await GerarJwt(login.Email);
+            return gerarToken ? await GerarJwt(login.Email) : AuthViewModel(true, [], string.Empty);
         }
 
-        private async Task<AuthResultViewModel> GerarJwt(string email)
+        public async Task<AuthResultViewModel> GerarJwt(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var date = DateTime.Now;
@@ -84,7 +84,8 @@ namespace DevXpert.Store.Core.Business.Services
         public async Task<List<Claim>> GetUserClaims(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
-            var roles = await userManager.GetRolesAsync(user);
+
+            if (user is null) return [];
 
             var claims = new List<Claim>()
             {
@@ -92,10 +93,26 @@ namespace DevXpert.Store.Core.Business.Services
                 new(ClaimTypes.NameIdentifier, user.Id)
             };
 
-            foreach (var role in roles)
+            foreach (var role in await userManager.GetRolesAsync(user))
                 claims.Add(new(ClaimTypes.Role, role));
 
             return claims;
+        }
+
+        private async Task<bool> UsuarioExists(string email)
+        {
+            var claims = await GetUserClaims(email);
+
+            if (claims.PossuiRole(Roles.Administrator))
+                return true;
+
+            if (claims.PossuiRole(Roles.Cliente))
+                return (await clienteService.BuscarPorEmail(email)) is not null;
+
+            if (claims.PossuiRole(Roles.Vendedor))
+                return (await vendedorService.BuscarPorEmail(email)) is not null;
+
+            return false;
         }
 
         private async Task<bool> HandleVendedor(IdentityUser user, string password)
@@ -121,22 +138,6 @@ namespace DevXpert.Store.Core.Business.Services
             var cliente = new Cliente(Guid.Parse(user.Id), user.UserName, user.Email, password);
 
             return await clienteService.Adicionar(cliente);
-        }
-
-        private async Task<bool> UsuarioExists(string email)
-        {
-            var claims = await GetUserClaims(email);
-
-            if (claims.PossuiRole(Roles.Administrator))
-                return true;
-
-            if (claims.PossuiRole(Roles.Cliente))
-                return (await clienteService.BuscarPorEmail(email)) is not null;
-
-            if (claims.PossuiRole(Roles.Vendedor))
-                return (await vendedorService.BuscarPorEmail(email)) is not null;
-
-            return false;
         }
 
         private static AuthResultViewModel AuthViewModel(bool success, List<string> errors, string token = "")

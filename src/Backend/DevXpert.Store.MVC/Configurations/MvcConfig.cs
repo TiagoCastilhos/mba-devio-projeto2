@@ -3,6 +3,7 @@ using DevXpert.Store.Core.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
+using static DevXpert.Store.MVC.Configurations.CustomIdentityErrorConfig;
 
 namespace DevXpert.Store.MVC.Configurations
 {
@@ -22,8 +23,10 @@ namespace DevXpert.Store.MVC.Configurations
 
             builder.Services
                    .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                   .AddErrorDescriber<PortugueseIdentityErrorDescriber>()
                    .AddRoles<IdentityRole>()
-                   .AddEntityFrameworkStores<AppDbContext>();
+                   .AddEntityFrameworkStores<AppDbContext>()
+                   ;
 
             builder.Services.AddControllersWithViews(options =>
             {
