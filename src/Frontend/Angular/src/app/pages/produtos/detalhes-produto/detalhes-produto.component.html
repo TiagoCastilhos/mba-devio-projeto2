@@ -31,9 +31,12 @@
             {{produto.favoritoId ? "Remover dos Favoritos" : "Adicionar aos Favoritos"}}
           </app-base-button>
 
-          <a [routerLink]="['/produtos']" (click)="obterProdutosDoVendedor(produto.vendedorId)">
-            Acessar vendedor
-          </a>
+          <span class="mt-2">
+            <strong>Vendido por </strong>
+            <a [routerLink]="['/produtos']" (click)="obterProdutosDoVendedor(produto.vendedorId)">
+              {{ produto.vendedor }}
+            </a>
+          </span>
         </div>
       </div>
     </div>

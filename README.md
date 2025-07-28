@@ -166,9 +166,8 @@ Core/API:
 - <s>:white_check_mark: Padronizar o wwwroot do MVC e Angular para ler a imagem de um unico lugar (Edson)</s>
 
 Angular
-- <s>:white_check_mark: Tela do produto - Arrumar o botão para favoritar;</s>
-- <s>:white_check_mark: Tela do produto - produtos do mesmo vendedor não mostra os favoritados;</s>
-- :white_check_mark:Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com); (Tiago)
+- <s>:white_check_mark: Tela do produto - Arrumar o botão para favoritar; (Tiago)</s>
+- <s>:white_check_mark: Tela do produto - produtos do mesmo vendedor não mostra os favoritados; (Tiago)</s>
+- <s>:white_check_mark: Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com); (Tiago)</s>
 - :white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel; (Tiago)
-- :white_check_mark: confirmar viabilidade de guarda de rota
-
+- <s>:white_check_mark: confirmar viabilidade de guarda de rota; (Victor)</s>

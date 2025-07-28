@@ -6,6 +6,7 @@ export type Produto = {
   estoque: number;
   imagem: string;
   categoria: string;
+  vendedor: string;
   categoriaId: string;
   vendedorId: string;
   favoritoId: string | null;
