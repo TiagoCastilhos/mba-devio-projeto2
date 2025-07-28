@@ -179,7 +179,7 @@ namespace DevXpert.Store.MVC.Controllers
             var categorias = await BuscarCategorias();
 
             var listaStatus = new List<SelectListItem> {
-            new() {Value = "", Text = "Todos", Selected = false}};
+            new() {Value = "", Text = "Todas as Categorias", Selected = false}};
 
             foreach (var c in categorias)
             {
