@@ -20,7 +20,7 @@
             </a>
         </div>
 
-        <div class="col-lg-4 col-md-4">
+        <div class="col-lg-3 col-md-3">
             <div class="input-group">
                 <select id="Ativo" name="Ativo" class="form-select" onchange="this.form.submit();">
                     @foreach (var item in ViewBag.FiltroStatus)
@@ -31,7 +31,18 @@
             </div>
         </div>
 
-        <div class="col-lg-8 col-md-8">
+        <div class="col-lg-3 col-md-3">
+            <div class="input-group">
+                <select id="Categoria" name="Categoria" class="form-select" onchange="this.form.submit();">
+                    @foreach (var item in ViewBag.FiltroCategoria)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3">
             <div class="input-group">
                 @Html.TextBox("busca", null, new { @class = "form-control input", @placeholder = "Pesquisar", autofocus = "", id = "busca" })
                 <span class="input-group-btn">

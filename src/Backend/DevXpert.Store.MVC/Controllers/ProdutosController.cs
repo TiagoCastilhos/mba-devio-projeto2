@@ -18,11 +18,13 @@ namespace DevXpert.Store.MVC.Controllers
                                     IAppIdentityUser user) : MainController(notificador, user)
     {
         
-        public async Task<IActionResult> Index(string busca, bool? ativo)
+        public async Task<IActionResult> Index(string busca, bool? ativo, Guid? categoria)
         {
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
 
-            var produtos = await produtoService.BuscarTodos(busca, UserId, null, ativo);
+            ViewBag.FiltroCategoria = await GetCategoriasFilter(categoria);
+
+            var produtos = await produtoService.BuscarTodos(busca, UserId, categoria, ativo);
 
             return View(ProdutoViewModel.MapToList(produtos));
         }
@@ -169,6 +171,30 @@ namespace DevXpert.Store.MVC.Controllers
                 Value = c.Id.ToString(),
                 Text = c.Nome
             });
+
+        }
+
+        protected async Task<List<SelectListItem>> GetCategoriasFilter(Guid? selected)
+        {
+            var categorias = await BuscarCategorias();
+
+            var listaStatus = new List<SelectListItem> {
+            new() {Value = "", Text = "Todos", Selected = false}};
+
+            foreach (var c in categorias)
+            {
+                listaStatus.Add(new SelectListItem {
+                    Value = c.Id.ToString(),
+                    Text = c.Nome,
+                    Selected = false
+                });
+            }
+
+            foreach (var item in listaStatus)
+                if (item.Value == selected.ToString())
+                    item.Selected = true;
+
+            return listaStatus;
 
         }
         #endregion
