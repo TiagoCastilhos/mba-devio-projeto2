@@ -48,11 +48,8 @@ namespace DevXpert.Store.Core.Business.Services
         {
             var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, false, true);
 
-            if (!result.Succeeded)
-                return AuthViewModel(false, ["Usuário ou senha incorretos."]);
-
-            if (!await UsuarioExists(login.Email))
-                return AuthViewModel(false, [$"Este usuário não é um {(login.IsCliente ? "cliente" : "vendedor")}."]);
+            if (!result.Succeeded || !await UsuarioExists(login.Email))
+                return AuthViewModel(false, ["Usuário ou senha incorretos."]);            
 
             return gerarToken ? await GerarJwt(login.Email) : AuthViewModel(true, [], string.Empty);
         }

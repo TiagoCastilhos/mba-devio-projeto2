@@ -44,7 +44,7 @@ namespace DevXpert.Store.MVC.Controllers
         protected List<SelectListItem> GetAtivosFilter(bool? selected)
         {
             var listaStatus = new List<SelectListItem> {
-                new() { Value = "", Text = "Todos", Selected = false},
+                new() { Value = "", Text = "Todos os Status", Selected = false},
                 new() { Value = "True", Text = "Ativo", Selected = false},
                 new() { Value = "False", Text = "Inativo", Selected = false}
             };
