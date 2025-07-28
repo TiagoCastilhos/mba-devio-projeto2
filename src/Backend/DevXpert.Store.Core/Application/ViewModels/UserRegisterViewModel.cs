@@ -17,5 +17,7 @@ namespace DevXpert.Store.Core.Application.ViewModels
         public string ConfirmPassword { get; set; }
 
         public bool IsCliente { get; set; } = true;
+
+        public void SetIsCliente(bool isCliente) => IsCliente = isCliente;
     }
 }
