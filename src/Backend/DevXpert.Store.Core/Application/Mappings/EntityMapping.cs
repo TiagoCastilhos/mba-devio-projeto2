@@ -60,7 +60,7 @@ namespace DevXpert.Store.Core.Application.Mappings
                 VendedorId = produto.VendedorId,
                 Ativo = produto.Ativo,
                 Categoria = produto.Categoria.Nome,
-                Vendedor = produto.Vendedor.Nome,
+                Vendedor = produto.Vendedor.Nome                
             };
         }
 

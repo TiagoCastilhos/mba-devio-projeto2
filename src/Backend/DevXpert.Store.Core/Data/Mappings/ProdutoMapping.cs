@@ -53,6 +53,11 @@ namespace DevXpert.Store.Core.Data.Mappings
                    .HasFillFactor(80)
                    .IsUnique(false);
 
+            builder.HasIndex(p => new { p.Nome, p.VendedorId })
+                   .HasDatabaseName("UQ_PRODUTO_NOME_VENDEDORID")
+                   .HasFillFactor(80)
+                   .IsUnique(true);
+
             builder.HasIndex(p => new { p.Nome, p.CategoriaId, p.VendedorId })
                    .HasDatabaseName("UQ_PRODUTO_NOME_CATEGORIAID_VENDEDORID")
                    .HasFillFactor(80)
