@@ -2,7 +2,6 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import * as regular from '@fortawesome/free-regular-svg-icons';
 import * as solid from '@fortawesome/free-solid-svg-icons';
 import { Produto } from '@models/produto.model';
-import { FavoritosService } from '@services/favoritos.service';
 import { Subscription } from 'rxjs';
 import { ProdutosService } from '../services/produtos/produtos.service';
 
