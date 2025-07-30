@@ -6,18 +6,12 @@ import { AutenticacaoService } from '@services/autenticacao.service';
   providedIn: 'root'
 })
 export class AutenticacaoGuard implements CanActivate {
-
   authService = inject(AutenticacaoService);
   router = inject(Router);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
-    return this.validarClaims(route);
-  }
-
-  protected validarClaims(routeAc: ActivatedRouteSnapshot): boolean {
     if (!this.authService.obterTokenUsuario()) {
-      this.router.navigate(['/auth/login/']);
-      return false;
+      return this.router.createUrlTree(['/auth/login']);
     }
     
     return true;
