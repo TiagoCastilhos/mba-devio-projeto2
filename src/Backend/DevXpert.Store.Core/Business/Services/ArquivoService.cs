@@ -11,11 +11,15 @@ namespace DevXpert.Store.Core.Business.Services
                                 IWebHostEnvironment environment,
                                 IOptions<ArquivoSettings> arquivoSettings) : BaseService(notificador), IArquivoService
     {
+        private readonly string Root = Path.Combine(Directory.GetParent(environment.ContentRootPath)!.FullName, arquivoSettings.Value.BasePath);
+
         public bool Excluir(string fileName)
         {
             if (fileName == arquivoSettings.Value.DefaultImage) return true;
 
-            var filePath = $"{environment.WebRootPath}{arquivoSettings.Value.BasePath.Replace("~", string.Empty)}{fileName}";
+            var filePath = $"{Root}{fileName}";
+
+            VerificarBaseImagens();
 
             if (File.Exists(filePath))
                 File.Delete(filePath);
@@ -28,7 +32,9 @@ namespace DevXpert.Store.Core.Business.Services
             if (file.Length == 0)
                 return NotificarError("Arquivo Corrompido ou vazio.");
 
-            var filePath = $"{environment.WebRootPath}{arquivoSettings.Value.BasePath.Replace("~", string.Empty)}{fileName}";
+            VerificarBaseImagens();
+
+            var filePath = $"{Root}{fileName}";
 
             if (File.Exists(filePath))
                 return NotificarError("Já existe um arquivo com este nome.");
@@ -38,6 +44,12 @@ namespace DevXpert.Store.Core.Business.Services
             await file.CopyToAsync(fileStream);
 
             return true;
+        }
+
+        private void VerificarBaseImagens()
+        {            
+            if (!Directory.Exists(Root))
+                Directory.CreateDirectory(Root);
         }
 
         public void Dispose()
