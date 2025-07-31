@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using DevXpert.Store.Core.Application.App;
+using DevXpert.Store.Core.Application.Helpers;
+using DevXpert.Store.Core.Application.Mappings;
+using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
-using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.Core.Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevXpert.Store.MVC.Controllers
 {
@@ -11,12 +13,17 @@ namespace DevXpert.Store.MVC.Controllers
     [Route("vendedores")]
     public class VendedoresController(IVendedorService vendedorService,
                                       IProdutoService produtoService,
+                                      ICategoriaService categoriaService,
+                                      ICategoriaHelperService categoriaHelperService,
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
-        public async Task<IActionResult> Index(string busca, bool? ativo)
+        public async Task<IActionResult> Index(string busca, bool? ativo, Guid? categoria)
         {
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+
+            ViewBag.FiltroCategoria = await categoriaHelperService.GetCategoriasFilterAsync(categoria);
+
             var vendedores = VendedorViewModel.MapToList(await vendedorService.BuscarTodos(busca, ativo));
             return View(vendedores);
         }
@@ -78,15 +85,16 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [HttpGet("produtos-vendedor/{id:guid}")]
-        public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo)
+        public async Task<IActionResult> ProdutosVendedor(Guid id, string busca, bool? ativo, Guid? categoria)
         {
             var vendedorViewModel = VendedorViewModel.MapToViewModel(await vendedorService.BuscarPorId(id));
             ViewBag.VendedorId = vendedorViewModel.Id;
             ViewBag.VendedorEmail = vendedorViewModel.Email;
 
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
+            ViewBag.FiltroCategoria = await categoriaHelperService.GetCategoriasFilterAsync(categoria);
 
-            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(busca, id, null, ativo));
+            var produtos = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(busca, id, categoria, ativo));
             return View(produtos);
         }
 
@@ -126,5 +134,6 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         #endregion
+
     }
 }
