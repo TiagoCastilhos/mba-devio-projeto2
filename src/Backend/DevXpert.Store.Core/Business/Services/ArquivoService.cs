@@ -28,7 +28,8 @@ namespace DevXpert.Store.Core.Business.Services
             if (file.Length == 0)
                 return NotificarError("Arquivo Corrompido ou vazio.");
 
-            var filePath = $"{environment.WebRootPath}{arquivoSettings.Value.BasePath.Replace("~", string.Empty)}{fileName}";
+            var root = Path.Combine(Directory.GetParent(environment.ContentRootPath)!.FullName, arquivoSettings.Value.BasePath);
+            var filePath = $"{root}{fileName}";
 
             if (File.Exists(filePath))
                 return NotificarError("Já existe um arquivo com este nome.");

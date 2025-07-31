@@ -83,9 +83,7 @@ namespace DevXpert.Store.API.Configurations
             
             var mvcWwwRootPath = Path.Combine(
                 Directory.GetParent(app.Environment.ContentRootPath)!.FullName,
-                "DevXpert.Store.MVC", 
-                "wwwroot", 
-                "imagens"
+                "DevXpert.Store.MVC/wwwroot/imagens"
             );
             
             if (!Directory.Exists(mvcWwwRootPath))
@@ -94,7 +92,8 @@ namespace DevXpert.Store.API.Configurations
             var staticFileOptions = new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(mvcWwwRootPath),
-                RequestPath = "/imagens"
+                RequestPath = new PathString("/imagens"),
+                
             };
 
             app.UseGlobalizationConfig()
