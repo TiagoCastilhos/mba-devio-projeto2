@@ -58,6 +58,12 @@ namespace DevXpert.Store.Core.Data.Mappings
                    .HasFillFactor(80)
                    .IsUnique(true);
 
+            builder.HasIndex(p => new { p.Nome, p.VendedorId })
+                   .HasDatabaseName("UQ_PRODUTO_NOME_VENDEDORID")
+                   .HasFillFactor(80)
+                   .IsUnique(true);
+
+
             builder.ToTable("PRODUTOS");
 
             builder.Ignore(p => p.ValidationResult);

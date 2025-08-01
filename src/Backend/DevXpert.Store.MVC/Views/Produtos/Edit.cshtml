@@ -81,7 +81,7 @@
     </div>
 
     <div class="col-md-8 text-center d-flex justify-content-center" id="imagePreview">
-        <img src="@Url.Content($"{arquivoSettings.Value.BasePath}{Model.Imagem}")"
+        <img src="@Url.Content($"{arquivoSettings.Value.RelativePath}{Model.Imagem}")"
              style="max-width: 500px; max-height:500px; padding: 10px" alt="@Model.Imagem[37..]">
     </div>   
 </div>

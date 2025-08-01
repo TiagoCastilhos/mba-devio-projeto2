@@ -34,7 +34,7 @@
     <div class="col-md-7 text-center">
         @if (!string.IsNullOrEmpty(Model.Imagem))
         {
-            <img src="@Url.Content($"{arquivoSettings.Value.BasePath}{Model.Imagem}")"
+            <img src="@Url.Content($"{arquivoSettings.Value.RelativePath}{Model.Imagem}")"
                  alt="Imagem do Produto"
                  class="img-fluid img-thumbnail mb-3"
                  style="max-height: 500px;" />

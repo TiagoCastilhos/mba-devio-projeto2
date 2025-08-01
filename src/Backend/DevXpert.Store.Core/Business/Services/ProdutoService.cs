@@ -92,7 +92,7 @@ namespace DevXpert.Store.Core.Business.Services
         {
             if (!IsValid(produto)) return false;
 
-            var expression = PredicateBuilder.New<Produto>(p => p.Nome == produto.Nome && 
+            var expression = PredicateBuilder.New<Produto>(p => p.Nome.ToUpper() == produto.Nome.ToUpper() && 
                                                                 p.VendedorId == produto.VendedorId);
 
             if (!isInsert) expression = expression.And(p => p.Id != produto.Id);
