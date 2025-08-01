@@ -1,9 +1,12 @@
 ﻿@using DevXpert.Store.Core.Application.ViewModels
-
+@using DevXpert.Store.Core.Business.Models.Settings
+@using Microsoft.Extensions.Options
+@inject IOptions<ArquivoSettings> arquivoSettings
 @model IEnumerable<ProdutoViewModel>
 
 @{
-    string controllerName = "Produtos";
+    string controllerName = "Produtos";    
+    var relativePath = arquivoSettings.Value.RelativePath;
     ViewData["Title"] = controllerName;
 }
 
@@ -73,7 +76,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td><img src="~/imagens/development/@Html.DisplayFor(model => item.Imagem)" alt="Image" style="width: 100px; height: 100px;" /></td>
+                                <td><img src="@Url.Content($"{arquivoSettings.Value.RelativePath}{item.Imagem}")" alt="Image" style="width: 100px; height: 100px;" /></td>
                                 <td>@Html.DisplayFor(modelItem => item.Nome)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
                                 <td>@item.Preco.ToString("C2")</td>

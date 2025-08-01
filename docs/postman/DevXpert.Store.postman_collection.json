@@ -282,7 +282,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \n  \"nome\": \"categoria posted 1\",\n  \"descricao\": \"descrição da categoria post\",\n  \"ativo\": true\n}",
+							"raw": "{ \n  \"nome\": \"Vestuário 1\",\n  \"descricao\": \"peças de roupas\",\n  \"ativo\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -528,7 +528,7 @@
 									"\r",
 									"var jsonData = JSON.parse(pm.response.text());\r",
 									"\r",
-									"pm.environment.set(\"categoria_id\", jsonData.id);"
+									"pm.environment.set(\"produto_id\", jsonData.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -562,12 +562,12 @@
 							"formdata": [
 								{
 									"key": "CategoriaId",
-									"value": "59a5633f-e3f0-4758-9dd1-a4d4ee740bb0",
+									"value": "{{categoria_id}}",
 									"type": "text"
 								},
 								{
 									"key": "Nome",
-									"value": "Camiseta regata",
+									"value": "Camiseta regata 1",
 									"type": "text"
 								},
 								{
@@ -663,7 +663,17 @@
 								},
 								{
 									"key": "Busca",
-									"value": "eletr",
+									"value": "monit",
+									"disabled": true
+								},
+								{
+									"key": "CategoriaId",
+									"value": "7b87817f-f13c-4a68-87c5-0fc28eda22ce",
+									"disabled": true
+								},
+								{
+									"key": "vendedorId",
+									"value": "f96e5735-7f8a-49a7-8fe1-64304e70257d",
 									"disabled": true
 								}
 							]
@@ -706,12 +716,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{base}}Categorias/{{categoria_id}}",
+							"raw": "{{base}}produtos/{{produto_id}}",
 							"host": [
-								"{{base}}Categorias"
+								"{{base}}produtos"
 							],
 							"path": [
-								"{{categoria_id}}"
+								"{{produto_id}}"
 							]
 						}
 					},
@@ -724,9 +734,13 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"StatusCode NoContent\",  ()=>{\r",
-									"    pm.response.to.have.status(204)\r",
-									"})"
+									"pm.test(\"StatusCode Created\",  ()=>{\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"var jsonData = JSON.parse(pm.response.text());\r",
+									"\r",
+									"pm.environment.set(\"produto_id\", jsonData.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -756,21 +770,52 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Categoria Posted updated\",\n    \"descricao\": \"Descrição da categoria post atualizada\",\n    \"id\": \"{{categoria_id}}\",\n    \"ativo\": true\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "{{produto_id}}",
+									"type": "text"
+								},
+								{
+									"key": "CategoriaId",
+									"value": "{{categoria_id}}",
+									"type": "text"
+								},
+								{
+									"key": "Nome",
+									"value": "Camiseta regata 123",
+									"type": "text"
+								},
+								{
+									"key": "Descricao",
+									"value": "Teste Lorem Ipsum Dolet",
+									"type": "text"
+								},
+								{
+									"key": "Estoque",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "Preco",
+									"value": "49,99",
+									"type": "text"
+								},
+								{
+									"key": "FileUpload",
+									"type": "file",
+									"src": "postman-cloud:///1f052a90-f0fc-4dd0-90db-4f67fc1d348f"
 								}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{base}}Categorias/{{categoria_id}}",
+							"raw": "{{base}}Produtos/{{produto_id}}",
 							"host": [
-								"{{base}}Categorias"
+								"{{base}}Produtos"
 							],
 							"path": [
-								"{{categoria_id}}"
+								"{{produto_id}}"
 							]
 						}
 					},
