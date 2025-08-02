@@ -9,6 +9,9 @@ import { provideRouter } from '@angular/router';
 import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { httpRequestInterceptorInterceptor } from './interceptors/http-request-interceptor.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +23,11 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimations(), // required animations providers
     provideToastr(), // Toastr providers
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      }
+    })
   ],
 };

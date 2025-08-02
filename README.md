@@ -169,5 +169,5 @@ Angular
 - <s>:white_check_mark: Tela do produto - Arrumar o botão para favoritar; (Tiago)</s>
 - <s>:white_check_mark: Tela do produto - produtos do mesmo vendedor não mostra os favoritados; (Tiago)</s>
 - <s>:white_check_mark: Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com); (Tiago)</s>
-- :white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel; (Tiago)
+- <s>:white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel; (Tiago)<s> 
 - <s>:white_check_mark: confirmar viabilidade de guarda de rota; (Victor)</s>

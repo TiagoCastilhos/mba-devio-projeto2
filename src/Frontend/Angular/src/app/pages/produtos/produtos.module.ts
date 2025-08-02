@@ -8,6 +8,7 @@ import { FavoritosService } from '@services/favoritos.service';
 import { DetalhesProdutoComponent } from './detalhes-produto/detalhes-produto.component';
 import { ListaProdutoComponent } from './lista-produto/lista-produto.component';
 import { produtosRoutes } from './produtos.routes';
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [ListaProdutoComponent, DetalhesProdutoComponent],
@@ -17,7 +18,10 @@ import { produtosRoutes } from './produtos.routes';
     BaseButtonComponent,
     FontAwesomeModule,
     ProdutoCardComponent,
+    CarouselModule
   ],
-  providers: [FavoritosService],
+  providers: [
+    FavoritosService,
+  ],
 })
 export class ProdutosModule { }
