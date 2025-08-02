@@ -21,8 +21,10 @@
     "@fortawesome/angular-fontawesome": "^1.0.0",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@primeuix/themes": "^1.2.3",
     "bootstrap": "^5.3.7",
     "ngx-toastr": "^19.0.0",
+    "primeng": "^19.1.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
