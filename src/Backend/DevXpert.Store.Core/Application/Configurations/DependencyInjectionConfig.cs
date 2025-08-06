@@ -1,5 +1,4 @@
 ﻿using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.Core.Application.Helpers;
 using DevXpert.Store.Core.Business.Interfaces.Repositories;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services;
@@ -34,7 +33,6 @@ namespace DevXpert.Store.Core.Application.Configurations
             builder.Services.AddScoped<IProdutoService, ProdutoService>();
             builder.Services.AddScoped<IVendedorService, VendedorService>();
             builder.Services.AddScoped<IClienteService, ClienteService>();
-            builder.Services.AddScoped<ICategoriaHelperService, CategoriaHelperService>();
             #endregion
 
             #region REPOSITORIES

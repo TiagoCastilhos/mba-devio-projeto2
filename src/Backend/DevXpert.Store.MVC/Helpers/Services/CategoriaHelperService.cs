@@ -1,16 +1,12 @@
 ﻿using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
+using DevXpert.Store.MVC.Helpers.Interface;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace DevXpert.Store.Core.Application.Helpers
+namespace DevXpert.Store.MVC.Helpers.Services
 {
-    public interface ICategoriaHelperService
-    {
-        Task<IEnumerable<CategoriaViewModel>> BuscarCategoriasAsync();
-        Task<List<SelectListItem>> GetCategoriasFilterAsync(Guid? selected);
-    }
-
+    
     public class CategoriaHelperService : ICategoriaHelperService
     {
         private readonly ICategoriaService categoriaService;
