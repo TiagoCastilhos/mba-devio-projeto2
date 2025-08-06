@@ -1,5 +1,7 @@
 ﻿using DevXpert.Store.Core.Application.Configurations;
 using DevXpert.Store.Core.Data.Context;
+using DevXpert.Store.MVC.Helpers.Interface;
+using DevXpert.Store.MVC.Helpers.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
@@ -37,6 +39,8 @@ namespace DevXpert.Store.MVC.Configurations
             builder.Services.AddAuthorization();
 
             builder.Services.AddRazorPages();
+
+            builder.Services.AddScoped<ICategoriaHelperService, CategoriaHelperService>();
 
             return builder;
         }
