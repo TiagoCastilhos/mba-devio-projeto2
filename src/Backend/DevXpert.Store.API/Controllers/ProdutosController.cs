@@ -47,7 +47,21 @@ namespace DevXpert.Store.API.Controllers
 
             if (produtoViewModel is not null)
             {
-                produtoViewModel.ProdutosVendedor = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(vendedorId: produto.VendedorId));
+                var produtos = await produtoService.BuscarTodos(vendedorId: produto.VendedorId);
+                produtoViewModel.ProdutosVendedor = ProdutoViewModel.MapToList(produtos);
+
+                if (UserId != Guid.Empty)
+                {
+                    var favoritos = produtos.First(p => p.Id == produtoViewModel.Id).Favoritos;
+                    produtoViewModel.FavoritoId = favoritos.FirstOrDefault(f => f.ClienteId == UserId)?.Id;
+
+                    foreach (var produtoVendedorViewModel in produtoViewModel.ProdutosVendedor)
+                    {
+                        favoritos = produtos.First(p => p.Id == produtoVendedorViewModel.Id).Favoritos;
+                        produtoVendedorViewModel.FavoritoId = favoritos.FirstOrDefault(f => f.ClienteId == UserId)?.Id;
+                    }
+                }
+
                 return CustomResponse(HttpStatusCode.OK, produtoViewModel);
             }
 
