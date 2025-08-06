@@ -4,10 +4,11 @@ using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Services.Notificador;
 using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Models.Constants;
 
 namespace DevXpert.Store.MVC.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Roles.Administrator)]
     [Route("vendedores")]
     public class VendedoresController(IVendedorService vendedorService,
                                       IProdutoService produtoService,

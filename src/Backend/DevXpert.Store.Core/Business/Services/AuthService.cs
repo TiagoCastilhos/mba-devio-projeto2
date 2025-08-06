@@ -46,9 +46,12 @@ namespace DevXpert.Store.Core.Business.Services
 
         public async Task<AuthResultViewModel> LoginAsync(UserLoginViewModel login, bool gerarToken = false)
         {
+            if (!await UsuarioExists(login.Email))
+                return AuthViewModel(false, ["Usuário ou senha incorretos."]);
+
             var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, false, true);
 
-            if (!result.Succeeded || !await UsuarioExists(login.Email))
+            if (!result.Succeeded)
                 return AuthViewModel(false, ["Usuário ou senha incorretos."]);            
 
             return gerarToken ? await GerarJwt(login.Email) : AuthViewModel(true, [], string.Empty);
