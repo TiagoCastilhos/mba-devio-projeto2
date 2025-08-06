@@ -4,6 +4,7 @@ import * as solid from '@fortawesome/free-solid-svg-icons';
 import { Produto } from '@models/produto.model';
 import { Subscription } from 'rxjs';
 import { ProdutosService } from '../services/produtos/produtos.service';
+import { AutenticacaoService } from '@services/autenticacao.service';
 
 @Component({
   selector: 'app-lista-produto',
@@ -16,15 +17,11 @@ export class ListaProdutoComponent implements OnInit, OnDestroy {
   faStarRegular = regular.faStar;
 
   private _produtoService = inject(ProdutosService);
-  produtos: Produto[] = [];
   private subscription!: Subscription;
+  produtos: Produto[] = [];
 
   ngOnInit(): void {
-    this.subscription = this._produtoService.produtos$.subscribe({
-      next: (res) => {
-        this.produtos = res;
-      },
-    });
+    this._carregarProdutos();
   }
 
   alternarFavorito(produto: Produto) {
@@ -35,5 +32,13 @@ export class ListaProdutoComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  private _carregarProdutos() {
+    this.subscription = this._produtoService.produtos$.subscribe({
+      next: (res) => {
+        this.produtos = res;
+      },
+    });
   }
 }
