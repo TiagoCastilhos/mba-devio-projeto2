@@ -35,6 +35,18 @@ export class ProdutosService extends BaseService {
 
     this._autenticacaoService.usuarioLogado.subscribe(v => {
       this.usuarioLogado = v;
+      this._http
+        .get<CustomResponse<Produto[]>>(`${this.apiUrl}/Produtos`)
+        .subscribe({
+          next: (response) => {
+            if (response.success) {
+              response.data.forEach((produto) => {
+                produto.imagem = `${environment.imagesBaseUrl}/${produto.imagem}`;
+              });
+              this._produtosSubject.next(response.data);
+            }
+          }
+        });
     });
   }
 

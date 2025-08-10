@@ -27,13 +27,11 @@ namespace DevXpert.Store.API.Controllers
             var produtosViewModel = ProdutoViewModel.MapToList(produtos);
 
             if (UserId != Guid.Empty)
-            {
                 foreach (var produtoViewModel in produtosViewModel)
                 {
                     var favoritos = produtos.First(p => p.Id == produtoViewModel.Id).Favoritos;
                     produtoViewModel.FavoritoId = favoritos.FirstOrDefault(f => f.ClienteId == UserId)?.Id;
                 }
-            }
 
             return CustomResponse(HttpStatusCode.OK, produtosViewModel);
         }
@@ -49,7 +47,21 @@ namespace DevXpert.Store.API.Controllers
 
             if (produtoViewModel is not null)
             {
-                produtoViewModel.ProdutosVendedor = ProdutoViewModel.MapToList(await produtoService.BuscarTodos(vendedorId: produto.VendedorId));
+                var produtos = await produtoService.BuscarTodos(vendedorId: produto.VendedorId);
+                produtoViewModel.ProdutosVendedor = ProdutoViewModel.MapToList(produtos);
+
+                if (UserId != Guid.Empty)
+                {
+                    var favoritos = produtos.First(p => p.Id == produtoViewModel.Id).Favoritos;
+                    produtoViewModel.FavoritoId = favoritos.FirstOrDefault(f => f.ClienteId == UserId)?.Id;
+
+                    foreach (var produtoVendedorViewModel in produtoViewModel.ProdutosVendedor)
+                    {
+                        favoritos = produtos.First(p => p.Id == produtoVendedorViewModel.Id).Favoritos;
+                        produtoVendedorViewModel.FavoritoId = favoritos.FirstOrDefault(f => f.ClienteId == UserId)?.Id;
+                    }
+                }
+
                 return CustomResponse(HttpStatusCode.OK, produtoViewModel);
             }
 
@@ -63,11 +75,12 @@ namespace DevXpert.Store.API.Controllers
         [Authorize(Roles = Roles.Vendedor)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] ProdutoViewModel produtoViewModel)
+        public async Task<IActionResult> Post([FromForm] ProdutoViewModel produtoViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             produtoViewModel.SetVendedorId(UserId);
+            produtoViewModel.SetImageProperties(string.Empty);
 
             if (!await produtoService.Adicionar(ProdutoViewModel.MapToEntity(produtoViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);
@@ -82,7 +95,7 @@ namespace DevXpert.Store.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Put(Guid id, [FromBody] ProdutoViewModel produtoViewModel)
+        public async Task<IActionResult> Put(Guid id, [FromForm] ProdutoViewModel produtoViewModel)
         {
             if (produtoViewModel is null || id != produtoViewModel.Id)
             {
@@ -93,6 +106,7 @@ namespace DevXpert.Store.API.Controllers
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             produtoViewModel.SetVendedorId(UserId);
+            produtoViewModel.SetImageProperties(produtoViewModel.Imagem);
 
             if (!await produtoService.Atualizar(ProdutoViewModel.MapToEntity(produtoViewModel)))
                 return CustomResponse(HttpStatusCode.BadRequest);

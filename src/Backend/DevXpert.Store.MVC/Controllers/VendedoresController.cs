@@ -7,9 +7,10 @@ using DevXpert.Store.MVC.Helpers.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace DevXpert.Store.MVC.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Roles.Administrator)]
     [Route("vendedores")]
     public class VendedoresController(IVendedorService vendedorService,
                                       IProdutoService produtoService,

@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using DevXpert.Store.Core.Business.Interfaces.Services;
-using DevXpert.Store.Core.Business.Services.Notificador;
-using DevXpert.Store.Core.Application.App;
+﻿using DevXpert.Store.Core.Application.App;
 using DevXpert.Store.Core.Application.ViewModels;
+using DevXpert.Store.Core.Business.Interfaces.Services;
+using DevXpert.Store.Core.Business.Models.Constants;
+using DevXpert.Store.Core.Business.Services.Notificador;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevXpert.Store.MVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Roles.Administrator)]
     [Route("categorias")]
     public class CategoriasController(ICategoriaService categoriaService,
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
     {
+        [HttpGet("")]
         public async Task<IActionResult> Index(string busca, bool? ativo)
         {
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
@@ -27,7 +29,6 @@ namespace DevXpert.Store.MVC.Controllers
             return await GetById(id);
         }
 
-        [Authorize(Roles = "Administrator")]
         [Route("novo")]
         public IActionResult Create()
         {
@@ -57,7 +58,6 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Administrator")]
         [Route("editar")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -90,7 +90,6 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Administrator")]
         [Route("excluir/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

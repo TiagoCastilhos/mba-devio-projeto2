@@ -78,7 +78,6 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         [HttpGet("editar/{id:guid}")]
-        [Authorize(Roles = $"{Roles.Administrator},{Roles.Vendedor}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var produto = await produtoService.BuscarPorId(id);

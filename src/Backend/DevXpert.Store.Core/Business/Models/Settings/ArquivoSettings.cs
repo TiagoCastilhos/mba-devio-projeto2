@@ -4,6 +4,7 @@
     {
         public const string ConfigName = "ArquivoSettings";
         public string BasePath { get; set; }
+        public string RelativePath { get; set; }
         public string DefaultImage { get; set; }
     }
 }
