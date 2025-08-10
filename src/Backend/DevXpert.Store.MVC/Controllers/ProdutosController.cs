@@ -1,9 +1,9 @@
 ﻿using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models.Constants;
 using DevXpert.Store.Core.Business.Services.Notificador;
+using DevXpert.Store.MVC.Helpers.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +14,7 @@ namespace DevXpert.Store.MVC.Controllers
     [Route("produtos")]
     public class ProdutosController(IProdutoService produtoService,
                                     ICategoriaService categoriaService,
+                                    ICategoriaHelperService categoriaHelperService,
                                     INotificador notificador,
                                     IAppIdentityUser user) : MainController(notificador, user)
     {
@@ -22,7 +23,7 @@ namespace DevXpert.Store.MVC.Controllers
         {
             ViewBag.FiltroStatus = GetAtivosFilter(ativo);
 
-            ViewBag.FiltroCategoria = await GetCategoriasFilter(categoria);
+            ViewBag.FiltroCategoria = await categoriaHelperService.GetCategoriasFilterAsync(categoria);
 
             var produtos = await produtoService.BuscarTodos(busca, UserId, categoria, ativo);
 
@@ -154,46 +155,17 @@ namespace DevXpert.Store.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        #region #region PRIVATE METHODS
-        private async Task<IEnumerable<CategoriaViewModel>> BuscarCategorias()
-        {
-            var categorias = await categoriaService.BuscarTodos(string.Empty, true);
-            return categorias.Select(EntityMapping.MapToCategoriaViewModel);
-        }
 
+        #region #region PRIVATE METHODS
         private async Task CarregarCategorias()
         {
-            var categorias = await BuscarCategorias();
+            var categorias = await categoriaHelperService.BuscarCategoriasAsync();
 
             ViewBag.Categorias = categorias.Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
                 Text = c.Nome
             });
-
-        }
-
-        protected async Task<List<SelectListItem>> GetCategoriasFilter(Guid? selected)
-        {
-            var categorias = await BuscarCategorias();
-
-            var listaStatus = new List<SelectListItem> {
-            new() {Value = "", Text = "Todas as Categorias", Selected = false}};
-
-            foreach (var c in categorias)
-            {
-                listaStatus.Add(new SelectListItem {
-                    Value = c.Id.ToString(),
-                    Text = c.Nome,
-                    Selected = false
-                });
-            }
-
-            foreach (var item in listaStatus)
-                if (item.Value == selected.ToString())
-                    item.Selected = true;
-
-            return listaStatus;
 
         }
         #endregion
