@@ -92,13 +92,12 @@ namespace DevXpert.Store.Core.Application.Mappings
                 Email = vendedor.Email,
                 QuantidadeProdutos = (vendedor.Produto?.Any()).GetValueOrDefault() ? vendedor.Produto.Count() : 0,
                 Ativo = vendedor.Ativo,
-                Senha = vendedor.Senha
             };
         }
 
         public static Vendedor MapToVendedor(VendedorViewModel vendedor)
         {
-            return new(vendedor.Id, vendedor.Nome, vendedor.Email, vendedor.Senha, vendedor.Ativo);
+            return new(vendedor.Id, vendedor.Nome, vendedor.Email, vendedor.Ativo);
         }
         #endregion
 

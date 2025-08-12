@@ -18,10 +18,6 @@ namespace DevXpert.Store.Core.Data.Mappings
                    .IsRequired()
                    .HasColumnType("VARCHAR(100)");
 
-            builder.Property(v => v.Senha)
-                   .IsRequired()
-                   .HasColumnType("VARCHAR(256)");
-
             builder.Property(v => v.Ativo)
                    .IsRequired()
                    .HasColumnType("BIT");

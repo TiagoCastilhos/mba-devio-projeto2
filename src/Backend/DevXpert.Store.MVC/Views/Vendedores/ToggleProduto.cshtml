@@ -11,6 +11,8 @@
 
 <h1 class="mb-4">@ViewBag.Title <strong>@Model.Nome</strong></h1>
 
+<partial name="_AlertPartial" />
+
 <div class="container mt-4">
 
     @await Html.PartialAsync("_ProdutoDetailsPartial", Model)

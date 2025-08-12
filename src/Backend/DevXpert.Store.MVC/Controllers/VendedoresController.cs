@@ -1,5 +1,4 @@
 ﻿using DevXpert.Store.Core.Application.App;
-using DevXpert.Store.Core.Application.Mappings;
 using DevXpert.Store.Core.Application.ViewModels;
 using DevXpert.Store.Core.Business.Interfaces.Services;
 using DevXpert.Store.Core.Business.Models.Constants;
@@ -15,7 +14,6 @@ namespace DevXpert.Store.MVC.Controllers
     [Route("vendedores")]
     public class VendedoresController(IVendedorService vendedorService,
                                       IProdutoService produtoService,
-                                      ICategoriaService categoriaService,
                                       ICategoriaHelperService categoriaHelperService,
                                       INotificador notificador,
                                       IAppIdentityUser user) : MainController(notificador, user)
@@ -104,7 +102,7 @@ namespace DevXpert.Store.MVC.Controllers
         public async Task<IActionResult> AlternarStatusProduto(Guid id)
         {
             var produto = await produtoService.BuscarPorId(id);
-            
+
             return View("ToggleProduto", ProdutoViewModel.MapToViewModel(produto));
         }
 
@@ -112,15 +110,24 @@ namespace DevXpert.Store.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AlternarStatusProdutoConfirmed(Guid id, Guid vendedorId)
         {
+            var produto = await produtoService.BuscarPorId(id);
+
+            if (produto == null)
+                return NotFound();
+
             if (!await produtoService.AlternarStatus(id))
+            {
                 GetErrorsFromNotificador();
+
+                return View("ToggleProduto", ProdutoViewModel.MapToViewModel(produto));
+            }
 
             await produtoService.Salvar();
 
             TempData["Sucesso"] = "Status do produto atualizado.";
 
             return RedirectToAction(nameof(ProdutosVendedor), new { id = vendedorId });
-        }      
+        }
 
         #region PRIVATE METHODS
 
@@ -136,6 +143,5 @@ namespace DevXpert.Store.MVC.Controllers
         }
 
         #endregion
-
     }
 }

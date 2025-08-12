@@ -10,6 +10,7 @@ namespace DevXpert.Store.Core.Business.Services
     public class ProdutoService(INotificador notificador,
                                 IProdutoRepository produtoRepository,
                                 IFavoritoRepository favoritoRepository,
+                                IVendedorRepository vendedorRepository,
                                 IArquivoService arquivoService) : BaseService(notificador), IProdutoService
     {
         #region READ
@@ -52,6 +53,10 @@ namespace DevXpert.Store.Core.Business.Services
             var produto = await produtoRepository.BuscarPorId(id);
 
             if (produto is null) return NotificarError("Produto não encontrado.");
+
+            var vendedor = await vendedorRepository.BuscarPorId(produto.VendedorId);
+
+            if (!vendedor.Ativo) return NotificarError("Não é possível alternar o status de produtos de vendedores inativos.");
 
             produto.AlternarStatus();
 
