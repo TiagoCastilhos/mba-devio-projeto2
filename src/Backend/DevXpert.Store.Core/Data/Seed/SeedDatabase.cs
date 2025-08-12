@@ -69,11 +69,11 @@ namespace DevXpert.Store.Core.Data.Seed
             );
 
             builder.Entity<Vendedor>().HasData(
-                new Vendedor(vendedorId, "vendedor@teste.com", "vendedor@teste.com", senha)
+                new Vendedor(vendedorId, "vendedor@teste.com", "vendedor@teste.com")
             );
 
             builder.Entity<Cliente>().HasData(
-                new Cliente(clienteId, "cliente@teste.com", "cliente@teste.com", senha)
+                new Cliente(clienteId, "cliente@teste.com", "cliente@teste.com")
             );
 
             builder.Entity<Categoria>().HasData(

@@ -33,8 +33,7 @@ namespace DevXpert.Store.Core.Business.Services
             if (!result.Succeeded)
                 return AuthViewModel(false, [.. result.Errors.Select(e => e.Description)]);
 
-            bool registered = usuarioRegistro.IsCliente ? await HandleCliente(user, usuarioRegistro.Password) :
-                                                          await HandleVendedor(user, usuarioRegistro.Password);
+            bool registered = usuarioRegistro.IsCliente ? await HandleCliente(user) : await HandleVendedor(user);
 
             if (!registered)
                 return AuthViewModel(false, [$"Falha ao cadastrar {(usuarioRegistro.IsCliente ? "cliente" : "vendedor")}."]);
@@ -115,11 +114,11 @@ namespace DevXpert.Store.Core.Business.Services
             return false;
         }
 
-        private async Task<bool> HandleVendedor(IdentityUser user, string password)
+        private async Task<bool> HandleVendedor(IdentityUser user)
         {
             await userManager.AddToRoleAsync(user, Roles.Vendedor);
 
-            var vendedor = new Vendedor(Guid.Parse(user.Id), user.UserName, user.Email, password);
+            var vendedor = new Vendedor(Guid.Parse(user.Id), user.UserName, user.Email);
 
             if (await vendedorService.Adicionar(vendedor))
             {
@@ -131,13 +130,20 @@ namespace DevXpert.Store.Core.Business.Services
             return false;
         }
 
-        private async Task<bool> HandleCliente(IdentityUser user, string password)
+        private async Task<bool> HandleCliente(IdentityUser user)
         {
             await userManager.AddToRoleAsync(user, Roles.Cliente);
 
-            var cliente = new Cliente(Guid.Parse(user.Id), user.UserName, user.Email, password);
+            var cliente = new Cliente(Guid.Parse(user.Id), user.UserName, user.Email);
 
-            return await clienteService.Adicionar(cliente);
+            if (await clienteService.Adicionar(cliente))
+            {
+                await clienteService.Salvar();
+                return true;
+            }
+
+            await userManager.DeleteAsync(user);
+            return false;
         }
 
         private static AuthResultViewModel AuthViewModel(bool success, List<string> errors, string token = "")

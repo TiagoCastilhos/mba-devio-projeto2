@@ -15,12 +15,11 @@ namespace DevXpert.Store.Core.Business.Models
 
         }
 
-        public Vendedor(Guid id, string nome, string email, string senha, bool ativo = true)
+        public Vendedor(Guid id, string nome, string email, bool ativo = true)
         {
             Id = id;
             Nome = nome;
             Email = email;
-            Senha = senha;
             Ativo = ativo;
         }
 
