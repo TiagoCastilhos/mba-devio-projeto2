@@ -83,10 +83,10 @@ namespace DevXpert.Store.Core.Data.Seed
             );
 
             builder.Entity<Produto>().HasData(
-                new Produto(Guid.Parse("f5dd84d8-ccda-43e8-96cf-be0ccff0de3b"), 100, 5000, "Computador", "Personal Computer", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
-                new Produto(Guid.Parse("5fa99536-a7c8-403d-a0a0-373f30773054"), 20, 60, "Mouse", "mouse com fio", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
-                new Produto(Guid.Parse("26361398-ab18-4efd-879f-1f0ad1bb6d9e"), 15, 100, "Teclado", "teclado mecânico", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
-                new Produto(Guid.Parse("6fa552cd-bdbf-4f4d-b298-987c3a140275"), 28, 780, "Monitor", "Monitor curso 27", "00000000-0000-0000-0000-000000000000_imagem.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId, false)
+                new Produto(Guid.Parse("f5dd84d8-ccda-43e8-96cf-be0ccff0de3b"), 100, 5000, "Computador", "Personal Computer", "f5dd84d8-ccda-43e8-96cf-be0ccff0de3b_computador.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
+                new Produto(Guid.Parse("5fa99536-a7c8-403d-a0a0-373f30773054"), 20, 60, "Mouse", "mouse com fio", "5fa99536-a7c8-403d-a0a0-373f30773054_mouse.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
+                new Produto(Guid.Parse("26361398-ab18-4efd-879f-1f0ad1bb6d9e"), 15, 100, "Teclado", "teclado mecânico", "26361398-ab18-4efd-879f-1f0ad1bb6d9e_teclado.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId),
+                new Produto(Guid.Parse("6fa552cd-bdbf-4f4d-b298-987c3a140275"), 28, 780, "Monitor", "Monitor curso 27", "6fa552cd-bdbf-4f4d-b298-987c3a140275_monitor_27.jpg", Guid.Parse("7b87817f-f13c-4a68-87c5-0fc28eda22ce"), vendedorId, false)
             );
 
             builder.Entity<Favorito>().HasData(
