@@ -155,19 +155,23 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 - Para feedbacks ou dúvidas utilize o recurso de Issues
 - O arquivo `FEEDBACK.md` é um resumo das avaliações do instrutor e deverá ser modificado apenas por ele.
 
-## :white_check_mark: **10. To Do List**
+## :white_check_mark: **10. Entrega do vídeo - Casos de uso**
 
-MVC:
-- :white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do admin); (Chayene)
-- <s>:white_check_mark: implementar filtro de pesquisa por categoria na tela de produtos (visão do vendedor); (Gilberto)</s>
+### Login de vendedor no MVC
+- Apresentar registro e login de vendedores no MVC
+- Apresentar criação (mostrar validações funcionando), atualização e deleção de produtos no MVC. 
+- Quando criar/deletar um produto, mostrar que parece/desaparece no front do Angular
 
-Core/API:
-- <s>:white_check_mark: ao cadastrar um vendedor ou cliente, a Role não está sendo gravada na tabela; (Cristian)</s>
-- <s>:white_check_mark: Padronizar o wwwroot do MVC e Angular para ler a imagem de um unico lugar (Edson)</s>
+### Login com admin no MVC
+- Apresentar criação, atualização e deleção de categorias
+- Apresentar desativação/ativação de produtos e mostrar que aparece/desaparece no front do Angular
+- Apresentar desativação/ativação de vendedores e mostrar que produtos são desativados/ativos em conjunto.
 
-Angular
-- <s>:white_check_mark: Tela do produto - Arrumar o botão para favoritar; (Tiago)</s>
-- <s>:white_check_mark: Tela do produto - produtos do mesmo vendedor não mostra os favoritados; (Tiago)</s>
-- <s>:white_check_mark: Tela do produto - Colocar email do vendedor na tela do produto (Vendido por: abc@abc.com); (Tiago)</s>
-- <s>:white_check_mark: Carrossel no produtos do mesmo vendedor: mostrar apenas 3, se o usuário queiser ver outros ele navega pelo carrossel; (Tiago)<s> 
-- <s>:white_check_mark: confirmar viabilidade de guarda de rota; (Victor)</s>
+### API
+- Mostrar swagger e autenticação
+
+### Login de cliente no Angular
+- Apresentar registro e login de clientes no Angular
+- Apresentar funcionalidade de favoritar/desfavoritar produtos
+- Apresentar lista de produtos favoritados
+- Apresentar visualização de produtos e produtos relacionados do mesmo vendedor
