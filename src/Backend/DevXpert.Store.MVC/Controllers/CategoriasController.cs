@@ -37,12 +37,10 @@ namespace DevXpert.Store.MVC.Controllers
 
         [HttpPost("novo")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nome,Descricao,Id")] CategoriaViewModel categoriaViewModel)
+        public async Task<IActionResult> Create([Bind("Nome,Descricao,Id,Ativo")] CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
-
-            categoriaViewModel.Ativar();
 
             if (!await categoriaService.Adicionar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
@@ -66,15 +64,13 @@ namespace DevXpert.Store.MVC.Controllers
 
         [HttpPost("editar")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Nome,Descricao,Id")] CategoriaViewModel categoriaViewModel)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Nome,Descricao,Id,Ativo")] CategoriaViewModel categoriaViewModel)
         {
             if (id != categoriaViewModel.Id)
                 return NotFound();
 
             if (!ModelState.IsValid)
                 return View(categoriaViewModel);
-
-            categoriaViewModel.Ativar();
 
             if (!await categoriaService.Atualizar(CategoriaViewModel.MapToEntity(categoriaViewModel)))
             {
