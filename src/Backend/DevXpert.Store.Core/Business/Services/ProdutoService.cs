@@ -141,7 +141,8 @@ namespace DevXpert.Store.Core.Business.Services
                 expression = expression.And(p => p.CategoriaId == categoriaId);
 
             if (!string.IsNullOrEmpty(buscar))
-                expression = expression.And(p => p.Nome.Contains(buscar) || p.Descricao.Contains(buscar));
+                expression = expression.And(p => p.Nome.ToUpper().Contains(buscar.ToUpper()) || 
+                                                 p.Descricao.ToUpper().Contains(buscar.ToUpper()));
 
             return expression;
         }

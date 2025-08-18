@@ -84,7 +84,8 @@ namespace DevXpert.Store.Core.Business.Services
                 expression = expression.And(c => c.Ativo == ativo);
 
             if (!string.IsNullOrEmpty(buscar))
-                expression = expression.And(c => c.Nome.Contains(buscar) || c.Descricao.Contains(buscar));
+                expression = expression.And(c => c.Nome.ToUpper().Contains(buscar.ToUpper()) || 
+                                                 c.Descricao.ToUpper().Contains(buscar.ToUpper()));
 
             return expression;
         }
