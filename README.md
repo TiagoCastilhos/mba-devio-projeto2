@@ -175,3 +175,6 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 - Apresentar funcionalidade de favoritar/desfavoritar produtos
 - Apresentar lista de produtos favoritados
 - Apresentar visualização de produtos e produtos relacionados do mesmo vendedor
+
+### Link do vídeo
+- [Projeto DevXpert.Store](https://youtu.be/CrXRMb4T3lA)
