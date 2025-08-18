@@ -92,7 +92,8 @@ namespace DevXpert.Store.Core.Business.Services
                 expression = expression.And(p => p.Ativo == ativo);
 
             if (!string.IsNullOrEmpty(buscar))
-                expression = expression.And(c => c.Nome.Contains(buscar) || c.Email.Contains(buscar));
+                expression = expression.And(c => c.Nome.ToUpper().Contains(buscar.ToUpper()) || 
+                                                 c.Email.ToUpper().Contains(buscar.ToUpper()));
 
             return expression;
         }
